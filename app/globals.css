@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(18, 18, 18, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(90, 90, 90, 0.5);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.7);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom colors */
+:root {
+  --color-mint: 160, 84%, 60%;
+}
+
+.text-mint-400 {
+  color: hsl(var(--color-mint));
+}
+
+.bg-mint-400 {
+  background-color: hsl(var(--color-mint));
+}
+
+.bg-mint-500\/5 {
+  background-color: hsla(var(--color-mint), 0.05);
+}
+
+.bg-mint-500\/10 {
+  background-color: hsla(var(--color-mint), 0.1);
+}
+
+.bg-mint-500\/20 {
+  background-color: hsla(var(--color-mint), 0.2);
+}
+
+.bg-mint-900\/5 {
+  background-color: hsla(var(--color-mint), 0.05);
+}
+
+.from-mint-400 {
+  --tw-gradient-from: hsl(var(--color-mint)) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsla(var(--color-mint), 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-mint-500\/5 {
+  --tw-gradient-from: hsla(var(--color-mint), 0.05) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsla(var(--color-mint), 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-mint-500\/10 {
+  --tw-gradient-from: hsla(var(--color-mint), 0.1) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsla(var(--color-mint), 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-mint-500\/20 {
+  --tw-gradient-from: hsla(var(--color-mint), 0.2) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsla(var(--color-mint), 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-mint-400 {
+  --tw-gradient-to: hsl(var(--color-mint)) var(--tw-gradient-to-position);
+}
+
+.to-mint-500 {
+  --tw-gradient-to: hsl(var(--color-mint)) var(--tw-gradient-to-position);
+}
+
+.to-mint-500\/5 {
+  --tw-gradient-to: hsla(var(--color-mint), 0.05) var(--tw-gradient-to-position);
+}
+
+.to-mint-500\/10 {
+  --tw-gradient-to: hsla(var(--color-mint), 0.1) var(--tw-gradient-to-position);
+}
+
+.to-mint-500\/20 {
+  --tw-gradient-to: hsla(var(--color-mint), 0.2) var(--tw-gradient-to-position);
+}
+
+.to-mint-900\/5 {
+  --tw-gradient-to: hsla(var(--color-mint), 0.05) var(--tw-gradient-to-position);
+}
