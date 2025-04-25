@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
     --radius: 0.5rem;
   }
 
@@ -54,8 +54,121 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-zinc-950;
+    @apply text-white;
   }
+}
+
+/* Responsive utilities */
+@layer utilities {
+  /* Hide on mobile, show on larger screens */
+  .hide-mobile {
+    @apply hidden sm:block;
+  }
+
+  /* Show on mobile, hide on larger screens */
+  .mobile-only {
+    @apply block sm:hidden;
+  }
+
+  /* Responsive text sizing */
+  .text-responsive-sm {
+    @apply text-sm sm:text-base md:text-lg;
+  }
+
+  .text-responsive-base {
+    @apply text-base sm:text-lg md:text-xl;
+  }
+
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  /* Responsive spacing */
+  .p-responsive {
+    @apply p-3 sm:p-4 md:p-6 lg:p-8;
+  }
+
+  .px-responsive {
+    @apply px-3 sm:px-4 md:px-6 lg:px-8;
+  }
+
+  .py-responsive {
+    @apply py-3 sm:py-4 md:py-6 lg:py-8;
+  }
+
+  .m-responsive {
+    @apply m-3 sm:m-4 md:m-6 lg:m-8;
+  }
+
+  .mx-responsive {
+    @apply mx-3 sm:mx-4 md:mx-6 lg:mx-8;
+  }
+
+  .my-responsive {
+    @apply my-3 sm:my-4 md:my-6 lg:my-8;
+  }
+
+  /* Responsive flex direction */
+  .flex-responsive {
+    @apply flex flex-col sm:flex-row;
+  }
+
+  .flex-responsive-reverse {
+    @apply flex flex-col-reverse sm:flex-row;
+  }
+}
+
+/* Media queries for fine-tuning */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 769px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Prevent horizontal overflow */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Improved scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(20, 20, 25, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 120, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 140, 0.7);
 }
 
 /* Custom scrollbar */

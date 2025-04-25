@@ -86,28 +86,31 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className="py-24 px-4 md:px-6 lg:px-8" id="features">
+    <section
+      className="py-16 sm:py-20 md:py-24 px-4 md:px-6 lg:px-8"
+      id="features"
+    >
       <div className="container mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 px-2">
             Intelligent features for your
-            <span className="bg-gradient-to-r from-purple-400 to-mint-400 text-transparent bg-clip-text ml-2">
+            <span className="bg-gradient-to-r from-purple-400 to-mint-400 text-transparent bg-clip-text block sm:inline sm:ml-2">
               financial future
             </span>
           </h2>
-          <p className="text-zinc-300 max-w-2xl mx-auto text-lg">
+          <p className="text-zinc-300 max-w-2xl mx-auto text-base sm:text-lg px-4 sm:px-6 md:px-0">
             Financify combines cutting-edge AI with human-centered design to
             transform how you manage money.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -121,18 +124,22 @@ export default function FeaturesSection() {
                 className={`absolute -inset-0.5 bg-gradient-to-r ${feature.borderGradient} opacity-0 group-hover:opacity-100 transition duration-300 blur-sm rounded-xl`}
               ></div>
               <div
-                className={`relative bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-8 h-full z-10 overflow-hidden transition-all duration-300 group-hover:bg-zinc-900/80`}
+                className={`relative bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-6 sm:p-8 h-full z-10 overflow-hidden transition-all duration-300 group-hover:bg-zinc-900/80`}
               >
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-300`}
                 ></div>
 
-                <div className="bg-zinc-800/50 p-3 rounded-lg inline-block mb-5">
+                <div className="bg-zinc-800/50 p-2 sm:p-3 rounded-lg inline-block mb-4 sm:mb-5">
                   {feature.icon}
                 </div>
 
-                <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-                <p className="text-zinc-400">{feature.description}</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
+                  {feature.title}
+                </h3>
+                <p className="text-sm sm:text-base text-zinc-400">
+                  {feature.description}
+                </p>
 
                 {/* Decorative corner */}
                 <div
