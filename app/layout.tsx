@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Finny - Financial Coach",
+  title: "Financify - Financial Coach",
   description:
     "A private financial coach that helps you save, invest, and plan — like a human advisor, but smarter.",
   generator: "v0.dev",

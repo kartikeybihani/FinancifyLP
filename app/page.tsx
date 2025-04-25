@@ -40,7 +40,12 @@ export default function Home() {
             <a href="#" className="hover:text-blue-300 transition-colors">
               Privacy
             </a>
-            <a href="#" className="hover:text-blue-300 transition-colors">
+            <a
+              href="https://www.linkedin.com/in/kbihani"
+              className="hover:text-blue-300 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Contact
             </a>
           </div>
