@@ -13,6 +13,8 @@ export default function HeroSection() {
   const [isTyping, setIsTyping] = useState(false);
   const [displayedText, setDisplayedText] = useState("");
   const [showControls, setShowControls] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const finnyMessages = [
@@ -98,7 +100,6 @@ export default function HeroSection() {
   // Handle email form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Form submitted! Check console for logs.");
     console.log("Form submitted");
 
     // Validate email
@@ -114,6 +115,15 @@ export default function HeroSection() {
     }
 
     console.log("Email submitted:", email);
+
+    // Show the custom notification
+    setNotificationMessage("You're on the waitlist! We'll be in touch soon.");
+    setShowNotification(true);
+
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000);
 
     // For now, just show success notification since Google Script endpoint is returning an error
     toast({
@@ -228,7 +238,60 @@ export default function HeroSection() {
   const handleMouseLeave = () => setShowControls(false);
 
   return (
-    <section className="min-h-screen flex flex-col justify-center pt-20 pb-16 px-4 md:px-6 lg:px-8">
+    <section className="min-h-screen flex flex-col justify-center pt-20 pb-16 px-4 md:px-6 lg:px-8 relative">
+      {/* Custom notification overlay */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-x-0 top-8 flex justify-center z-50"
+          >
+            <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-700/50 rounded-lg px-10 py-4 shadow-xl max-w-lg text-center relative">
+              <button
+                onClick={() => setShowNotification(false)}
+                className="absolute top-3 right-3 text-zinc-400 hover:text-white transition-colors py-1.5 pr-1.5 pl-3 rounded-full hover:bg-zinc-800/50"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+              <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-1 w-full absolute top-0 left-0 rounded-t-lg"></div>
+              <div className="flex items-center justify-center">
+                <span className="mr-3 text-purple-400 flex-shrink-0">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="bg-purple-500/20 p-0.5 rounded-full"
+                  >
+                    <path
+                      d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                <p className="text-zinc-100 text-sm font-medium pr-6">
+                  {notificationMessage}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           <div className="text-left">
