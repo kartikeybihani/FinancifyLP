@@ -20,30 +20,17 @@ export default function HeroSection() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const finnyMessages = [
-    "You spent $312 on food last week — want to cut that by 10%?",
-    "You're 63% of the way to your Hawaii trip goal. Keep it up!",
+    "You're 75% of the way to your Hawaii trip goal. Keep it up!",
+    "Your portfolio is up 12% this year, would you like to rebalance?",
     "Want to auto-invest $50 next Friday when your paycheck hits?",
     "I noticed your subscriptions total $87/month. Let's review them?",
   ];
 
   // Define categories for each message
-  const messageCategories = ["Spending", "Goals", "Investing", "Insights"];
+  const messageCategories = ["Goals", "Investing", "Insights", "Spending"];
 
   // Define icons for each category
   const categoryIcons = [
-    <svg
-      key="spending"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4ZM12 11H15V13H12V16H10V13H7V11H10V8H12V11Z"
-        fill="currentColor"
-      />
-    </svg>,
     <svg
       key="goals"
       width="16"
@@ -80,6 +67,19 @@ export default function HeroSection() {
     >
       <path
         d="M12 3C17.5 3 22 6.58 22 11C22 15.42 17.5 19 12 19C10.76 19 9.57 18.82 8.47 18.5C5.55 21 2 21 2 21C4.33 18.67 4.7 17.1 4.75 16.5C3.05 15.07 2 13.13 2 11C2 6.58 6.5 3 12 3ZM11 13H13V17H11V13ZM11 7H13V11H11V7Z"
+        fill="currentColor"
+      />
+    </svg>,
+    <svg
+      key="spending"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4ZM12 11H15V13H12V16H10V13H7V11H10V8H12V11Z"
         fill="currentColor"
       />
     </svg>,
@@ -225,7 +225,7 @@ export default function HeroSection() {
         setIsMessageChanging(false);
         setIsTyping(true);
       }, 500); // Half duration of the transition
-    }, 8000); // Increased for more time to read messages
+    }, 5000);
 
     return () => clearInterval(rotateMessages);
   }, [currentMessageIndex, finnyMessages.length]);

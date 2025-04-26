@@ -71,7 +71,7 @@ export default function SparkMomentSection() {
           >
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
               <span className="block">Goal planning,</span>
-              <span className="block mt-1 bg-gradient-to-r from-purple-400 via-indigo-400 to-mint-400 text-transparent bg-clip-text">
+              <span className="block mt-2 md:mt-1 bg-gradient-to-r from-purple-400 via-indigo-400 to-mint-400 text-transparent bg-clip-text">
                 for you — by you.
               </span>
             </h2>
@@ -80,31 +80,39 @@ export default function SparkMomentSection() {
               Set a goal once. Let Finny track it with you.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-5 py-3 rounded-lg border border-zinc-700/30">
-                <div className="text-2xl font-bold text-purple-400">93%</div>
-                <div className="text-sm text-zinc-400">
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
+                <div className="text-xl sm:text-2xl font-bold text-purple-400">
+                  93%
+                </div>
+                <div className="text-xs sm:text-sm text-zinc-400">
                   of users achieve their first financial goal
                 </div>
               </div>
 
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-5 py-3 rounded-lg border border-zinc-700/30">
-                <div className="text-2xl font-bold text-mint-400">2.5x</div>
-                <div className="text-sm text-zinc-400">
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
+                <div className="text-xl sm:text-2xl font-bold text-mint-400">
+                  2.5x
+                </div>
+                <div className="text-xs sm:text-sm text-zinc-400">
                   faster savings rate than traditional methods
                 </div>
               </div>
 
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-5 py-3 rounded-lg border border-zinc-700/30">
-                <div className="text-2xl font-bold text-indigo-400">80%</div>
-                <div className="text-sm text-zinc-400">
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
+                <div className="text-xl sm:text-2xl font-bold text-indigo-400">
+                  80%
+                </div>
+                <div className="text-xs sm:text-sm text-zinc-400">
                   less stress about money management
                 </div>
               </div>
 
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-5 py-3 rounded-lg border border-zinc-700/30">
-                <div className="text-2xl font-bold text-blue-400">5+</div>
-                <div className="text-sm text-zinc-400">
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
+                <div className="text-xl sm:text-2xl font-bold text-blue-400">
+                  5+
+                </div>
+                <div className="text-xs sm:text-sm text-zinc-400">
                   financial goals achieved on average
                 </div>
               </div>
