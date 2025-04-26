@@ -275,16 +275,19 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-0 top-8 flex justify-center z-50"
+            className="fixed inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 top-4 sm:top-8 flex justify-center z-50"
           >
-            <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-700/50 rounded-lg px-10 py-4 shadow-xl max-w-lg text-center relative">
+            <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-700/50 rounded-xl px-4 sm:px-8 py-3 sm:py-4 shadow-2xl max-w-sm w-full relative overflow-hidden">
+              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-70"></div>
+              <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-70"></div>
+
               <button
                 onClick={() => setShowNotification(false)}
-                className="absolute top-3 right-3 text-zinc-400 hover:text-white transition-colors py-1.5 pr-1.5 pl-3 rounded-full hover:bg-zinc-800/50"
+                className="absolute top-2.5 right-2.5 text-zinc-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-zinc-800/50"
               >
                 <svg
-                  width="15"
-                  height="15"
+                  width="16"
+                  height="16"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -295,26 +298,31 @@ export default function HeroSection() {
                   />
                 </svg>
               </button>
-              <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-1 w-full absolute top-0 left-0 rounded-t-lg"></div>
-              <div className="flex items-center justify-center">
-                <span className="mr-3 text-purple-400 flex-shrink-0">
+
+              <div className="flex items-start gap-3">
+                <div className="shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
                   <svg
-                    width="18"
-                    height="18"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="bg-purple-500/20 p-0.5 rounded-full"
+                    className="text-purple-400"
                   >
                     <path
                       d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"
                       fill="currentColor"
                     />
                   </svg>
-                </span>
-                <p className="text-zinc-100 text-sm font-medium pr-6">
-                  {notificationMessage}
-                </p>
+                </div>
+                <div className="flex-1 pt-1">
+                  <p className="text-sm sm:text-base text-zinc-100 font-medium pr-6">
+                    {notificationMessage}
+                  </p>
+                  <p className="text-xs text-zinc-400 mt-1">
+                    We'll send you an email when we're ready for you.
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>
