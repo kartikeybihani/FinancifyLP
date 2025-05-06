@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Analytics and performance monitoring components
 // Font configuration for the application
+// Metadata configuration for SEO and viewport settings
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
