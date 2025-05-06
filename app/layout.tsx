@@ -12,6 +12,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 // Root layout configuration with hydration settings
 // Global styles and CSS reset configuration
 // Accessibility and language settings
+// Performance monitoring and optimization
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
