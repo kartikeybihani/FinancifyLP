@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 // Metadata configuration for SEO and viewport settings
 // Theme provider configuration for dark/light mode
 // Root layout configuration with hydration settings
+// Global styles and CSS reset configuration
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
