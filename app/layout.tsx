@@ -8,7 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 // Analytics and performance monitoring components
 // Font configuration for the application
 // Metadata configuration for SEO and viewport settings
-// Theme provider configuration for dark/light mode
+// Enhanced theme provider setup for seamless dark/light mode switching
 // Root layout configuration with hydration settings
 // Global styles and CSS reset configuration
 // Accessibility and language settings
