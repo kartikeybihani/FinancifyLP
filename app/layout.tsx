@@ -15,6 +15,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 // Performance monitoring and optimization
 const inter = Inter({ subsets: ["latin"] });
 
+// This is a useless comment for testing purposes
 export const metadata = {
   title: "Financify - Financial Coach",
   description:
