@@ -19,7 +19,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Financify v1.0 - Financial Coach",
   description:
-    "A private financial coach that helps you save, invest, and plan — like a human advisor, but smarter.",
+    "Your AI-powered financial coach for smarter saving and investing decisions.",
   generator: "v0.dev",
   viewport: {
     width: "device-width",
