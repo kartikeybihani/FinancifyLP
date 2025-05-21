@@ -17,7 +17,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 // Viewport configuration for responsive design and mobile optimization
 export const metadata = {
-  title: "Financify - Financial Coach",
+  title: "Financify v1.0 - Financial Coach",
   description:
     "A private financial coach that helps you save, invest, and plan — like a human advisor, but smarter.",
   generator: "v0.dev",
