@@ -1,168 +1,194 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react";
 
 export default function ParticleBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     // Set canvas dimensions
     const setCanvasDimensions = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight * 3 // Make canvas taller to cover scrolling
-    }
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight * 3; // Make canvas taller to cover scrolling
+    };
 
-    setCanvasDimensions()
-    window.addEventListener("resize", setCanvasDimensions)
+    setCanvasDimensions();
+    window.addEventListener("resize", setCanvasDimensions);
 
     // Particle class with enhanced behavior
     class Particle {
-      x: number
-      y: number
-      size: number
-      speedX: number
-      speedY: number
-      color: string
-      alpha: number
-      hue: number
-      saturation: number
-      lightness: number
-      pulseSpeed: number
-      pulseDirection: number
-      maxSize: number
-      minSize: number
-      shape: string
-      trail: { x: number; y: number; size: number; alpha: number }[]
-      hasTrail: boolean
+      x: number;
+      y: number;
+      size: number;
+      speedX: number;
+      speedY: number;
+      color: string;
+      alpha: number;
+      hue: number;
+      saturation: number;
+      lightness: number;
+      pulseSpeed: number;
+      pulseDirection: number;
+      maxSize: number;
+      minSize: number;
+      shape: string;
+      trail: { x: number; y: number; size: number; alpha: number }[];
+      hasTrail: boolean;
+      canvasWidth: number;
+      canvasHeight: number;
+      twinkleSpeed: number;
+      twinklePhase: number;
+      baseAlpha: number;
 
-      constructor() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
-        this.size = Math.random() * 2 + 0.5
-        this.maxSize = this.size + Math.random() * 2
-        this.minSize = Math.max(0.5, this.size - Math.random() * 1)
-        this.speedX = Math.random() * 0.5 - 0.25
-        this.speedY = Math.random() * 0.5 - 0.25
+      constructor(canvasWidth: number, canvasHeight: number) {
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+        this.x = Math.random() * this.canvasWidth;
+        this.y = Math.random() * this.canvasHeight;
+        this.size = Math.random() * 1.5 + 0.2; // Smaller base size for stars
+        this.maxSize = this.size + Math.random() * 1;
+        this.minSize = Math.max(0.2, this.size - Math.random() * 0.5);
+        this.speedX = (Math.random() - 0.5) * 0.3; // Slower movement
+        this.speedY = (Math.random() - 0.5) * 0.3;
 
-        // Colors in the lavender/purple/mint spectrum
+        // Whites and subtle gold colors for stars
         this.hue =
-          Math.random() > 0.7
-            ? Math.random() * 40 + 140 // Lavender/Purple range
-            : Math.random() * 40 + 160 // Mint/Teal range
-        this.saturation = Math.random() * 30 + 70 // High saturation
-        this.lightness = Math.random() * 20 + 50 // Medium lightness
+          Math.random() > 0.85
+            ? Math.random() * 50 + 30 // Warm gold/yellow for some stars
+            : Math.random() * 60 + 200; // Cool white/blue for most stars
+        this.saturation = Math.random() > 0.85 ? 70 : 20; // Most stars are more white
+        this.lightness = Math.random() * 30 + 70; // Brighter for star effect
 
-        // For pulsing effect
-        this.pulseSpeed = Math.random() * 0.02 + 0.01
-        this.pulseDirection = Math.random() > 0.5 ? 1 : -1
+        this.pulseSpeed = Math.random() * 0.03 + 0.01; // Slightly faster pulsing
+        this.pulseDirection = Math.random() > 0.5 ? 1 : -1;
 
-        this.alpha = Math.random() * 0.5 + 0.1
-        this.color = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${this.alpha})`
+        this.alpha = Math.random() * 0.7 + 0.3;
+        this.color = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${this.alpha})`;
 
-        // Random shapes: circle, square, or triangle
-        const shapes = ["circle", "square", "triangle"]
-        this.shape = shapes[Math.floor(Math.random() * shapes.length)]
+        // Only use circles for stars
+        this.shape = "circle";
 
-        // Particle trail
-        this.trail = []
-        this.hasTrail = Math.random() > 0.8 // Only some particles have trails
+        // Star trail effect
+        this.trail = [];
+        this.hasTrail = Math.random() > 0.7; // 30% of stars have trails
+
+        // Add twinkling effect
+        this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+        this.twinklePhase = Math.random() * Math.PI * 2;
+        this.baseAlpha = this.alpha;
       }
 
       update() {
-        // Add current position to trail
-        if (this.hasTrail && Math.random() > 0.7) {
+        // Add current position to trail with reduced frequency for stars
+        if (this.hasTrail && Math.random() > 0.85) {
           this.trail.push({
             x: this.x,
             y: this.y,
-            size: this.size * 0.6,
-            alpha: this.alpha * 0.5,
-          })
+            size: this.size * 0.4, // Smaller trail for stars
+            alpha: this.alpha * 0.3,
+          });
 
           // Limit trail length
-          if (this.trail.length > 5) {
-            this.trail.shift()
+          if (this.trail.length > 3) {
+            // Shorter trails for stars
+            this.trail.shift();
           }
         }
 
-        // Slightly curved motion
-        this.x += this.speedX + Math.sin(this.y * 0.01) * 0.1
-        this.y += this.speedY + Math.cos(this.x * 0.01) * 0.1
+        // Slightly curved motion for stars
+        this.x += this.speedX;
+        this.y += this.speedY;
 
-        // Pulse size
-        this.size += this.pulseSpeed * this.pulseDirection
-        if (this.size > this.maxSize || this.size < this.minSize) {
-          this.pulseDirection *= -1
-        }
+        // Twinkle effect
+        this.twinklePhase += this.twinkleSpeed;
+        this.alpha = this.baseAlpha * (0.6 + Math.sin(this.twinklePhase) * 0.4);
 
-        // Slowly shift color
-        this.hue += 0.1
-        if (this.hue > 280) this.hue = 140
-        this.color = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${this.alpha})`
+        // Update color with new alpha
+        this.color = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${this.alpha})`;
 
-        // Wrap around edges with some margin
-        if (this.x < -50) this.x = canvas.width + 50
-        if (this.x > canvas.width + 50) this.x = -50
-        if (this.y < -50) this.y = canvas.height + 50
-        if (this.y > canvas.height + 50) this.y = -50
+        // Wrap around edges
+        if (this.x < -50) this.x = this.canvasWidth + 50;
+        if (this.x > this.canvasWidth + 50) this.x = -50;
+        if (this.y < -50) this.y = this.canvasHeight + 50;
+        if (this.y > this.canvasHeight + 50) this.y = -50;
       }
 
       draw() {
-        if (!ctx) return
+        if (!ctx) return;
 
-        // Draw trail
+        // Draw trail with fade effect
         if (this.hasTrail) {
           this.trail.forEach((point, index) => {
-            const trailAlpha = point.alpha * (index / this.trail.length)
-            ctx.fillStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${trailAlpha})`
-            ctx.beginPath()
-            ctx.arc(point.x, point.y, point.size * (index / this.trail.length), 0, Math.PI * 2)
-            ctx.fill()
-          })
+            const trailAlpha =
+              point.alpha * ((index + 1) / this.trail.length) * 0.5;
+            ctx.fillStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${trailAlpha})`;
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
+            ctx.fill();
+          });
         }
 
-        ctx.fillStyle = this.color
+        // Draw star with subtle glow effect
+        const glow = this.size * 2;
+        const gradient = ctx.createRadialGradient(
+          this.x,
+          this.y,
+          0,
+          this.x,
+          this.y,
+          glow
+        );
 
-        switch (this.shape) {
-          case "circle":
-            ctx.beginPath()
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-            ctx.fill()
-            break
+        gradient.addColorStop(0, this.color);
+        gradient.addColorStop(
+          0.5,
+          `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, ${
+            this.alpha * 0.3
+          })`
+        );
+        gradient.addColorStop(
+          1,
+          `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, 0)`
+        );
 
-          case "square":
-            ctx.fillRect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2)
-            break
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, glow, 0, Math.PI * 2);
+        ctx.fill();
 
-          case "triangle":
-            ctx.beginPath()
-            ctx.moveTo(this.x, this.y - this.size)
-            ctx.lineTo(this.x - this.size, this.y + this.size)
-            ctx.lineTo(this.x + this.size, this.y + this.size)
-            ctx.closePath()
-            ctx.fill()
-            break
-        }
+        // Draw the main star point
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
-    // Create particles
-    const particlesArray: Particle[] = []
-    const numberOfParticles = Math.min(150, window.innerWidth / 15)
+    // Create more particles for a denser star field
+    const numberOfParticles = Math.min(200, window.innerWidth / 10);
 
+    // Create particles
+    const particlesArray: Particle[] = [];
     for (let i = 0; i < numberOfParticles; i++) {
-      particlesArray.push(new Particle())
+      particlesArray.push(new Particle(canvas.width, canvas.height));
     }
 
     // Create geometric background elements
-    const geometricElements: { x: number; y: number; size: number; rotation: number; type: string; color: string }[] =
-      []
-    const numberOfElements = 15
+    const geometricElements: {
+      x: number;
+      y: number;
+      size: number;
+      rotation: number;
+      type: string;
+      color: string;
+    }[] = [];
+    const numberOfElements = 8;
 
     for (let i = 0; i < numberOfElements; i++) {
       geometricElements.push({
@@ -172,96 +198,111 @@ export default function ParticleBackground() {
         rotation: Math.random() * Math.PI,
         type: Math.random() > 0.5 ? "circle" : "rect",
         color: `hsla(${Math.random() * 60 + 160}, 70%, 50%, 0.03)`,
-      })
+      });
     }
 
     // Animation loop
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Create a rich, deep background gradient
+      // Create a deep space gradient from black to dark gray
       const gradient = ctx.createRadialGradient(
         canvas.width / 2,
         canvas.height / 3,
         0,
         canvas.width / 2,
         canvas.height / 3,
-        canvas.width,
-      )
-      gradient.addColorStop(0, "rgba(20, 17, 35, 1)") // Deep purple-blue
-      gradient.addColorStop(0.5, "rgba(15, 12, 30, 1)") // Darker purple-blue
-      gradient.addColorStop(1, "rgba(10, 8, 20, 1)") // Almost black with purple tint
-      ctx.fillStyle = gradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+        canvas.width * 1.2
+      );
+      gradient.addColorStop(0, "rgba(0, 0, 0, 1)"); // Pure black at center
+      gradient.addColorStop(0.4, "rgba(10, 10, 12, 1)"); // Very dark gray
+      gradient.addColorStop(0.7, "rgba(20, 20, 24, 1)"); // Slightly lighter
+      gradient.addColorStop(1, "rgba(30, 30, 35, 1)"); // Dark gray at edges
 
-      // Draw large geometric elements in background
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add a subtle overlay gradient for depth
+      const overlayGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      overlayGradient.addColorStop(0, "rgba(255, 255, 255, 0.03)");
+      overlayGradient.addColorStop(0.5, "rgba(255, 255, 255, 0)");
+      overlayGradient.addColorStop(1, "rgba(255, 255, 255, 0.02)");
+      ctx.fillStyle = overlayGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw fewer, larger geometric elements for nebula-like effect
       geometricElements.forEach((element) => {
-        ctx.save()
-        ctx.translate(element.x, element.y)
-        ctx.rotate(element.rotation)
-        ctx.fillStyle = element.color
+        ctx.save();
+        ctx.translate(element.x, element.y);
+        ctx.rotate(element.rotation);
+
+        // Use very subtle blue/purple colors for nebula effect
+        const nebulaColor = `hsla(${Math.random() * 60 + 220}, 70%, 50%, 0.01)`;
+        ctx.fillStyle = nebulaColor;
 
         if (element.type === "circle") {
-          ctx.beginPath()
-          ctx.arc(0, 0, element.size, 0, Math.PI * 2)
-          ctx.fill()
-        } else {
-          ctx.fillRect(-element.size / 2, -element.size / 2, element.size, element.size)
+          ctx.beginPath();
+          ctx.arc(0, 0, element.size * 1.5, 0, Math.PI * 2);
+          ctx.fill();
         }
-
-        ctx.restore()
-      })
+        ctx.restore();
+      });
 
       // Update and draw particles
       for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update()
-        particlesArray[i].draw()
+        particlesArray[i].update();
+        particlesArray[i].draw();
       }
 
       // Connect particles with lines if they're close enough
-      connectParticles()
+      connectParticles();
 
-      requestAnimationFrame(animate)
-    }
+      requestAnimationFrame(animate);
+    };
 
     // Connect particles with lines - enhanced with gradient lines
     const connectParticles = () => {
       for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
-          const dx = particlesArray[a].x - particlesArray[b].x
-          const dy = particlesArray[a].y - particlesArray[b].y
-          const distance = Math.sqrt(dx * dx + dy * dy)
+          const dx = particlesArray[a].x - particlesArray[b].x;
+          const dy = particlesArray[a].y - particlesArray[b].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < 120) {
-            const opacity = 1 - distance / 120
+            const opacity = 1 - distance / 120;
 
             // Create gradient line between particles
             const gradient = ctx.createLinearGradient(
               particlesArray[a].x,
               particlesArray[a].y,
               particlesArray[b].x,
-              particlesArray[b].y,
-            )
-            gradient.addColorStop(0, particlesArray[a].color)
-            gradient.addColorStop(1, particlesArray[b].color)
+              particlesArray[b].y
+            );
+            gradient.addColorStop(0, particlesArray[a].color);
+            gradient.addColorStop(1, particlesArray[b].color);
 
-            ctx.strokeStyle = gradient
-            ctx.lineWidth = opacity * 0.8
-            ctx.beginPath()
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y)
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y)
-            ctx.stroke()
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = opacity * 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx.stroke();
           }
         }
       }
-    }
+    };
 
-    animate()
+    animate();
 
     return () => {
-      window.removeEventListener("resize", setCanvasDimensions)
-    }
-  }, [])
+      window.removeEventListener("resize", setCanvasDimensions);
+    };
+  }, []);
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0 opacity-70" />
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full z-0 opacity-70"
+    />
+  );
 }

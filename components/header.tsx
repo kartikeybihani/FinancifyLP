@@ -48,7 +48,7 @@ export default function Header() {
               <motion.div
                 className={`text-lg sm:text-xl md:text-2xl font-bold text-transparent bg-clip-text transition-all duration-300 ease-out ${
                   isHovered
-                    ? "bg-gradient-to-r from-purple-400 via-indigo-400 to-blue-500"
+                    ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
                     : "bg-gradient-to-r from-white to-zinc-300"
                 }`}
                 whileHover={{
@@ -81,7 +81,7 @@ export default function Header() {
             <div className="hidden md:flex items-center">
               <Link
                 href="#top"
-                className="inline-flex text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded-lg transition-colors"
+                className="inline-flex text-sm font-medium text-white bg-[#4A90E2] hover:bg-[#3A7BC9] py-2 px-4 rounded-lg transition-colors"
               >
                 Join Waitlist
               </Link>
@@ -156,7 +156,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="#top"
-                  className="text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded-lg transition-colors w-full text-center mt-2"
+                  className="text-sm font-medium text-white bg-[#4A90E2] hover:bg-[#3A7BC9] py-2 px-4 rounded-lg transition-colors w-full text-center mt-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Join Waitlist

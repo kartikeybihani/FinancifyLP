@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
+import Image from "next/image";
 
 export default function HeroSection() {
   const [email, setEmail] = useState("");
@@ -300,14 +301,14 @@ export default function HeroSection() {
               </button>
 
               <div className="flex items-start gap-3">
-                <div className="shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                <div className="shrink-0 w-6 h-6 bg-[#4A90E2]/20 rounded-lg flex items-center justify-center">
                   <svg
-                    width="20"
-                    height="20"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-purple-400"
+                    className="text-[#4A90E2]"
                   >
                     <path
                       d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"
@@ -338,19 +339,27 @@ export default function HeroSection() {
               transition={{ delay: 0.1, duration: 0.6 }}
               className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-6 md:mb-8 mx-auto sm:mx-0"
             >
-              <div className="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse"></div>
-              <span>AI-powered financial guidance</span>
+              <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
+              <span className="bg-gradient-to-r from-[#4A90E2] via-blue-500 to-blue-400 text-transparent bg-clip-text">
+                AI-powered financial guidance
+              </span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.7 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-3 md:mb-4"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-3 md:mb-4 relative"
             >
-              Your money. <br className="md:block hidden" />
-              <span className="bg-gradient-to-r from-purple-400 via-indigo-400 to-mint-400 text-transparent bg-clip-text">
-                Fully understood.
+              <span className="relative inline-block">
+                Your money. <br className="md:block hidden" />
+                <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
+              </span>
+              <span className="relative inline-block">
+                <span className="absolute -inset-1 bg-gradient-to-r from-[#4A90E2]/20 via-indigo-400/20 to-mint-400/20 blur-2xl rounded-lg"></span>
+                <span className="relative bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-mint-400 text-transparent bg-clip-text animate-shimmer">
+                  Fully understood.
+                </span>
               </span>
             </motion.h1>
 
@@ -369,8 +378,7 @@ export default function HeroSection() {
               transition={{ delay: 0.6, duration: 0.7 }}
               className="text-base sm:text-lg text-zinc-400 max-w-xl mb-2 mx-auto sm:mx-0"
             >
-              A private financial coach that helps you save, invest, and plan —
-              like a human advisor, but smarter and faster.
+              A financial coach that helps you invest, plan, and save.
             </motion.p>
 
             <motion.p
@@ -379,7 +387,7 @@ export default function HeroSection() {
               transition={{ delay: 0.7, duration: 0.5 }}
               className="text-sm text-zinc-400 max-w-xl mb-8 mx-auto sm:mx-0"
             >
-              Just clarity and control for your money.
+              Built to give you a peace of mind.
             </motion.p>
 
             <motion.div
@@ -396,7 +404,7 @@ export default function HeroSection() {
                   <Input
                     type="email"
                     placeholder="Enter your email"
-                    className="w-full bg-zinc-800/40 border-zinc-700/30 focus:border-purple-500/50 h-10 sm:h-12"
+                    className="w-full bg-zinc-800/40 border-zinc-700/30 focus:border-[#4A90E2]/50 h-10 sm:h-12"
                     value={email}
                     onChange={(e) => {
                       console.log("Email input changed:", e.target.value);
@@ -407,7 +415,7 @@ export default function HeroSection() {
                 </div>
                 <Button
                   type="submit"
-                  className="h-10 sm:h-12 px-4 sm:px-6 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-medium"
+                  className="h-10 sm:h-12 px-4 sm:px-6 bg-[#4A90E2] hover:bg-[#3A7BC9] text-white font-medium rounded-lg transition-colors"
                   onClick={() => console.log("Join button clicked")}
                 >
                   Join the Waitlist
@@ -446,21 +454,22 @@ export default function HeroSection() {
                   }}
                 >
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center text-white ${
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-white ${
                       idx === currentMessageIndex
-                        ? "bg-gradient-to-r from-purple-500 to-blue-600"
+                        ? "bg-gradient-to-r from-[#4A90E2] to-blue-600"
                         : "bg-zinc-800"
                     }`}
                   >
                     {React.cloneElement(categoryIcons[idx], {
-                      className:
+                      className: `w-3.5 h-3.5 ${
                         idx === currentMessageIndex
                           ? "text-white"
-                          : "text-zinc-400",
+                          : "text-zinc-400"
+                      }`,
                     })}
                   </div>
                   <span
-                    className={`text-sm font-medium pr-2 ${
+                    className={`text-xs font-medium pr-2 ${
                       idx === currentMessageIndex
                         ? "text-white"
                         : "text-zinc-500"
@@ -490,7 +499,7 @@ export default function HeroSection() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-1/2 -right-10 z-10 w-8 h-8 rounded-full bg-zinc-800/70 flex items-center justify-center text-white backdrop-blur-sm border border-zinc-700/50 hover:bg-purple-500/50 transition-colors hidden sm:flex"
+                      className="absolute top-1/2 -right-10 z-10 w-8 h-8 rounded-full bg-zinc-800/70 flex items-center justify-center text-white backdrop-blur-sm border border-zinc-700/50 hover:bg-[#4A90E2]/50 transition-colors hidden sm:flex"
                       onClick={() => handleNavigate("next")}
                     >
                       <svg
@@ -511,7 +520,7 @@ export default function HeroSection() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-1/2 -left-10 z-10 w-8 h-8 rounded-full bg-zinc-800/70 flex items-center justify-center text-white backdrop-blur-sm border border-zinc-700/50 hover:bg-purple-500/50 transition-colors hidden sm:flex"
+                      className="absolute top-1/2 -left-10 z-10 w-8 h-8 rounded-full bg-zinc-800/70 flex items-center justify-center text-white backdrop-blur-sm border border-zinc-700/50 hover:bg-[#4A90E2]/50 transition-colors hidden sm:flex"
                       onClick={() => handleNavigate("prev")}
                     >
                       <svg
@@ -532,8 +541,8 @@ export default function HeroSection() {
               </AnimatePresence>
 
               {/* Glow background effects */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/30 to-blue-500/30 rounded-2xl blur-md"></div>
-              <div className="absolute -top-6 -left-6 w-32 h-32 bg-purple-500/10 rounded-full blur-xl"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/30 to-blue-500/30 rounded-2xl blur-md"></div>
+              <div className="absolute -top-6 -left-6 w-32 h-32 bg-[#4A90E2]/10 rounded-full blur-xl"></div>
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
 
               {/* Chat interface container */}
@@ -541,8 +550,14 @@ export default function HeroSection() {
                 {/* Chat header */}
                 <div className="bg-zinc-800/50 backdrop-blur-sm px-3 sm:px-6 py-3 sm:py-4 border-b border-zinc-700/30 flex items-center justify-between">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-base sm:text-lg font-medium shrink-0">
-                      F
+                    <div className="w-12 sm:w-16 h-12 sm:h-16 shrink-0">
+                      <Image
+                        src="/mascot1.jpg"
+                        alt="Finny Mascot"
+                        width={90}
+                        height={90}
+                        className="w-full h-full scale-x-[-1]"
+                      />
                     </div>
                     <div>
                       <div className="font-medium text-zinc-200 text-sm sm:text-base">
@@ -554,7 +569,7 @@ export default function HeroSection() {
                       </div>
                     </div>
                   </div>
-                  <div className="text-zinc-400">
+                  {/* <div className="text-zinc-400">
                     <svg
                       width="14"
                       height="14"
@@ -568,7 +583,7 @@ export default function HeroSection() {
                         fill="currentColor"
                       />
                     </svg>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Chat messages area */}
@@ -582,8 +597,14 @@ export default function HeroSection() {
 
                   {/* Previous message bubble */}
                   <div className="flex gap-2 mb-4 sm:mb-6">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs sm:text-sm font-medium shrink-0">
-                      F
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-gradient-to-br from-[#4A90E2] to-blue-600 flex items-center justify-center shrink-0">
+                      <Image
+                        src="/mascot1.jpg"
+                        alt="Finny Mascot"
+                        width={32}
+                        height={32}
+                        className="w-full h-full object-cover scale-x-[-1]"
+                      />
                     </div>
                     <div className="max-w-[85%] sm:max-w-[80%]">
                       <div className="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200">
@@ -597,8 +618,14 @@ export default function HeroSection() {
 
                   {/* Current animated message bubble */}
                   <div className="flex gap-2">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs sm:text-sm font-medium shrink-0">
-                      F
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-gradient-to-br from-[#4A90E2] to-blue-600 flex items-center justify-center shrink-0">
+                      <Image
+                        src="/mascot1.jpg"
+                        alt="Finny Mascot"
+                        width={32}
+                        height={32}
+                        className="w-full h-full object-cover scale-x-[-1]"
+                      />
                     </div>
                     <div className="max-w-[85%] sm:max-w-[80%]">
                       <AnimatePresence mode="wait">
@@ -663,7 +690,7 @@ export default function HeroSection() {
                       key={index}
                       className={`h-1.5 rounded-full cursor-pointer transition-all duration-500 ${
                         index === currentMessageIndex
-                          ? "w-6 sm:w-8 bg-gradient-to-r from-purple-500 to-blue-600"
+                          ? "w-6 sm:w-8 bg-gradient-to-r from-[#4A90E2] to-blue-600"
                           : "w-1.5 sm:w-2 bg-zinc-600"
                       }`}
                       whileHover={{
@@ -696,7 +723,7 @@ export default function HeroSection() {
                   <div className="flex-1 bg-zinc-800/50 border border-zinc-700/50 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-zinc-500 text-xs sm:text-sm">
                     Type a message...
                   </div>
-                  <button className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
+                  <button className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-gradient-to-r from-[#4A90E2] to-blue-600 flex items-center justify-center">
                     <svg
                       width="16"
                       height="16"
@@ -724,9 +751,9 @@ export default function HeroSection() {
                 </div>
 
                 {/* Glow effects */}
-                <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-purple-500/10 to-transparent pointer-events-none"></div>
+                <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#4A90E2]/10 to-transparent pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-blue-500/10 to-transparent pointer-events-none"></div>
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-xl pointer-events-none"></div>
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#4A90E2]/10 rounded-full blur-xl pointer-events-none"></div>
                 <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
               </div>
             </div>

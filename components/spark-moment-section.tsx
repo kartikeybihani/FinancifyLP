@@ -71,7 +71,7 @@ export default function SparkMomentSection() {
           >
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
               <span className="block">Goal planning,</span>
-              <span className="block mt-2 md:mt-1 bg-gradient-to-r from-purple-400 via-indigo-400 to-mint-400 text-transparent bg-clip-text">
+              <span className="block mt-2 md:mt-1 bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-blue-400 text-transparent bg-clip-text animate-shimmer">
                 for you — by you.
               </span>
             </h2>
@@ -127,7 +127,7 @@ export default function SparkMomentSection() {
             className="flex justify-center lg:justify-end"
           >
             <div className="w-full max-w-md bg-zinc-900/60 border border-zinc-800/50 rounded-xl overflow-hidden relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500/10 to-mint-500/10 rounded-xl blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/10 to-blue-500/10 rounded-xl blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
 
               <div className="p-6 relative z-10">
                 <h3 className="text-lg font-medium mb-6">
@@ -415,7 +415,7 @@ export default function SparkMomentSection() {
       </div>
 
       {/* Decorative background elements */}
-      <div className="absolute top-1/4 left-0 w-full h-1/2 bg-gradient-to-r from-purple-900/5 via-transparent to-mint-900/5 transform -skew-y-6 -z-10"></div>
+      <div className="absolute top-1/4 left-0 w-full h-1/2 bg-gradient-to-r from-[#4A90E2]/5 via-transparent to-blue-900/5 transform -skew-y-6 -z-10"></div>
     </section>
   );
 }

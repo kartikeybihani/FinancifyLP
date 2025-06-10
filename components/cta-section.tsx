@@ -95,7 +95,7 @@ export default function CtaSection() {
   };
 
   return (
-    <section className="py-24 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-[#121822] to-[#0a0a14] relative">
+    <section className="py-24 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-[#0a0c14] to-[#050509] relative">
       {/* Custom notification overlay */}
       <AnimatePresence>
         {showNotification && (
@@ -123,16 +123,16 @@ export default function CtaSection() {
                   />
                 </svg>
               </button>
-              <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-1 w-full absolute top-0 left-0 rounded-t-lg"></div>
+              <div className="bg-gradient-to-r from-[#4A90E2] to-blue-500 h-1 w-full absolute top-0 left-0 rounded-t-lg"></div>
               <div className="flex items-center justify-center">
-                <span className="mr-3 text-purple-400 flex-shrink-0">
+                <span className="mr-3 text-[#4A90E2] flex-shrink-0">
                   <svg
                     width="18"
                     height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="bg-purple-500/20 p-0.5 rounded-full"
+                    className="bg-[#4A90E2]/20 p-0.5 rounded-full"
                   >
                     <path
                       d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"
@@ -157,7 +157,7 @@ export default function CtaSection() {
         className="container mx-auto max-w-4xl text-center"
       >
         <div className="relative">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-mint-500/20 rounded-xl blur-sm"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/20 via-blue-500/20 to-blue-400/20 rounded-xl blur-sm"></div>
           <div className="bg-zinc-900/60 backdrop-blur-sm border border-blue-800/30 rounded-xl p-8 md:p-12 relative">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Want early access to Financify?
@@ -184,7 +184,7 @@ export default function CtaSection() {
               />
               <Button
                 type="submit"
-                className="h-12 px-6 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-medium"
+                className="h-12 px-6 bg-[#4A90E2] hover:bg-[#3A7BC9] text-white font-medium rounded-lg transition-colors"
                 onClick={() => console.log("CTA join button clicked")}
               >
                 Join the Waitlist

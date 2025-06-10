@@ -5,14 +5,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// Analytics and performance monitoring components
-// Font configuration for the application
-// Metadata configuration for SEO and viewport settings
-// Enhanced theme provider setup for seamless dark/light mode switching
-// Root layout configuration with hydration settings
-// Global styles and CSS reset configuration
-// Accessibility and language settings
-// Performance monitoring and optimization
 const inter = Inter({ subsets: ["latin"] });
 
 // Viewport configuration for responsive design and mobile optimization

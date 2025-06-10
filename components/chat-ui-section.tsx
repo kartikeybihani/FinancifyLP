@@ -127,7 +127,7 @@ export default function ChatUISection() {
     >
       {/* Enhanced background styling similar to hero section */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent"></div>
-      <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-purple-500/5 to-transparent opacity-40"></div>
+      <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-[#4A90E2]/5 to-transparent opacity-40"></div>
       <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-tr from-indigo-500/10 to-transparent rounded-full blur-xl"></div>
       <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-blue-500/5 rounded-full blur-xl"></div>
 
@@ -135,7 +135,7 @@ export default function ChatUISection() {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Conversations that feel
-            <span className="bg-gradient-to-r from-purple-400 to-mint-400 text-transparent bg-clip-text ml-2">
+            <span className="bg-gradient-to-r from-[#4A90E2] to-blue-400 text-transparent bg-clip-text ml-2">
               human
             </span>
           </h2>
@@ -161,7 +161,7 @@ export default function ChatUISection() {
           {/* Chat header */}
           <div className="flex items-center justify-between pb-3 border-b border-zinc-700/40 mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center text-white font-medium">
+              <div className="w-7 h-7 rounded-full bg-[#4A90E2] flex items-center justify-center text-white font-medium">
                 F
               </div>
               <div>
@@ -185,7 +185,7 @@ export default function ChatUISection() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <div className="max-w-[75%] rounded-2xl px-3 py-2 backdrop-blur-md text-sm bg-purple-600/25 border border-purple-500/40 text-white rounded-tr-none shadow-lg shadow-purple-500/10">
+                  <div className="max-w-[75%] rounded-2xl px-3 py-2 backdrop-blur-md text-sm bg-[#4A90E2]/25 border border-[#4A90E2]/40 text-white rounded-tr-none shadow-lg shadow-[#4A90E2]/10">
                     <p className="flex items-center">
                       <span className="inline-block mr-0.5 h-4 w-[1px] bg-white animate-pulse"></span>
                     </p>
@@ -206,7 +206,7 @@ export default function ChatUISection() {
                   <div
                     className={`max-w-[75%] rounded-2xl px-3 py-2 backdrop-blur-md text-sm ${
                       message.sender === "user"
-                        ? "bg-purple-600/25 border border-purple-500/40 text-white rounded-tr-none shadow-lg shadow-purple-500/10"
+                        ? "bg-[#4A90E2]/25 border border-[#4A90E2]/40 text-white rounded-tr-none shadow-lg shadow-[#4A90E2]/10"
                         : "bg-zinc-800/60 border border-zinc-700/40 text-white rounded-tl-none shadow-lg shadow-zinc-800/10"
                     }`}
                   >
@@ -264,7 +264,7 @@ export default function ChatUISection() {
               className="flex-1 bg-zinc-800/40 backdrop-blur-sm border border-zinc-700/40 rounded-full px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-purple-500/50 shadow-inner"
               disabled
             />
-            <button className="w-7 h-7 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center">
+            <button className="w-7 h-7 rounded-full bg-[#4A90E2] flex items-center justify-center">
               <svg
                 width="12"
                 height="12"
@@ -291,8 +291,8 @@ export default function ChatUISection() {
           </div>
 
           {/* Decorative elements */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 via-indigo-400/10 to-indigo-500/20 rounded-2xl blur-xl opacity-60"></div>
-          <div className="absolute top-0 left-0 right-0 h-60 bg-gradient-to-b from-purple-500/15 to-transparent"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-[#4A90E2]/20 via-blue-400/10 to-blue-500/20 rounded-2xl blur-xl opacity-60"></div>
+          <div className="absolute top-0 left-0 right-0 h-60 bg-gradient-to-b from-[#4A90E2]/15 to-transparent"></div>
           <div className="absolute bottom-0 left-0 right-0 h-60 bg-gradient-to-t from-indigo-500/15 to-transparent"></div>
 
           {/* Additional glass morphism effect */}
