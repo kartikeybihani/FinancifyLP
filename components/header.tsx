@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,23 +8,44 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header() {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 py-3 sm:py-4 px-4 sm:px-6 backdrop-blur-sm border-b border-zinc-800/10">
-      <div className="container mx-auto max-w-7xl">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-4 sm:px-6 ${
+        isScrolled
+          ? "mt-2 sm:mt-4 mx-4 sm:mx-auto max-w-[calc(100%-2rem)] sm:max-w-4xl bg-white/3 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-sm border border-white/10 py-2 sm:py-3"
+          : "max-w-7xl mx-auto py-2 sm:py-4"
+      }`}
+    >
+      <div className="container mx-auto">
         <div className="flex items-center justify-between">
           <div
-            className="flex items-center gap-2 sm:gap-3 cursor-pointer"
+            className={`flex items-center cursor-pointer ${
+              isScrolled ? "gap-1 sm:gap-2" : "gap-1.5 sm:gap-2"
+            }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             <Link href="/">
               <motion.div
-                className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+                className={`relative ${
+                  isScrolled ? "w-5 h-5 sm:w-7 sm:h-7" : "w-6 h-6 sm:w-8 sm:h-8"
+                }`}
                 animate={{
                   rotate: isHovered ? 180 : 0,
                 }}
@@ -46,10 +67,12 @@ export default function Header() {
             </Link>
             <Link href="/">
               <motion.div
-                className={`text-lg sm:text-xl md:text-2xl font-bold text-transparent bg-clip-text transition-all duration-300 ease-out ${
+                className={`font-bold text-transparent bg-clip-text transition-all duration-300 ease-out ${
                   isHovered
                     ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
                     : "bg-gradient-to-r from-white to-zinc-300"
+                } ${
+                  isScrolled ? "text-sm sm:text-base" : "text-base sm:text-lg"
                 }`}
                 whileHover={{
                   scale: 1.05,
@@ -61,110 +84,135 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-4 sm:gap-6">
-            {/* Desktop navigation */}
-            <nav className="hidden md:flex items-center gap-6">
-              <Link
-                href="#features"
-                className="text-zinc-300 hover:text-white transition-colors text-sm"
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden text-zinc-300 p-1.5 rounded-md bg-zinc-800/30 border border-zinc-700/30 hover:bg-zinc-800/50 transition-colors"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+          >
+            {isMobileMenuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                Features
-              </Link>
-              <Link
-                href="#chat-section"
-                className="text-zinc-300 hover:text-white transition-colors text-sm"
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                AI Chat
-              </Link>
-            </nav>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
+              </svg>
+            )}
+          </button>
 
-            <div className="hidden md:flex items-center">
-              <Link
-                href="#top"
-                className="inline-flex text-sm font-medium text-white bg-[#4A90E2] hover:bg-[#3A7BC9] py-2 px-4 rounded-lg transition-colors"
+          {/* Mobile menu */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden absolute top-full left-0 right-0 mt-2 mx-2 bg-zinc-900/90 backdrop-blur-lg rounded-xl border border-zinc-800/50 shadow-lg overflow-hidden"
               >
-                Join Waitlist
-              </Link>
-            </div>
+                <nav className="flex flex-col py-4 gap-3 px-2">
+                  <Link
+                    href="#features"
+                    className="text-zinc-300 transition-all duration-300 px-3 py-2.5 rounded-lg hover:bg-zinc-800/50 hover:text-blue-400 active:scale-95"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Features
+                  </Link>
+                  <Link
+                    href="#chat-section"
+                    className="text-zinc-300 transition-all duration-300 px-3 py-2.5 rounded-lg hover:bg-zinc-800/50 hover:text-blue-400 active:scale-95"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    AI Chat
+                  </Link>
+                  <Link
+                    href="#pricing"
+                    className="text-zinc-300 transition-all duration-300 px-3 py-2.5 rounded-lg hover:bg-zinc-800/50 hover:text-blue-400 active:scale-95"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Pricing
+                  </Link>
+                  <Link
+                    href="#top"
+                    className="text-sm font-medium text-white bg-[#4A90E2] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 py-2.5 px-4 rounded-lg transition-all duration-300 text-center mt-2 hover:shadow-[0_0_15px_rgba(74,144,226,0.5)] active:scale-95"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Join Waitlist
+                  </Link>
+                </nav>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-            {/* Mobile menu button */}
-            <button
-              className="md:hidden text-zinc-300 p-1.5 rounded-md bg-zinc-800/30 border border-zinc-700/30"
-              onClick={toggleMobileMenu}
-              aria-label="Toggle mobile menu"
+          {/* Desktop navigation */}
+          <nav className="hidden md:flex items-center gap-8 lg:gap-16 mr-6">
+            <Link
+              href="#features"
+              className={`relative transition-all duration-300 ${
+                isScrolled
+                  ? "text-sm lg:text-base py-1.5 px-3"
+                  : "text-base py-1 px-2"
+              } bg-gradient-to-r from-zinc-300 to-zinc-300 bg-[length:0%_2px] bg-no-repeat bg-bottom hover:bg-[length:100%_2px] hover:text-blue-400`}
             >
-              {isMobileMenuOpen ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="4" y1="12" x2="20" y2="12"></line>
-                  <line x1="4" y1="6" x2="20" y2="6"></line>
-                  <line x1="4" y1="18" x2="20" y2="18"></line>
-                </svg>
-              )}
-            </button>
+              Features
+            </Link>
+            <Link
+              href="#chat-section"
+              className={`relative transition-all duration-300 ${
+                isScrolled
+                  ? "text-sm lg:text-base py-1.5 px-3"
+                  : "text-base py-1 px-2"
+              } bg-gradient-to-r from-zinc-300 to-zinc-300 bg-[length:0%_2px] bg-no-repeat bg-bottom hover:bg-[length:100%_2px] hover:text-blue-400`}
+            >
+              AI Chat
+            </Link>
+            <Link
+              href="#pricing"
+              className={`relative transition-all duration-300 ${
+                isScrolled
+                  ? "text-sm lg:text-base py-1.5 px-3"
+                  : "text-base py-1 px-2"
+              } bg-gradient-to-r from-zinc-300 to-zinc-300 bg-[length:0%_2px] bg-no-repeat bg-bottom hover:bg-[length:100%_2px] hover:text-blue-400`}
+            >
+              Pricing
+            </Link>
+          </nav>
+
+          <div className="hidden md:flex items-center">
+            <Link
+              href="#top"
+              className={`inline-flex font-medium text-white bg-[#4A90E2] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(74,144,226,0.5)] rounded-[25px] ${
+                isScrolled ? "text-sm py-2 px-4" : "text-base py-2.5 px-5"
+              }`}
+            >
+              Join Waitlist
+            </Link>
           </div>
         </div>
-
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden"
-            >
-              <nav className="flex flex-col py-4 gap-4 border-t border-zinc-800/30 mt-3">
-                <Link
-                  href="#features"
-                  className="text-zinc-300 hover:text-white transition-colors px-1 py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Features
-                </Link>
-                <Link
-                  href="#chat-section"
-                  className="text-zinc-300 hover:text-white transition-colors px-1 py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  AI Chat
-                </Link>
-                <Link
-                  href="#top"
-                  className="text-sm font-medium text-white bg-[#4A90E2] hover:bg-[#3A7BC9] py-2 px-4 rounded-lg transition-colors w-full text-center mt-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Join Waitlist
-                </Link>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </header>
   );
