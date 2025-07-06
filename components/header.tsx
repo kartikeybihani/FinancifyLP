@@ -36,7 +36,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           <div
             className={`flex items-center cursor-pointer ${
-              isScrolled ? "gap-1 sm:gap-2" : "gap-1.5 sm:gap-2"
+              isScrolled ? "gap-2.5 sm:gap-4" : "gap-1.5 sm:gap-2"
             }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -44,7 +44,9 @@ export default function Header() {
             <Link href="/">
               <motion.div
                 className={`relative ${
-                  isScrolled ? "w-5 h-5 sm:w-7 sm:h-7" : "w-6 h-6 sm:w-8 sm:h-8"
+                  isScrolled
+                    ? "w-6 h-6 sm:w-8 sm:h-8"
+                    : "w-8 h-8 sm:w-10 sm:h-10"
                 }`}
                 animate={{
                   rotate: isHovered ? 180 : 0,
@@ -71,9 +73,7 @@ export default function Header() {
                   isHovered
                     ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
                     : "bg-gradient-to-r from-white to-zinc-300"
-                } ${
-                  isScrolled ? "text-sm sm:text-base" : "text-base sm:text-lg"
-                }`}
+                } ${isScrolled ? "text-lg sm:text-xl" : "text-xl sm:text-2xl"}`}
                 whileHover={{
                   scale: 1.05,
                   transition: { duration: 0.2 },
@@ -147,7 +147,7 @@ export default function Header() {
                     className="text-zinc-300 transition-all duration-300 px-3 py-2.5 rounded-lg hover:bg-zinc-800/50 hover:text-blue-400 active:scale-95"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    AI Chat
+                    Financial Copilot
                   </Link>
                   <Link
                     href="#pricing"
@@ -174,7 +174,7 @@ export default function Header() {
               href="#features"
               className={`relative transition-all duration-300 ${
                 isScrolled
-                  ? "text-sm lg:text-base py-1.5 px-3"
+                  ? "text-[11px] lg:text-[13px] py-1 px-2 opacity-85 hover:opacity-100"
                   : "text-base py-1 px-2"
               } bg-gradient-to-r from-zinc-300 to-zinc-300 bg-[length:0%_2px] bg-no-repeat bg-bottom hover:bg-[length:100%_2px] hover:text-blue-400`}
             >
@@ -184,17 +184,17 @@ export default function Header() {
               href="#chat-section"
               className={`relative transition-all duration-300 ${
                 isScrolled
-                  ? "text-sm lg:text-base py-1.5 px-3"
+                  ? "text-[11px] lg:text-[13px] py-1 px-2 opacity-85 hover:opacity-100"
                   : "text-base py-1 px-2"
               } bg-gradient-to-r from-zinc-300 to-zinc-300 bg-[length:0%_2px] bg-no-repeat bg-bottom hover:bg-[length:100%_2px] hover:text-blue-400`}
             >
-              AI Chat
+              Financial Copilot
             </Link>
             <Link
               href="#pricing"
               className={`relative transition-all duration-300 ${
                 isScrolled
-                  ? "text-sm lg:text-base py-1.5 px-3"
+                  ? "text-[11px] lg:text-[13px] py-1 px-2 opacity-85 hover:opacity-100"
                   : "text-base py-1 px-2"
               } bg-gradient-to-r from-zinc-300 to-zinc-300 bg-[length:0%_2px] bg-no-repeat bg-bottom hover:bg-[length:100%_2px] hover:text-blue-400`}
             >
