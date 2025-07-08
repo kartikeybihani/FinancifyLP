@@ -6,6 +6,7 @@ import HeroSection from "@/components/hero-section";
 import SparkMomentSection from "@/components/spark-moment-section";
 import ChatUISection from "@/components/chat-ui-section";
 import FeaturesSection from "@/components/features-section";
+import { PricingDemo } from "@/components/pricing-demo";
 import CtaSection from "@/components/cta-section";
 import ParticleBackground from "@/components/particle-background";
 
@@ -27,6 +28,7 @@ export default function Home() {
         <SparkMomentSection />
         <ChatUISection />
         <FeaturesSection />
+        <PricingDemo />
         <CtaSection />
       </div>
 

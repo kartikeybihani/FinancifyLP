@@ -26,10 +26,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-4 sm:px-6 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
         isScrolled
-          ? "mt-2 sm:mt-4 mx-4 sm:mx-auto max-w-[calc(100%-2rem)] sm:max-w-4xl bg-white/3 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-sm border border-white/10 py-2 sm:py-3"
-          : "max-w-7xl mx-auto py-2 sm:py-4"
+          ? "mt-2 sm:mt-4 mx-4 sm:mx-auto max-w-[calc(100%-2rem)] sm:max-w-4xl bg-white/3 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-sm border border-white/10 py-2 sm:py-3 px-4 sm:px-0"
+          : "max-w-7xl mx-auto py-2 sm:py-4 px-4 sm:px-6"
       }`}
     >
       <div className="container mx-auto">
@@ -169,7 +169,11 @@ export default function Header() {
           </AnimatePresence>
 
           {/* Desktop navigation */}
-          <nav className="hidden md:flex items-center gap-8 lg:gap-16 mr-6">
+          <nav
+            className={`hidden md:flex items-center gap-8 lg:gap-16 ${
+              isScrolled ? "mr-0" : "mr-6"
+            }`}
+          >
             <Link
               href="#features"
               className={`relative transition-all duration-300 ${
@@ -202,11 +206,15 @@ export default function Header() {
             </Link>
           </nav>
 
-          <div className="hidden md:flex items-center">
+          <div
+            className={`hidden md:flex items-center ${
+              isScrolled ? "pr-0" : ""
+            }`}
+          >
             <Link
               href="#top"
               className={`inline-flex font-medium text-white bg-[#4A90E2] hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(74,144,226,0.5)] rounded-[25px] ${
-                isScrolled ? "text-sm py-2 px-4" : "text-base py-2.5 px-5"
+                isScrolled ? "text-sm py-2 px-4 pr-4" : "text-base py-2.5 px-5"
               }`}
             >
               Join Waitlist
