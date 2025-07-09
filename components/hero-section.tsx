@@ -105,8 +105,9 @@ export default function HeroSection() {
     e.preventDefault();
     console.log("Form submitted");
 
-    // Validate email
-    if (!email || !email.includes("@")) {
+    // Improved email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       console.log("Invalid email");
       toast({
         title: "Invalid email",
@@ -115,6 +116,27 @@ export default function HeroSection() {
         duration: 3000,
       });
       return;
+    }
+
+    // Check for duplicate emails
+    try {
+      const storedEmails = JSON.parse(
+        localStorage.getItem("waitlistEmails") || "[]"
+      );
+      const isDuplicate = storedEmails.some(
+        (entry: any) => entry.email.toLowerCase() === email.toLowerCase()
+      );
+
+      if (isDuplicate) {
+        toast({
+          title: "Already on the list!",
+          description: "This email is already registered for early access.",
+          duration: 3000,
+        });
+        return;
+      }
+    } catch (err) {
+      console.error("Error checking for duplicates:", err);
     }
 
     console.log("Email submitted:", email);
@@ -140,7 +162,11 @@ export default function HeroSection() {
       const storedEmails = JSON.parse(
         localStorage.getItem("waitlistEmails") || "[]"
       );
-      storedEmails.push({ email, timestamp: new Date().toISOString() });
+      storedEmails.push({
+        email,
+        timestamp: new Date().toISOString(),
+        source: "hero",
+      });
       localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
       console.log("Email stored in localStorage");
     } catch (err) {
@@ -153,19 +179,18 @@ export default function HeroSection() {
         "https://script.google.com/macros/s/AKfycbxOPhiCqoqByH4kM7j9q0eUxyP8saLGdBFLyI8X9Bn3MxoRPZ4Km-YZg9IwU-ncza2Z/exec",
         {
           method: "POST",
-          mode: "no-cors",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: email }),
+          body: JSON.stringify({
+            email: email,
+            source: "hero",
+          }),
         }
       )
-        .then((response) => {
-          console.log("Response received:", response);
-        })
-        .catch((error) => {
-          console.error("Error sending to Google Script:", error);
-        });
+        .then((res) => res.json())
+        .then((data) => console.log("Server Response:", data))
+        .catch((err) => console.error("POST Error:", err));
     } catch (err) {
       console.error("Error in fetch operation:", err);
     }
@@ -273,38 +298,20 @@ export default function HeroSection() {
       <AnimatePresence>
         {showNotification && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -60 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 top-4 sm:top-8 flex justify-center z-50"
+            exit={{ opacity: 0, y: -60 }}
+            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+            className="fixed top-0 left-0 right-0 z-[100] flex justify-center pointer-events-none"
+            style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
           >
-            <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-700/50 rounded-xl px-4 sm:px-8 py-3 sm:py-4 shadow-2xl max-w-sm w-full relative overflow-hidden">
-              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-70"></div>
-              <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-70"></div>
-
-              <button
-                onClick={() => setShowNotification(false)}
-                className="absolute top-2.5 right-2.5 text-zinc-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-zinc-800/50"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </button>
-
-              <div className="flex items-start gap-3">
-                <div className="shrink-0 w-6 h-6 bg-[#4A90E2]/20 rounded-lg flex items-center justify-center">
+            <div className="pointer-events-auto bg-white/90 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-700 shadow-xl rounded-b-2xl px-10 py-4 mt-4 max-w-2xl w-full flex items-center relative overflow-hidden mx-4 sm:mx-8">
+              <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-[#4A90E2] via-blue-400 to-blue-500 opacity-70" />
+              <div className="flex items-center gap-3 flex-1">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-[#4A90E2]/15 flex items-center justify-center">
                   <svg
-                    width="16"
-                    height="16"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -316,15 +323,33 @@ export default function HeroSection() {
                     />
                   </svg>
                 </div>
-                <div className="flex-1 pt-1">
-                  <p className="text-sm sm:text-base text-zinc-100 font-medium pr-6">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm sm:text-base text-zinc-900 dark:text-zinc-100 font-semibold truncate">
                     {notificationMessage}
                   </p>
-                  <p className="text-xs text-zinc-400 mt-1">
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
                     We'll send you an email when we're ready for you.
                   </p>
                 </div>
               </div>
+              <button
+                onClick={() => setShowNotification(false)}
+                className="absolute top-3 right-3 text-zinc-400 hover:text-zinc-700 dark:hover:text-white transition-colors p-1 rounded-full hover:bg-zinc-200/60 dark:hover:bg-zinc-800/60"
+                aria-label="Close notification"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
             </div>
           </motion.div>
         )}

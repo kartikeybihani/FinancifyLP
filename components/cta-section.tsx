@@ -15,8 +15,9 @@ export default function CtaSection() {
     e.preventDefault();
     console.log("CTA form submitted");
 
-    // Validate email
-    if (!email || !email.includes("@")) {
+    // Improved email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       console.log("Invalid email in CTA");
       toast({
         title: "Invalid email",
@@ -25,6 +26,27 @@ export default function CtaSection() {
         duration: 3000,
       });
       return;
+    }
+
+    // Check for duplicate emails
+    try {
+      const storedEmails = JSON.parse(
+        localStorage.getItem("waitlistEmails") || "[]"
+      );
+      const isDuplicate = storedEmails.some(
+        (entry: any) => entry.email.toLowerCase() === email.toLowerCase()
+      );
+
+      if (isDuplicate) {
+        toast({
+          title: "Already on the list!",
+          description: "This email is already registered for early access.",
+          duration: 3000,
+        });
+        return;
+      }
+    } catch (err) {
+      console.error("Error checking for duplicates:", err);
     }
 
     // Handle form submission
