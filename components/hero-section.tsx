@@ -120,38 +120,80 @@ export default function HeroSection() {
 
     console.log("Email submitted:", email);
 
-    // Show the custom notification
-    setNotificationMessage("You're on the waitlist! We'll be in touch soon.");
-    setShowNotification(true);
-
-    // Hide notification after 3 seconds
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 3000);
-
-    toast({
-      title: "You're on the list!",
-      description: "We'll notify you when early access is available.",
-      duration: 7000,
-    });
-
-    // Store in localStorage as a fallback
     try {
-      const storedEmails = JSON.parse(
-        localStorage.getItem("waitlistEmails") || "[]"
-      );
-      storedEmails.push({
-        email,
-        timestamp: new Date().toISOString(),
-        source: "hero",
-      });
-      localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
-      console.log("Email stored in localStorage");
-    } catch (err) {
-      console.error("Error storing email in localStorage:", err);
-    }
+      // Create form data for Google Apps Script
+      const formData = new URLSearchParams();
+      formData.append("email", email);
 
-    setEmail("");
+      // Submit to Google Apps Script - simple POST to avoid preflight
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbyEs7w326Cp6vNhgK6C835GgKaJ1PsUV8tm0rz74okNnwGEmDAAMihjJ5qtpeHU1q6z/exec",
+        {
+          method: "POST",
+          body: formData, // Let browser set Content-Type automatically
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.text();
+      console.log("Google Apps Script response:", result);
+
+      // Show success notification
+      setNotificationMessage(
+        "🎉 You're on the waitlist! We'll be in touch soon."
+      );
+      setShowNotification(true);
+
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+
+      toast({
+        title: "You're on the list!",
+        description: "We'll notify you when early access is available.",
+        duration: 7000,
+      });
+
+      // Store in localStorage as a fallback
+      try {
+        const storedEmails = JSON.parse(
+          localStorage.getItem("waitlistEmails") || "[]"
+        );
+        storedEmails.push({
+          email,
+          timestamp: new Date().toISOString(),
+          source: "hero",
+        });
+        localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
+        console.log("Email stored in localStorage");
+      } catch (err) {
+        console.error("Error storing email in localStorage:", err);
+      }
+
+      setEmail("");
+    } catch (error) {
+      console.error("Error submitting to Google Apps Script:", error);
+
+      // Show error notification
+      setNotificationMessage("❌ Something went wrong. Please try again.");
+      setShowNotification(true);
+
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+
+      toast({
+        title: "Submission failed",
+        description: "Please try again or contact support.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   // Type animation effect for messages
