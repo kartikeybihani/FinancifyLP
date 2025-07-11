@@ -101,7 +101,7 @@ export default function HeroSection() {
   };
 
   // Handle email form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted");
 
@@ -118,27 +118,6 @@ export default function HeroSection() {
       return;
     }
 
-    // Check for duplicate emails
-    try {
-      const storedEmails = JSON.parse(
-        localStorage.getItem("waitlistEmails") || "[]"
-      );
-      const isDuplicate = storedEmails.some(
-        (entry: any) => entry.email.toLowerCase() === email.toLowerCase()
-      );
-
-      if (isDuplicate) {
-        toast({
-          title: "Already on the list!",
-          description: "This email is already registered for early access.",
-          duration: 3000,
-        });
-        return;
-      }
-    } catch (err) {
-      console.error("Error checking for duplicates:", err);
-    }
-
     console.log("Email submitted:", email);
 
     // Show the custom notification
@@ -150,7 +129,6 @@ export default function HeroSection() {
       setShowNotification(false);
     }, 3000);
 
-    // For now, just show success notification since Google Script endpoint is returning an error
     toast({
       title: "You're on the list!",
       description: "We'll notify you when early access is available.",
@@ -171,28 +149,6 @@ export default function HeroSection() {
       console.log("Email stored in localStorage");
     } catch (err) {
       console.error("Error storing email in localStorage:", err);
-    }
-
-    // Attempt to send to the server, but don't block UI
-    try {
-      fetch(
-        "https://script.google.com/macros/s/AKfycbxOPhiCqoqByH4kM7j9q0eUxyP8saLGdBFLyI8X9Bn3MxoRPZ4Km-YZg9IwU-ncza2Z/exec",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            source: "hero",
-          }),
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => console.log("Server Response:", data))
-        .catch((err) => console.error("POST Error:", err));
-    } catch (err) {
-      console.error("Error in fetch operation:", err);
     }
 
     setEmail("");

@@ -8,18 +8,19 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] });
 
 // Viewport configuration for responsive design and mobile optimization
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#1e293b",
+};
+
 export const metadata = {
   title: "Financify v1.0 - Financial Coach",
   description:
     "Your AI-powered financial coach for smarter saving and investing decisions.",
   generator: "v0.dev",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
-  themeColor: "#1e293b",
 };
 
 export default function RootLayout({
