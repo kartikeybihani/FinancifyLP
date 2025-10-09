@@ -17,10 +17,10 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: "Financify v1.0 - Financial Coach",
+  title: "Financify - Financial Advisor",
   description:
-    "Your AI-powered financial coach for smarter saving and investing decisions.",
-  generator: "v0.dev",
+    "Your AI-powered financial advisor for smarter saving and investing decisions.",
+  generator: "v1.0",
 };
 
 export default function RootLayout({

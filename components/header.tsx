@@ -28,7 +28,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
         isScrolled
-          ? "mt-2 sm:mt-4 mx-4 sm:mx-auto max-w-[calc(100%-2rem)] sm:max-w-4xl bg-white/3 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-sm border border-white/10 py-2 sm:py-3 px-4 sm:px-0"
+          ? "mt-2 sm:mt-4 mx-4 sm:mx-auto max-w-[calc(100%-2rem)] sm:max-w-4xl bg-white/3 backdrop-blur-sm rounded-3xl sm:rounded-[2rem] shadow-sm border border-white/10 py-2 sm:py-3 px-4 sm:px-0"
           : "max-w-7xl mx-auto py-2 sm:py-4 px-4 sm:px-6"
       }`}
     >
@@ -136,11 +136,11 @@ export default function Header() {
               >
                 <nav className="flex flex-col py-4 gap-3 px-2">
                   <Link
-                    href="#features"
+                    href="#how-it-works"
                     className="text-zinc-300 transition-all duration-300 px-3 py-2.5 rounded-lg hover:bg-zinc-800/50 hover:text-blue-400 active:scale-95"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Features
+                    How it Works
                   </Link>
                   <Link
                     href="#chat-section"
@@ -175,14 +175,14 @@ export default function Header() {
             }`}
           >
             <Link
-              href="#features"
+              href="#how-it-works"
               className={`relative transition-all duration-300 ${
                 isScrolled
                   ? "text-[11px] lg:text-[13px] py-1 px-2 opacity-85 hover:opacity-100"
                   : "text-base py-1 px-2"
               } bg-gradient-to-r from-zinc-300 to-zinc-300 bg-[length:0%_2px] bg-no-repeat bg-bottom hover:bg-[length:100%_2px] hover:text-blue-400`}
             >
-              Features
+              How it Works
             </Link>
             <Link
               href="#chat-section"

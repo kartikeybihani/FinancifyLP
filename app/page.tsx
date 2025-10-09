@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import Header from "@/components/header";
 import HeroSection from "@/components/hero-section";
 import SparkMomentSection from "@/components/spark-moment-section";
+import HowItWorksSection from "@/components/how-it-works-section";
 import ChatUISection from "@/components/chat-ui-section";
-import FeaturesSection from "@/components/features-section";
 import { PricingDemo } from "@/components/pricing-demo";
 import CtaSection from "@/components/cta-section";
 import ParticleBackground from "@/components/particle-background";
@@ -17,7 +17,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-[#121212] text-white overflow-hidden">
+    <main className="relative min-h-screen bg-zinc-900 text-white overflow-hidden">
       <ParticleBackground />
 
       <div className="relative z-10">
@@ -26,8 +26,8 @@ export default function Home() {
           <HeroSection />
         </section>
         <SparkMomentSection />
+        <HowItWorksSection />
         <ChatUISection />
-        <FeaturesSection />
         <PricingDemo />
         <CtaSection />
       </div>

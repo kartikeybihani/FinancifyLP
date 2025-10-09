@@ -21,79 +21,11 @@ export default function HeroSection() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const finnyMessages = [
-    "You're 75% of the way to your Hawaii trip goal. Keep it up!",
-    "Your portfolio is up 12% this year, would you like to rebalance?",
-    "Want to auto-invest $50 next Friday when your paycheck hits?",
-    "I noticed your subscriptions total $87/month. Let's review them?",
+    "You're 75% to your Hawaii trip. You're almost there.",
+    "Your investments are up 12% this year. Should we rebalance?",
+    "You could save $87/month by cutting unused subscriptions.",
+    "Your emergency fund needs $2,000 more. Let's get there.",
   ];
-
-  // Define categories for each message
-  const messageCategories = ["Goals", "Investing", "Insights", "Spending"];
-
-  // Define icons for each category
-  const categoryIcons = [
-    <svg
-      key="goals"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4ZM11 7H13V13H17V15H11V7Z"
-        fill="currentColor"
-      />
-    </svg>,
-    <svg
-      key="investing"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M16 11.78L20.24 4.45L21.97 5.45L16.74 14.5L10.23 10.75L5.46 19H22V21H2V3H4V17.54L9.5 8L16 11.78Z"
-        fill="currentColor"
-      />
-    </svg>,
-    <svg
-      key="insights"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 3C17.5 3 22 6.58 22 11C22 15.42 17.5 19 12 19C10.76 19 9.57 18.82 8.47 18.5C5.55 21 2 21 2 21C4.33 18.67 4.7 17.1 4.75 16.5C3.05 15.07 2 13.13 2 11C2 6.58 6.5 3 12 3ZM11 13H13V17H11V13ZM11 7H13V11H11V7Z"
-        fill="currentColor"
-      />
-    </svg>,
-    <svg
-      key="spending"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4ZM12 11H15V13H12V16H10V13H7V11H10V8H12V11Z"
-        fill="currentColor"
-      />
-    </svg>,
-  ];
-
-  // Get the current time for message timestamps
-  const getTimeString = () => {
-    const now = new Date();
-    return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
-
-  // Times for each message to create a realistic chat experience
-  const messageTimes = ["9:43 AM", "9:45 AM", "9:48 AM", "9:52 AM"];
 
   // Generate response time in seconds (random between 1-3 seconds)
   const getResponseTime = () => {
@@ -120,6 +52,42 @@ export default function HeroSection() {
 
     console.log("Email submitted:", email);
 
+    // Show success notification IMMEDIATELY
+    setNotificationMessage(
+      "🎉 You're on the waitlist! We'll be in touch soon."
+    );
+    setShowNotification(true);
+
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000);
+
+    toast({
+      title: "You're on the list!",
+      description: "We'll notify you when early access is available.",
+      duration: 7000,
+    });
+
+    // Store in localStorage immediately
+    try {
+      const storedEmails = JSON.parse(
+        localStorage.getItem("waitlistEmails") || "[]"
+      );
+      storedEmails.push({
+        email,
+        timestamp: new Date().toISOString(),
+        source: "hero",
+      });
+      localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
+      console.log("Email stored in localStorage");
+    } catch (err) {
+      console.error("Error storing email in localStorage:", err);
+    }
+
+    setEmail("");
+
+    // Handle Google Apps Script submission in the background (non-blocking)
     try {
       // Create form data for Google Apps Script
       const formData = new URLSearchParams();
@@ -140,59 +108,9 @@ export default function HeroSection() {
 
       const result = await response.text();
       console.log("Google Apps Script response:", result);
-
-      // Show success notification
-      setNotificationMessage(
-        "🎉 You're on the waitlist! We'll be in touch soon."
-      );
-      setShowNotification(true);
-
-      // Hide notification after 3 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 3000);
-
-      toast({
-        title: "You're on the list!",
-        description: "We'll notify you when early access is available.",
-        duration: 7000,
-      });
-
-      // Store in localStorage as a fallback
-      try {
-        const storedEmails = JSON.parse(
-          localStorage.getItem("waitlistEmails") || "[]"
-        );
-        storedEmails.push({
-          email,
-          timestamp: new Date().toISOString(),
-          source: "hero",
-        });
-        localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
-        console.log("Email stored in localStorage");
-      } catch (err) {
-        console.error("Error storing email in localStorage:", err);
-      }
-
-      setEmail("");
     } catch (error) {
-      console.error("Error submitting to Google Apps Script:", error);
-
-      // Show error notification
-      setNotificationMessage("❌ Something went wrong. Please try again.");
-      setShowNotification(true);
-
-      // Hide notification after 3 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 3000);
-
-      toast({
-        title: "Submission failed",
-        description: "Please try again or contact support.",
-        variant: "destructive",
-        duration: 5000,
-      });
+      console.error("Error in background submission:", error);
+      // Don't show error to user since we already showed success
     }
   };
 
@@ -355,7 +273,7 @@ export default function HeroSection() {
 
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-8 items-center">
-          <div className="text-left sm:text-left text-center">
+          <div className="text-left sm:text-left text-center order-2 lg:order-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -364,7 +282,7 @@ export default function HeroSection() {
             >
               <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
               <span className="bg-gradient-to-r from-[#4A90E2] via-blue-500 to-blue-400 text-transparent bg-clip-text">
-                AI-powered financial guidance
+                AI-native financial guidance
               </span>
             </motion.div>
 
@@ -372,16 +290,16 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.7 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-3 md:mb-4 relative"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3 md:mb-4 relative"
             >
               <span className="relative inline-block">
-                Your money. <br className="md:block hidden" />
+                Stop losing money to <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
               </span>
               <span className="relative inline-block">
                 <span className="absolute -inset-1 bg-gradient-to-r from-[#4A90E2]/20 via-indigo-400/20 to-mint-400/20 blur-2xl rounded-lg"></span>
                 <span className="relative bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-mint-400 text-transparent bg-clip-text animate-shimmer">
-                  Fully understood.
+                  bad financial decisions.
                 </span>
               </span>
             </motion.h1>
@@ -390,28 +308,29 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="text-lg sm:text-xl md:text-2xl text-zinc-300 max-w-xl mb-3 md:mb-4 mx-auto sm:mx-0"
+              className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-xl mb-3 md:mb-4 mx-auto sm:mx-0"
             >
-              Guided by Finny — your AI financial coach.
+              Your personal financial advisor. Invest smarter, save more, and
+              avoid costly mistakes.
             </motion.p>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.7 }}
-              className="text-base sm:text-lg text-zinc-400 max-w-xl mb-2 mx-auto sm:mx-0"
+              className="text-sm sm:text-base text-zinc-400 max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0"
             >
-              A financial coach that helps you invest, plan, and save.
+              Built to give you peace of mind.
             </motion.p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 0 }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-              className="text-sm text-zinc-400 max-w-xl mb-8 mx-auto sm:mx-0"
+              transition={{ delay: 0.7, duration: 0.7 }}
+              className="text-xs sm:text-sm text-[#4A90E2] font-medium mb-6 md:mb-8 mx-auto sm:mx-0"
             >
-              Built to give you a peace of mind.
-            </motion.p>
+              Join 500+ people on our waitlist to get early access
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -451,118 +370,17 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.7 }}
-            className="flex justify-center lg:justify-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            className="flex justify-center lg:justify-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12 order-1 lg:order-2"
           >
-            {/* Category indicators - Hidden on mobile, visible from md breakpoint */}
-            <div className="absolute -left-8 md:-left-10 lg:-left-12 top-1/2 transform -translate-y-1/2 hidden md:flex flex-col gap-6 z-10">
-              {messageCategories.map((category, idx) => (
-                <motion.div
-                  key={category}
-                  className={`flex items-center gap-3 cursor-pointer transition-all ${
-                    idx === currentMessageIndex
-                      ? "opacity-100 translate-x-0"
-                      : "opacity-50 -translate-x-2"
-                  }`}
-                  whileHover={{ scale: 1.05, opacity: 1 }}
-                  onClick={() => {
-                    setIsMessageChanging(true);
-                    setTimeout(() => {
-                      setCurrentMessageIndex(idx);
-                      setDisplayedText("");
-                      setIsMessageChanging(false);
-                      setIsTyping(true);
-                    }, 500);
-                  }}
-                >
-                  <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-white ${
-                      idx === currentMessageIndex
-                        ? "bg-gradient-to-r from-[#4A90E2] to-blue-600"
-                        : "bg-zinc-800"
-                    }`}
-                  >
-                    {React.cloneElement(categoryIcons[idx], {
-                      className: `w-3.5 h-3.5 ${
-                        idx === currentMessageIndex
-                          ? "text-white"
-                          : "text-zinc-400"
-                      }`,
-                    })}
-                  </div>
-                  <span
-                    className={`text-xs font-medium pr-2 ${
-                      idx === currentMessageIndex
-                        ? "text-white"
-                        : "text-zinc-500"
-                    }`}
-                  >
-                    {category}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-
             {/* Mobile category indicators - REMOVED completely for phones */}
 
             <div
-              className="relative w-full max-w-xs sm:max-w-sm md:max-w-md h-[380px] sm:h-[450px] md:h-[500px] mx-auto lg:mr-0 lg:ml-auto"
+              className="relative w-full max-w-xs sm:max-w-sm md:max-w-md h-[260px] sm:h-[320px] md:h-[420px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto"
               ref={chatContainerRef}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {/* Sliding navigation controls */}
-              <AnimatePresence>
-                {showControls && (
-                  <>
-                    <motion.button
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-1/2 -right-10 z-10 w-8 h-8 rounded-full bg-zinc-800/70 flex items-center justify-center text-white backdrop-blur-sm border border-zinc-700/50 hover:bg-[#4A90E2]/50 transition-colors hidden sm:flex"
-                      onClick={() => handleNavigate("next")}
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </motion.button>
-                    <motion.button
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-1/2 -left-10 z-10 w-8 h-8 rounded-full bg-zinc-800/70 flex items-center justify-center text-white backdrop-blur-sm border border-zinc-700/50 hover:bg-[#4A90E2]/50 transition-colors hidden sm:flex"
-                      onClick={() => handleNavigate("prev")}
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M15.41 16.59L10.83 12L15.41 7.41L14 6L8 12L14 18L15.41 16.59Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </motion.button>
-                  </>
-                )}
-              </AnimatePresence>
-
               {/* Glow background effects */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/30 to-blue-500/30 rounded-2xl blur-md"></div>
               <div className="absolute -top-6 -left-6 w-32 h-32 bg-[#4A90E2]/10 rounded-full blur-xl"></div>
@@ -632,7 +450,7 @@ export default function HeroSection() {
                     <div className="max-w-[85%] sm:max-w-[80%]">
                       <div className="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200">
                         <p>
-                          Hello! I'm Finny, your AI financial coach. I'll help
+                          Hello! I'm Finny, your AI financial advisor. I'll help
                           you manage your money better.
                         </p>
                       </div>
@@ -660,23 +478,14 @@ export default function HeroSection() {
                           transition={{ duration: 0.5 }}
                           className="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200"
                         >
-                          <div className="flex items-center mb-1.5 flex-wrap">
-                            <span className="text-xs text-blue-300 font-medium bg-blue-500/20 rounded-full px-2 py-0.5 flex items-center gap-1 mb-1 sm:mb-0">
-                              {React.cloneElement(
-                                categoryIcons[currentMessageIndex],
-                                {
-                                  className: "text-blue-300",
-                                }
-                              )}
-                              {messageCategories[currentMessageIndex]}
-                            </span>
-                            {isTyping && (
-                              <span className="text-xs text-zinc-500 ml-2 flex items-center gap-1">
+                          {isTyping && (
+                            <div className="flex items-center mb-1.5">
+                              <span className="text-xs text-zinc-500 flex items-center gap-1">
                                 <span className="h-1 w-1 bg-zinc-500 rounded-full animate-pulse"></span>
                                 Typing...
                               </span>
-                            )}
-                          </div>
+                            </div>
+                          )}
                           <p>
                             {displayedText}
                             {isTyping && (
@@ -739,38 +548,6 @@ export default function HeroSection() {
                 {/* Swipe indicator for mobile */}
                 <div className="sm:hidden text-center text-xs text-zinc-500 py-2">
                   Swipe to change messages
-                </div>
-
-                {/* Chat input */}
-                <div className="px-3 sm:px-4 py-2 sm:py-3 border-t border-zinc-700/30 flex items-center gap-2">
-                  <div className="flex-1 bg-zinc-800/50 border border-zinc-700/50 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-zinc-500 text-xs sm:text-sm">
-                    Type a message...
-                  </div>
-                  <button className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-gradient-to-r from-[#4A90E2] to-blue-600 flex items-center justify-center">
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="sm:w-18 sm:h-18"
-                    >
-                      <path
-                        d="M22 2L11 13"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M22 2L15 22L11 13L2 9L22 2Z"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
                 </div>
 
                 {/* Glow effects */}

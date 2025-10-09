@@ -52,7 +52,7 @@ export default function CtaSection() {
     // Handle form submission
     console.log("Email submitted from CTA:", email);
 
-    // Show the custom notification
+    // Show the custom notification IMMEDIATELY
     setNotificationMessage("You're on the waitlist! We'll be in touch soon.");
     setShowNotification(true);
 
@@ -61,14 +61,14 @@ export default function CtaSection() {
       setShowNotification(false);
     }, 3000);
 
-    // For now, just show success notification since Google Script endpoint is returning an error
+    // Show toast notification immediately
     toast({
       title: "You're on the list!",
       description: "We'll notify you when early access is available.",
       duration: 7000,
     });
 
-    // Store in localStorage as a fallback
+    // Store in localStorage immediately
     try {
       const storedEmails = JSON.parse(
         localStorage.getItem("waitlistEmails") || "[]"
@@ -84,7 +84,7 @@ export default function CtaSection() {
       console.error("Error storing CTA email in localStorage:", err);
     }
 
-    // Attempt to send to the server, but don't block UI
+    // Attempt to send to the server in the background (non-blocking)
     try {
       fetch(
         "https://script.google.com/macros/s/AKfycbyYvw7_bBsuirrctEjf02yyoJ_GDMh2EJA1oLnKI6txtdJiBx4cr5hgrIC4fffeE1rg/exec",
@@ -186,7 +186,7 @@ export default function CtaSection() {
             </h2>
             <p className="text-zinc-300 max-w-2xl mx-auto text-lg mb-8">
               Join our waitlist today and be among the first to experience the
-              future of financial coaching.
+              future of financial advising.
             </p>
 
             <form

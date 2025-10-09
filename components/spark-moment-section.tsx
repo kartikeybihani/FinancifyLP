@@ -69,51 +69,50 @@ export default function SparkMomentSection() {
             }}
             className="space-y-6"
           >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-              <span className="block">Goal planning,</span>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-relaxed">
+              <span className="block">Your personal financial</span>
               <span className="block mt-2 md:mt-1 bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-blue-400 text-transparent bg-clip-text animate-shimmer">
-                for you — by you.
+                advisor. Always on.
               </span>
             </h2>
 
             <p className="text-xl text-zinc-300 max-w-xl leading-relaxed">
-              Set a goal once. Let Finny track it with you.
+              Get personalized financial guidance that actually understands your
+              goals.
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
-                <div className="text-xl sm:text-2xl font-bold text-purple-400">
-                  93%
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-3 rounded-lg border border-zinc-700/30">
+                <div className="text-lg font-bold text-purple-400 mb-1">
+                  $0/hour
                 </div>
-                <div className="text-xs sm:text-sm text-zinc-400">
-                  of users achieve their first financial goal
-                </div>
-              </div>
-
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
-                <div className="text-xl sm:text-2xl font-bold text-mint-400">
-                  2.5x
-                </div>
-                <div className="text-xs sm:text-sm text-zinc-400">
-                  faster savings rate than traditional methods
+                <div className="text-xs text-zinc-400">
+                  vs $300/hour financial advisors
                 </div>
               </div>
 
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
-                <div className="text-xl sm:text-2xl font-bold text-indigo-400">
-                  80%
-                </div>
-                <div className="text-xs sm:text-sm text-zinc-400">
-                  less stress about money management
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-3 rounded-lg border border-zinc-700/30">
+                <div className="text-lg font-bold text-mint-400 mb-1">24/7</div>
+                <div className="text-xs text-zinc-400">
+                  Always available when you need advice
                 </div>
               </div>
 
-              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-zinc-700/30">
-                <div className="text-xl sm:text-2xl font-bold text-blue-400">
-                  5+
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-3 rounded-lg border border-zinc-700/30">
+                <div className="text-lg font-bold text-indigo-400 mb-1">
+                  Personalized
                 </div>
-                <div className="text-xs sm:text-sm text-zinc-400">
-                  financial goals achieved on average
+                <div className="text-xs text-zinc-400">
+                  Advice based on your actual financial situation
+                </div>
+              </div>
+
+              <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-3 rounded-lg border border-zinc-700/30">
+                <div className="text-lg font-bold text-blue-400 mb-1">
+                  Gen Z First
+                </div>
+                <div className="text-xs text-zinc-400">
+                  Built for how you actually manage money
                 </div>
               </div>
             </div>
@@ -131,7 +130,7 @@ export default function SparkMomentSection() {
 
               <div className="p-6 relative z-10">
                 <h3 className="text-lg font-medium mb-6">
-                  Your Financial Journey
+                  Your Complete Financial Plan
                 </h3>
 
                 <div className="space-y-6 relative">
@@ -187,7 +186,7 @@ export default function SparkMomentSection() {
                           </span>
                         </div>
                         <p className="text-xs text-zinc-400 mt-1">
-                          3 months of expenses saved
+                          6 months of expenses saved
                         </p>
                         {/* Progress bar */}
                         <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
@@ -243,13 +242,13 @@ export default function SparkMomentSection() {
                         <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
                           <div
                             className="bg-mint-500 h-1.5 rounded-full"
-                            style={{ width: "40%" }}
+                            style={{ width: "60%" }}
                           ></div>
                         </div>
                       </div>
                     </motion.div>
 
-                    {/* Mid-term: Trip */}
+                    {/* Mid-term: Investment Portfolio */}
                     <motion.div
                       variants={item}
                       className="flex items-start gap-4"
@@ -267,68 +266,30 @@ export default function SparkMomentSection() {
                           strokeLinejoin="round"
                           className="text-purple-400"
                         >
-                          <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
+                          <path d="M3 3v18h18"></path>
+                          <path d="m19 9-5 5-4-4-3 3"></path>
                         </svg>
                       </div>
-                      <div>
+                      <div className="w-full">
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-semibold text-purple-400">
                             2025
                           </span>
                           <span className="text-zinc-300 font-medium">
-                            Europe Trip
+                            Investment Portfolio
                           </span>
                           <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
                             In progress
                           </span>
                         </div>
                         <p className="text-xs text-zinc-400 mt-1">
-                          First major travel experience
-                        </p>
-                      </div>
-                    </motion.div>
-
-                    {/* Mid-term: Car */}
-                    <motion.div
-                      variants={item}
-                      className="flex items-start gap-4"
-                    >
-                      <div className="w-9 h-9 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center shrink-0 z-10">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="text-indigo-400"
-                        >
-                          <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C1.4 11.3 1 12.1 1 13v3c0 .6.4 1 1 1h2"></path>
-                          <circle cx="7" cy="17" r="2"></circle>
-                          <path d="M9 17h6"></path>
-                          <circle cx="17" cy="17" r="2"></circle>
-                        </svg>
-                      </div>
-                      <div className="w-full">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-indigo-400">
-                            2026
-                          </span>
-                          <span className="text-zinc-300 font-medium">
-                            First Car
-                          </span>
-                        </div>
-                        <p className="text-xs text-zinc-400 mt-1">
-                          $15K saved for reliable transportation
+                          Diversified portfolio for long-term growth
                         </p>
                         {/* Progress bar */}
                         <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
                           <div
-                            className="bg-indigo-500 h-1.5 rounded-full"
-                            style={{ width: "25%" }}
+                            className="bg-purple-500 h-1.5 rounded-full"
+                            style={{ width: "30%" }}
                           ></div>
                         </div>
                       </div>
@@ -356,10 +317,10 @@ export default function SparkMomentSection() {
                           <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
                       </div>
-                      <div>
+                      <div className="w-full">
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-semibold text-mint-400">
-                            2030
+                            2028
                           </span>
                           <span className="text-zinc-300 font-medium">
                             Home Downpayment
@@ -368,42 +329,13 @@ export default function SparkMomentSection() {
                         <p className="text-xs text-zinc-400 mt-1">
                           20% down on your dream home
                         </p>
-                      </div>
-                    </motion.div>
-
-                    {/* Long-term: Retirement */}
-                    <motion.div
-                      variants={item}
-                      className="flex items-start gap-4"
-                    >
-                      <div className="w-9 h-9 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center shrink-0 z-10">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="text-indigo-400"
-                        >
-                          <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-indigo-400">
-                            2038
-                          </span>
-                          <span className="text-zinc-300 font-medium">
-                            FIRE Goal
-                          </span>
+                        {/* Progress bar */}
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
+                          <div
+                            className="bg-mint-500 h-1.5 rounded-full"
+                            style={{ width: "15%" }}
+                          ></div>
                         </div>
-                        <p className="text-xs text-zinc-400 mt-1">
-                          Financial independence achieved
-                        </p>
                       </div>
                     </motion.div>
                   </motion.div>
