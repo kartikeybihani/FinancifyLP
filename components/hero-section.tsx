@@ -18,7 +18,9 @@ export default function HeroSection() {
   const [notificationMessage, setNotificationMessage] = useState("");
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const chatMessagesRef = useRef<HTMLDivElement>(null);
 
   const finnyMessages = [
     "You're 75% to your Hawaii trip. You're almost there.",
@@ -176,6 +178,31 @@ export default function HeroSection() {
   useEffect(() => {
     setIsTyping(true);
   }, []);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Auto-scroll to typing animation on mobile
+  useEffect(() => {
+    if (isMobile && isTyping && chatMessagesRef.current) {
+      // Small delay to ensure the typing animation is rendered
+      setTimeout(() => {
+        chatMessagesRef.current?.scrollTo({
+          top: chatMessagesRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }, 100);
+    }
+  }, [isMobile, isTyping]);
 
   // Show controls on hover
   const handleMouseEnter = () => setShowControls(true);
@@ -428,7 +455,10 @@ export default function HeroSection() {
                 </div>
 
                 {/* Chat messages area */}
-                <div className="flex-1 px-3 sm:px-6 py-3 sm:py-4 overflow-auto">
+                <div
+                  ref={chatMessagesRef}
+                  className="flex-1 px-3 sm:px-6 py-3 sm:py-4 overflow-auto"
+                >
                   {/* System welcome message */}
                   <div className="bg-zinc-800/50 px-3 sm:px-4 py-2 rounded-lg text-center text-xs text-zinc-500 mb-3 sm:mb-4">
                     Today • Conversation with Finny
