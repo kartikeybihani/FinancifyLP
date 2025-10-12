@@ -1,9 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function HowItWorksSection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   const journeySteps = [
     {
       title: "Connect Your Accounts",
@@ -96,10 +109,11 @@ export default function HowItWorksSection() {
 
       <div className="container mx-auto max-w-6xl relative">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={isMobile ? false : { opacity: 0, y: 20 }}
+          animate={isMobile ? { opacity: 1, y: 0 } : {}}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={isMobile ? { duration: 0 } : { duration: 0.6 }}
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-2">
@@ -119,10 +133,15 @@ export default function HowItWorksSection() {
             {journeySteps.map((step, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={isMobile ? false : { opacity: 0, y: 30 }}
+                animate={isMobile ? { opacity: 1, y: 0 } : {}}
+                whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                transition={
+                  isMobile
+                    ? { duration: 0 }
+                    : { duration: 0.6, delay: index * 0.2 }
+                }
                 className="relative group"
               >
                 {/* Desktop arrow */}
@@ -167,10 +186,15 @@ export default function HowItWorksSection() {
             {journeySteps.map((step, index) => (
               <div key={index} className="relative">
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={isMobile ? false : { opacity: 0, y: 30 }}
+                  animate={isMobile ? { opacity: 1, y: 0 } : {}}
+                  whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  transition={
+                    isMobile
+                      ? { duration: 0 }
+                      : { duration: 0.6, delay: index * 0.2 }
+                  }
                   className="relative group"
                 >
                   <div className="relative bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-4 group-hover:border-zinc-700/50 transition-all duration-300">
@@ -201,10 +225,15 @@ export default function HowItWorksSection() {
                 {/* Mobile arrow - only between steps, not after the last one */}
                 {index < journeySteps.length - 1 && (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={isMobile ? false : { opacity: 0 }}
+                    animate={isMobile ? { opacity: 1 } : {}}
+                    whileInView={isMobile ? {} : { opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
+                    transition={
+                      isMobile
+                        ? { duration: 0 }
+                        : { duration: 0.6, delay: index * 0.2 + 0.3 }
+                    }
                     className="flex justify-center py-2"
                   >
                     <div className="w-8 h-8 flex items-center justify-center">
@@ -233,10 +262,13 @@ export default function HowItWorksSection() {
 
         {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={isMobile ? false : { opacity: 0, y: 20 }}
+          animate={isMobile ? { opacity: 1, y: 0 } : {}}
+          whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          transition={
+            isMobile ? { duration: 0 } : { duration: 0.6, delay: 0.6 }
+          }
           className="text-center mt-12 sm:mt-16"
         >
           <div className="bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-5 sm:p-6 lg:p-8 max-w-2xl mx-auto">

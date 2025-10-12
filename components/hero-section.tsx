@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,10 +35,10 @@ export default function HeroSection() {
     "Your emergency fund needs $2,000 more. Let's get there.",
   ];
 
-  // Generate response time in seconds (random between 1-3 seconds)
-  const getResponseTime = () => {
+  // Generate response time in seconds (random between 1-3 seconds) - memoized
+  const getResponseTime = useCallback(() => {
     return Math.floor(Math.random() * 3) + 1;
-  };
+  }, []);
 
   // Handle email form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -116,63 +122,80 @@ export default function HeroSection() {
     }
   };
 
-  // Type animation effect for messages
+  // Type animation effect for messages - optimized for mobile
   useEffect(() => {
     if (!isMessageChanging && !isTyping) return;
 
     if (isTyping) {
       const currentMessage = finnyMessages[currentMessageIndex];
+      // Much faster typing on mobile (50ms), smooth on desktop (30ms)
+      const typingSpeed = isMobile ? 50 : 30;
 
       if (displayedText.length < currentMessage.length) {
         const timer = setTimeout(() => {
           setDisplayedText(
             currentMessage.substring(0, displayedText.length + 1)
           );
-        }, 30); // Speed of typing
+        }, typingSpeed);
 
         return () => clearTimeout(timer);
       } else {
         setIsTyping(false);
       }
     }
-  }, [isTyping, displayedText, currentMessageIndex, finnyMessages]);
+  }, [isTyping, displayedText, currentMessageIndex, finnyMessages, isMobile]);
 
-  // Handle manual navigation
-  const handleNavigate = (direction: "prev" | "next") => {
-    setIsMessageChanging(true);
-
-    // Wait for fade-out animation to complete
-    setTimeout(() => {
-      if (direction === "prev") {
-        setCurrentMessageIndex((prev) =>
-          prev === 0 ? finnyMessages.length - 1 : prev - 1
-        );
-      } else {
-        setCurrentMessageIndex((prev) => (prev + 1) % finnyMessages.length);
-      }
-      setDisplayedText("");
-      setIsMessageChanging(false);
-      setIsTyping(true);
-    }, 500);
-  };
-
-  // Rotate through Finny messages
-  useEffect(() => {
-    const rotateMessages = setInterval(() => {
+  // Handle manual navigation - memoized
+  const handleNavigate = useCallback(
+    (direction: "prev" | "next") => {
       setIsMessageChanging(true);
 
       // Wait for fade-out animation to complete
-      setTimeout(() => {
-        const nextIndex = (currentMessageIndex + 1) % finnyMessages.length;
-        setCurrentMessageIndex(nextIndex);
-        setDisplayedText("");
-        setIsMessageChanging(false);
-        setIsTyping(true);
-      }, 500); // Half duration of the transition
-    }, 5000);
+      setTimeout(
+        () => {
+          if (direction === "prev") {
+            setCurrentMessageIndex((prev) =>
+              prev === 0 ? finnyMessages.length - 1 : prev - 1
+            );
+          } else {
+            setCurrentMessageIndex((prev) => (prev + 1) % finnyMessages.length);
+          }
+          setDisplayedText("");
+          setIsMessageChanging(false);
+          setIsTyping(true);
+        },
+        isMobile ? 300 : 500
+      );
+    },
+    [finnyMessages.length]
+  );
+
+  // Rotate through Finny messages - ensure typing completes first
+  useEffect(() => {
+    const rotateMessages = setInterval(
+      () => {
+        // Don't change if still typing
+        if (isTyping) return;
+
+        setIsMessageChanging(true);
+
+        // Wait for fade-out animation to complete
+        setTimeout(
+          () => {
+            const nextIndex = (currentMessageIndex + 1) % finnyMessages.length;
+            setCurrentMessageIndex(nextIndex);
+            setDisplayedText("");
+            setIsMessageChanging(false);
+            setIsTyping(true);
+          },
+          isMobile ? 300 : 500
+        ); // Faster transition on mobile
+      },
+      isMobile ? 1500 : 1000
+    ); // Shorter interval for faster message rotation
 
     return () => clearInterval(rotateMessages);
-  }, [currentMessageIndex, finnyMessages.length]);
+  }, [currentMessageIndex, finnyMessages.length, isMobile, isTyping]);
 
   // Start initial typing on component mount
   useEffect(() => {
@@ -191,16 +214,16 @@ export default function HeroSection() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Auto-scroll to typing animation on mobile
+  // Auto-scroll to typing animation on mobile - optimized
   useEffect(() => {
     if (isMobile && isTyping && chatMessagesRef.current) {
-      // Small delay to ensure the typing animation is rendered
-      setTimeout(() => {
+      // Use requestAnimationFrame for better performance
+      requestAnimationFrame(() => {
         chatMessagesRef.current?.scrollTo({
           top: chatMessagesRef.current.scrollHeight,
           behavior: "smooth",
         });
-      }, 100);
+      });
     }
   }, [isMobile, isTyping]);
 
@@ -414,9 +437,17 @@ export default function HeroSection() {
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
 
               {/* Chat interface container */}
-              <div className="relative bg-zinc-900/60 backdrop-blur-xl border border-zinc-700/50 rounded-2xl overflow-hidden h-full flex flex-col">
+              <div
+                className={`relative bg-zinc-900/60 border border-zinc-700/50 rounded-2xl overflow-hidden h-full flex flex-col ${
+                  isMobile ? "backdrop-blur-sm" : "backdrop-blur-xl"
+                }`}
+              >
                 {/* Chat header */}
-                <div className="bg-zinc-800/50 backdrop-blur-sm px-3 sm:px-6 py-3 sm:py-4 border-b border-zinc-700/30 flex items-center justify-between">
+                <div
+                  className={`bg-zinc-800/50 px-3 sm:px-6 py-3 sm:py-4 border-b border-zinc-700/30 flex items-center justify-between ${
+                    isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
+                  }`}
+                >
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="w-12 sm:w-16 h-12 sm:h-16 shrink-0">
                       <Image
@@ -478,7 +509,11 @@ export default function HeroSection() {
                       />
                     </div>
                     <div className="max-w-[85%] sm:max-w-[80%]">
-                      <div className="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200">
+                      <div
+                        className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200 ${
+                          isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
+                        }`}
+                      >
                         <p>
                           Hello! I'm Finny, your AI financial advisor. I'll help
                           you manage your money better.
@@ -505,8 +540,10 @@ export default function HeroSection() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.5 }}
-                          className="bg-blue-600/20 backdrop-blur-sm border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200"
+                          transition={{ duration: isMobile ? 0.2 : 0.5 }}
+                          className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200 ${
+                            isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
+                          }`}
                         >
                           {isTyping && (
                             <div className="flex items-center mb-1.5">

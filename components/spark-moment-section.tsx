@@ -7,6 +7,19 @@ export default function SparkMomentSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const controls = useAnimation();
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Set up intersection observer to detect when section is in view
   useEffect(() => {

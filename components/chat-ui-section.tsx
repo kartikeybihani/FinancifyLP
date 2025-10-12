@@ -15,6 +15,7 @@ export default function ChatUISection() {
   const [isInView, setIsInView] = useState(false);
   const [showCursor, setShowCursor] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const controls = useAnimation();
@@ -44,6 +45,18 @@ export default function ChatUISection() {
     "Help me budget for a new car",
   ];
 
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   // Set up intersection observer to detect when section is in view
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -69,18 +82,20 @@ export default function ChatUISection() {
     };
   }, [controls, hasAnimated]);
 
-  // Scroll to bottom of messages - only within the message container
+  // Scroll to bottom of messages - optimized for mobile
   useEffect(() => {
     if (messagesEndRef.current) {
-      // Only scroll the container, not the whole page
       const messageContainer = messagesEndRef.current.parentElement;
       if (messageContainer) {
-        messageContainer.scrollTop = messageContainer.scrollHeight;
+        // Use requestAnimationFrame for better performance on mobile
+        requestAnimationFrame(() => {
+          messageContainer.scrollTop = messageContainer.scrollHeight;
+        });
       }
     }
   }, [messages]);
 
-  // Animate conversation with delays - only when section is in view
+  // Animate conversation with delays - optimized for mobile
   useEffect(() => {
     if (!isInView) return;
 
@@ -90,34 +105,36 @@ export default function ChatUISection() {
 
       // Show typing cursor animation before first message
       setShowCursor(true);
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      await new Promise((resolve) =>
+        setTimeout(resolve, isMobile ? 800 : 1200)
+      );
       setShowCursor(false);
 
       // Add user message
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, isMobile ? 100 : 200));
       setMessages([conversation[0]]);
 
       // Show typing indicator
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, isMobile ? 400 : 800));
       setTyping(true);
 
       // Add first bot response after delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, isMobile ? 300 : 500));
       setTyping(false);
       setMessages((prev) => [...prev, conversation[1]]);
 
       // Show typing indicator again
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, isMobile ? 300 : 500));
       setTyping(true);
 
       // Add second bot response after delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, isMobile ? 300 : 500));
       setTyping(false);
       setMessages((prev) => [...prev, conversation[2]]);
     };
 
     displayMessages();
-  }, [isInView]);
+  }, [isInView, isMobile]);
 
   return (
     <section
@@ -156,7 +173,9 @@ export default function ChatUISection() {
               transition: { duration: 0.6 },
             },
           }}
-          className="bg-[#142042]/80 backdrop-blur-2xl rounded-2xl border border-zinc-700/50 p-6 md:p-8 max-w-xl mx-auto shadow-xl relative overflow-hidden"
+          className={`bg-[#142042]/80 rounded-2xl border border-zinc-700/50 p-6 md:p-8 max-w-xl mx-auto shadow-xl relative overflow-hidden ${
+            isMobile ? "backdrop-blur-sm" : "backdrop-blur-2xl"
+          }`}
         >
           {/* Chat header */}
           <div className="flex items-center justify-between pb-3 border-b border-zinc-700/40 mb-4">
@@ -185,7 +204,11 @@ export default function ChatUISection() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <div className="max-w-[75%] rounded-2xl px-3 py-2 backdrop-blur-md text-sm bg-[#4A90E2]/25 border border-[#4A90E2]/40 text-white rounded-tr-none shadow-lg shadow-[#4A90E2]/10">
+                  <div
+                    className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm bg-[#4A90E2]/25 border border-[#4A90E2]/40 text-white rounded-tr-none shadow-lg shadow-[#4A90E2]/10 ${
+                      isMobile ? "backdrop-blur-none" : "backdrop-blur-md"
+                    }`}
+                  >
                     <p className="flex items-center">
                       <span className="inline-block mr-0.5 h-4 w-[1px] bg-white animate-pulse"></span>
                     </p>
@@ -201,14 +224,14 @@ export default function ChatUISection() {
                   }`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: isMobile ? 0.2 : 0.3 }}
                 >
                   <div
-                    className={`max-w-[75%] rounded-2xl px-3 py-2 backdrop-blur-md text-sm ${
+                    className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${
                       message.sender === "user"
                         ? "bg-[#4A90E2]/25 border border-[#4A90E2]/40 text-white rounded-tr-none shadow-lg shadow-[#4A90E2]/10"
                         : "bg-zinc-800/60 border border-zinc-700/40 text-white rounded-tl-none shadow-lg shadow-zinc-800/10"
-                    }`}
+                    } ${isMobile ? "backdrop-blur-none" : "backdrop-blur-md"}`}
                   >
                     <p>{message.text}</p>
                   </div>
@@ -222,7 +245,11 @@ export default function ChatUISection() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <div className="bg-zinc-800/60 backdrop-blur-md border border-zinc-700/40 text-white rounded-2xl rounded-tl-none px-3 py-2 shadow-lg shadow-zinc-800/10">
+                  <div
+                    className={`bg-zinc-800/60 border border-zinc-700/40 text-white rounded-2xl rounded-tl-none px-3 py-2 shadow-lg shadow-zinc-800/10 ${
+                      isMobile ? "backdrop-blur-none" : "backdrop-blur-md"
+                    }`}
+                  >
                     <div className="flex gap-1 items-center h-5">
                       <div
                         className="w-2 h-2 rounded-full bg-zinc-400 animate-bounce"
@@ -230,11 +257,11 @@ export default function ChatUISection() {
                       ></div>
                       <div
                         className="w-2 h-2 rounded-full bg-zinc-400 animate-bounce"
-                        style={{ animationDelay: "150ms" }}
+                        style={{ animationDelay: isMobile ? "100ms" : "150ms" }}
                       ></div>
                       <div
                         className="w-2 h-2 rounded-full bg-zinc-400 animate-bounce"
-                        style={{ animationDelay: "300ms" }}
+                        style={{ animationDelay: isMobile ? "200ms" : "300ms" }}
                       ></div>
                     </div>
                   </div>
@@ -249,7 +276,9 @@ export default function ChatUISection() {
             {chatSuggestions.map((suggestion, index) => (
               <button
                 key={index}
-                className="text-xs bg-zinc-800/60 backdrop-blur-sm hover:bg-zinc-700/70 text-zinc-300 px-2 py-1 rounded-full border border-zinc-700/40 transition-colors shadow-sm text-[11px]"
+                className={`text-xs bg-zinc-800/60 hover:bg-zinc-700/70 text-zinc-300 px-2 py-1 rounded-full border border-zinc-700/40 transition-colors shadow-sm text-[11px] ${
+                  isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
+                }`}
               >
                 {suggestion}
               </button>
@@ -261,7 +290,9 @@ export default function ChatUISection() {
             <input
               type="text"
               placeholder="Ask Finny anything about your finances..."
-              className="flex-1 bg-zinc-800/40 backdrop-blur-sm border border-zinc-700/40 rounded-full px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-purple-500/50 shadow-inner"
+              className={`flex-1 bg-zinc-800/40 border border-zinc-700/40 rounded-full px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-purple-500/50 shadow-inner ${
+                isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
+              }`}
               disabled
             />
             <button className="w-7 h-7 rounded-full bg-[#4A90E2] flex items-center justify-center">
@@ -296,7 +327,11 @@ export default function ChatUISection() {
           <div className="absolute bottom-0 left-0 right-0 h-60 bg-gradient-to-t from-indigo-500/15 to-transparent"></div>
 
           {/* Additional glass morphism effect */}
-          <div className="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl opacity-20 pointer-events-none"></div>
+          <div
+            className={`absolute inset-0 bg-white/5 rounded-2xl opacity-20 pointer-events-none ${
+              isMobile ? "backdrop-blur-none" : "backdrop-blur-md"
+            }`}
+          ></div>
         </motion.div>
       </div>
     </section>
