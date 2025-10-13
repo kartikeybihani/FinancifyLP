@@ -353,7 +353,7 @@ export default function HeroSection() {
                 Stop losing money to <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
               </span>
-              <span className="relative inline-block">
+              <span className="relative inline-block md:mt-2">
                 <span className="absolute -inset-1 bg-gradient-to-r from-[#4A90E2]/20 via-indigo-400/20 to-mint-400/20 blur-2xl rounded-lg"></span>
                 <span className="relative bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-mint-400 text-transparent bg-clip-text animate-shimmer">
                   bad financial decisions.
