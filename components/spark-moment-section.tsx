@@ -82,9 +82,9 @@ export default function SparkMomentSection() {
             }}
             className="space-y-6"
           >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-relaxed">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-relaxed">
               <span className="block">Your personal financial</span>
-              <span className="block mt-2 md:mt-1 bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-blue-400 text-transparent bg-clip-text animate-shimmer">
+              <span className="block mt-1 md:mt-1 bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-blue-400 text-transparent bg-clip-text animate-shimmer">
                 advisor. Always on.
               </span>
             </h2>
@@ -146,14 +146,14 @@ export default function SparkMomentSection() {
                   Your Complete Financial Plan
                 </h3>
 
-                <div className="space-y-6 relative">
+                <div className="space-y-4 sm:space-y-6 relative">
                   {/* Timeline line - Animated */}
                   <motion.div
                     initial={{ scaleY: 0, originY: 0 }}
                     whileInView={{ scaleY: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.2, ease: "easeInOut" }}
-                    className="absolute left-[18px] top-1 bottom-1 w-0.5 bg-zinc-700/50"
+                    className="absolute left-[14px] sm:left-[18px] top-1 bottom-1 w-0.5 bg-zinc-700/50"
                   ></motion.div>
 
                   {/* Timeline items - Staggered animation */}
@@ -162,40 +162,40 @@ export default function SparkMomentSection() {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    className="space-y-6"
+                    className="space-y-4 sm:space-y-6"
                   >
                     {/* Short-term: Emergency Fund */}
                     <motion.div
                       variants={item}
-                      className="flex items-start gap-4"
+                      className="flex items-start gap-3 sm:gap-4"
                     >
-                      <div className="w-9 h-9 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 z-10">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="text-blue-400"
+                          className="text-blue-400 sm:w-4 sm:h-4"
                         >
                           <path d="M19 5V3a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v2"></path>
                           <path d="M1 5h22v16a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5z"></path>
                         </svg>
                       </div>
                       <div className="w-full">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-blue-400">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-xs font-semibold text-blue-400">
                             2023
                           </span>
-                          <span className="text-zinc-300 font-medium">
+                          <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Emergency Fund
                           </span>
-                          <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">
-                            85% done
+                          <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                            85%
                           </span>
                         </div>
                         <p className="text-xs text-zinc-400 mt-1">
@@ -214,20 +214,20 @@ export default function SparkMomentSection() {
                     {/* Short-term: Student Loan */}
                     <motion.div
                       variants={item}
-                      className="flex items-start gap-4"
+                      className="flex items-start gap-3 sm:gap-4"
                     >
-                      <div className="w-9 h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="text-mint-400"
+                          className="text-mint-400 sm:w-4 sm:h-4"
                         >
                           <rect
                             width="20"
@@ -240,11 +240,11 @@ export default function SparkMomentSection() {
                         </svg>
                       </div>
                       <div className="w-full">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-mint-400">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-xs font-semibold text-mint-400">
                             2024
                           </span>
-                          <span className="text-zinc-300 font-medium">
+                          <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Student Loan Payoff
                           </span>
                         </div>
@@ -264,34 +264,34 @@ export default function SparkMomentSection() {
                     {/* Mid-term: Investment Portfolio */}
                     <motion.div
                       variants={item}
-                      className="flex items-start gap-4"
+                      className="flex items-start gap-3 sm:gap-4"
                     >
-                      <div className="w-9 h-9 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center shrink-0 z-10">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="text-purple-400"
+                          className="text-purple-400 sm:w-4 sm:h-4"
                         >
                           <path d="M3 3v18h18"></path>
                           <path d="m19 9-5 5-4-4-3 3"></path>
                         </svg>
                       </div>
                       <div className="w-full">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-purple-400">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-xs font-semibold text-purple-400">
                             2025
                           </span>
-                          <span className="text-zinc-300 font-medium">
+                          <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Investment Portfolio
                           </span>
-                          <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
+                          <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded-full whitespace-nowrap">
                             In progress
                           </span>
                         </div>
@@ -311,31 +311,31 @@ export default function SparkMomentSection() {
                     {/* Long-term: Home */}
                     <motion.div
                       variants={item}
-                      className="flex items-start gap-4"
+                      className="flex items-start gap-3 sm:gap-4"
                     >
-                      <div className="w-9 h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="text-mint-400"
+                          className="text-mint-400 sm:w-4 sm:h-4"
                         >
                           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                           <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
                       </div>
                       <div className="w-full">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-mint-400">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-xs font-semibold text-mint-400">
                             2028
                           </span>
-                          <span className="text-zinc-300 font-medium">
+                          <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Home Downpayment
                           </span>
                         </div>

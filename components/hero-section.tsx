@@ -122,14 +122,21 @@ export default function HeroSection() {
     }
   };
 
-  // Type animation effect for messages - optimized for mobile
+  // Type animation effect for messages - skip typing on mobile
   useEffect(() => {
     if (!isMessageChanging && !isTyping) return;
 
+    // Skip typing animation on mobile - show message directly
+    if (isMobile && isTyping) {
+      const currentMessage = finnyMessages[currentMessageIndex];
+      setDisplayedText(currentMessage);
+      setIsTyping(false);
+      return;
+    }
+
     if (isTyping) {
       const currentMessage = finnyMessages[currentMessageIndex];
-      // Much faster typing on mobile (50ms), smooth on desktop (30ms)
-      const typingSpeed = isMobile ? 50 : 30;
+      const typingSpeed = 30; // Desktop typing speed
 
       if (displayedText.length < currentMessage.length) {
         const timer = setTimeout(() => {
@@ -167,15 +174,15 @@ export default function HeroSection() {
         isMobile ? 300 : 500
       );
     },
-    [finnyMessages.length]
+    [finnyMessages.length, isMobile]
   );
 
   // Rotate through Finny messages - ensure typing completes first
   useEffect(() => {
     const rotateMessages = setInterval(
       () => {
-        // Don't change if still typing
-        if (isTyping) return;
+        // Don't change if still typing (only for desktop)
+        if (!isMobile && isTyping) return;
 
         setIsMessageChanging(true);
 
@@ -191,8 +198,8 @@ export default function HeroSection() {
           isMobile ? 300 : 500
         ); // Faster transition on mobile
       },
-      isMobile ? 1500 : 1000
-    ); // Shorter interval for faster message rotation
+      isMobile ? 1000 : 1000
+    ); // 1 second interval for mobile, same for desktop
 
     return () => clearInterval(rotateMessages);
   }, [currentMessageIndex, finnyMessages.length, isMobile, isTyping]);
@@ -545,7 +552,7 @@ export default function HeroSection() {
                             isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
                           }`}
                         >
-                          {isTyping && (
+                          {isTyping && !isMobile && (
                             <div className="flex items-center mb-1.5">
                               <span className="text-xs text-zinc-500 flex items-center gap-1">
                                 <span className="h-1 w-1 bg-zinc-500 rounded-full animate-pulse"></span>
@@ -555,7 +562,7 @@ export default function HeroSection() {
                           )}
                           <p>
                             {displayedText}
-                            {isTyping && (
+                            {isTyping && !isMobile && (
                               <span className="inline-block w-1.5 h-4 bg-zinc-400 ml-1 animate-pulse"></span>
                             )}
                           </p>
@@ -601,12 +608,15 @@ export default function HeroSection() {
                       }}
                       onClick={() => {
                         setIsMessageChanging(true);
-                        setTimeout(() => {
-                          setCurrentMessageIndex(index);
-                          setDisplayedText("");
-                          setIsMessageChanging(false);
-                          setIsTyping(true);
-                        }, 500);
+                        setTimeout(
+                          () => {
+                            setCurrentMessageIndex(index);
+                            setDisplayedText("");
+                            setIsMessageChanging(false);
+                            setIsTyping(true);
+                          },
+                          isMobile ? 300 : 500
+                        );
                       }}
                     ></motion.div>
                   ))}
