@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import Image from "next/image";
 
 type Message = {
   id: number;
@@ -180,8 +181,14 @@ export default function ChatUISection() {
           {/* Chat header */}
           <div className="flex items-center justify-between pb-3 border-b border-zinc-700/40 mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-[#4A90E2] flex items-center justify-center text-white font-medium">
-                F
+              <div className="w-7 h-7 rounded-full overflow-hidden bg-gradient-to-br from-[#4A90E2] to-blue-600 flex items-center justify-center shrink-0">
+                <Image
+                  src="/mascot1.jpg"
+                  alt="Finny Mascot"
+                  width={28}
+                  height={28}
+                  className="w-full h-full object-cover scale-x-[-1]"
+                />
               </div>
               <div>
                 <h3 className="font-medium text-sm">Finny</h3>

@@ -1,90 +1,16 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import React from "react";
 
 export default function SparkMomentSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const controls = useAnimation();
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Set up intersection observer to detect when section is in view
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimated) {
-          controls.start("visible");
-          setHasAnimated(true);
-        }
-      },
-      { threshold: 0.3 } // Trigger when 30% of the section is visible
-    );
-
-    observer.observe(sectionRef.current);
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, [controls, hasAnimated]);
-
-  // Define staggered animation variants for timeline
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, x: -20 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  };
-
   return (
-    <section
-      ref={sectionRef}
-      className="py-16 px-4 md:px-6 lg:px-8 relative overflow-hidden"
-    >
+    <section className="py-16 px-4 md:px-6 lg:px-8 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 items-center">
-          <motion.div
-            initial="hidden"
-            animate={controls}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.8, ease: "easeOut" },
-              },
-            }}
-            className="space-y-6"
-          >
+          <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-relaxed">
               <span className="block">Your personal financial</span>
-              <span className="block mt-1 md:mt-1 bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-blue-400 text-transparent bg-clip-text animate-shimmer">
+              <span className="block mt-1 md:mt-1 bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-blue-400 text-transparent bg-clip-text leading-tight">
                 advisor. Always on.
               </span>
             </h2>
@@ -129,17 +55,11 @@ export default function SparkMomentSection() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex justify-center lg:justify-end"
-          >
+          <div className="flex justify-center lg:justify-end">
             <div className="w-full max-w-md bg-zinc-900/60 border border-zinc-800/50 rounded-xl overflow-hidden relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/10 to-blue-500/10 rounded-xl blur opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/10 to-blue-500/10 rounded-xl blur opacity-50"></div>
 
               <div className="p-6 relative z-10">
                 <h3 className="text-lg font-medium mb-6">
@@ -147,28 +67,13 @@ export default function SparkMomentSection() {
                 </h3>
 
                 <div className="space-y-4 sm:space-y-6 relative">
-                  {/* Timeline line - Animated */}
-                  <motion.div
-                    initial={{ scaleY: 0, originY: 0 }}
-                    whileInView={{ scaleY: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, ease: "easeInOut" }}
-                    className="absolute left-[14px] sm:left-[18px] top-1 bottom-1 w-0.5 bg-zinc-700/50"
-                  ></motion.div>
+                  {/* Timeline line */}
+                  <div className="absolute left-[14px] sm:left-[18px] top-1 bottom-1 w-0.5 bg-zinc-700/50"></div>
 
-                  {/* Timeline items - Staggered animation */}
-                  <motion.div
-                    variants={container}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    className="space-y-4 sm:space-y-6"
-                  >
+                  {/* Timeline items */}
+                  <div className="space-y-4 sm:space-y-6">
                     {/* Short-term: Emergency Fund */}
-                    <motion.div
-                      variants={item}
-                      className="flex items-start gap-3 sm:gap-4"
-                    >
+                    <div className="flex items-start gap-3 sm:gap-4">
                       <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -209,13 +114,10 @@ export default function SparkMomentSection() {
                           ></div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Short-term: Student Loan */}
-                    <motion.div
-                      variants={item}
-                      className="flex items-start gap-3 sm:gap-4"
-                    >
+                    <div className="flex items-start gap-3 sm:gap-4">
                       <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -259,13 +161,10 @@ export default function SparkMomentSection() {
                           ></div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Mid-term: Investment Portfolio */}
-                    <motion.div
-                      variants={item}
-                      className="flex items-start gap-3 sm:gap-4"
-                    >
+                    <div className="flex items-start gap-3 sm:gap-4">
                       <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -306,13 +205,10 @@ export default function SparkMomentSection() {
                           ></div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Long-term: Home */}
-                    <motion.div
-                      variants={item}
-                      className="flex items-start gap-3 sm:gap-4"
-                    >
+                    <div className="flex items-start gap-3 sm:gap-4">
                       <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -350,12 +246,12 @@ export default function SparkMomentSection() {
                           ></div>
                         </div>
                       </div>
-                    </motion.div>
-                  </motion.div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 

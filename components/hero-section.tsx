@@ -130,13 +130,16 @@ export default function HeroSection() {
     if (isMobile && isTyping) {
       const currentMessage = finnyMessages[currentMessageIndex];
       setDisplayedText(currentMessage);
-      setIsTyping(false);
+      // Add a small delay to prevent race conditions
+      setTimeout(() => {
+        setIsTyping(false);
+      }, 50);
       return;
     }
 
     if (isTyping) {
       const currentMessage = finnyMessages[currentMessageIndex];
-      const typingSpeed = 30; // Desktop typing speed
+      const typingSpeed = 25; // Desktop typing speed - slower for better readability
 
       if (displayedText.length < currentMessage.length) {
         const timer = setTimeout(() => {
@@ -157,7 +160,7 @@ export default function HeroSection() {
     (direction: "prev" | "next") => {
       setIsMessageChanging(true);
 
-      // Wait for fade-out animation to complete
+      // Wait for animation to complete
       setTimeout(
         () => {
           if (direction === "prev") {
@@ -171,7 +174,7 @@ export default function HeroSection() {
           setIsMessageChanging(false);
           setIsTyping(true);
         },
-        isMobile ? 300 : 500
+        isMobile ? 400 : 300 // Match the slide animation timing
       );
     },
     [finnyMessages.length, isMobile]
@@ -186,7 +189,7 @@ export default function HeroSection() {
 
         setIsMessageChanging(true);
 
-        // Wait for fade-out animation to complete
+        // Wait for animation to complete
         setTimeout(
           () => {
             const nextIndex = (currentMessageIndex + 1) % finnyMessages.length;
@@ -195,11 +198,11 @@ export default function HeroSection() {
             setIsMessageChanging(false);
             setIsTyping(true);
           },
-          isMobile ? 300 : 500
-        ); // Faster transition on mobile
+          isMobile ? 400 : 300 // Longer transition for mobile slide animation
+        );
       },
-      isMobile ? 1000 : 1000
-    ); // 1 second interval for mobile, same for desktop
+      isMobile ? 3000 : 1000 // Much slower rotation for mobile (3 seconds vs 1 second)
+    );
 
     return () => clearInterval(rotateMessages);
   }, [currentMessageIndex, finnyMessages.length, isMobile, isTyping]);
@@ -334,7 +337,10 @@ export default function HeroSection() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.6 }}
+              transition={{
+                delay: isMobile ? 0.03 : 0.05,
+                duration: isMobile ? 0.2 : 0.4,
+              }}
               className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-6 md:mb-8 mx-auto sm:mx-0"
             >
               <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
@@ -346,7 +352,10 @@ export default function HeroSection() {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.7 }}
+              transition={{
+                delay: isMobile ? 0.05 : 0.15,
+                duration: isMobile ? 0.25 : 0.45,
+              }}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3 md:mb-4 relative"
             >
               <span className="relative inline-block">
@@ -364,7 +373,10 @@ export default function HeroSection() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.7 }}
+              transition={{
+                delay: isMobile ? 0.08 : 0.25,
+                duration: isMobile ? 0.25 : 0.45,
+              }}
               className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-xl mb-3 md:mb-4 mx-auto sm:mx-0"
             >
               Your personal financial advisor. Invest smarter, save more, and
@@ -374,7 +386,10 @@ export default function HeroSection() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.7 }}
+              transition={{
+                delay: isMobile ? 0.1 : 0.3,
+                duration: isMobile ? 0.25 : 0.45,
+              }}
               className="text-sm sm:text-base text-zinc-400 max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0"
             >
               Built to give you peace of mind.
@@ -383,16 +398,10 @@ export default function HeroSection() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.7 }}
-              className="text-xs sm:text-sm text-[#4A90E2] font-medium mb-6 md:mb-8 mx-auto sm:mx-0"
-            >
-              Join 500+ people on our waitlist to get early access
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.7 }}
+              transition={{
+                delay: isMobile ? 0.12 : 0.35,
+                duration: isMobile ? 0.25 : 0.45,
+              }}
               className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto sm:mx-0"
             >
               <form
@@ -421,12 +430,27 @@ export default function HeroSection() {
                 </Button>
               </form>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: isMobile ? 0.15 : 0.45,
+                duration: isMobile ? 0.25 : 0.45,
+              }}
+              className="text-xs sm:text-sm text-[#4A90E2] font-medium mt-4 mx-auto sm:mx-0"
+            >
+              Join 500+ people on our waitlist to get early access
+            </motion.div>
           </div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.7 }}
+            transition={{
+              duration: isMobile ? 0.3 : 0.6,
+              delay: isMobile ? 0.1 : 0.35,
+            }}
             className="flex justify-center lg:justify-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12 order-1 lg:order-2"
           >
             {/* Mobile category indicators - REMOVED completely for phones */}
@@ -544,10 +568,25 @@ export default function HeroSection() {
                       <AnimatePresence mode="wait">
                         <motion.div
                           key={currentMessageIndex}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: isMobile ? 0.2 : 0.5 }}
+                          initial={
+                            isMobile
+                              ? { opacity: 0, x: 50 }
+                              : { opacity: 0, y: 10 }
+                          }
+                          animate={
+                            isMobile
+                              ? { opacity: 1, x: 0 }
+                              : { opacity: 1, y: 0 }
+                          }
+                          exit={
+                            isMobile
+                              ? { opacity: 0, x: -50 }
+                              : { opacity: 0, y: -10 }
+                          }
+                          transition={{
+                            duration: isMobile ? 0.4 : 0.3,
+                            ease: isMobile ? "easeInOut" : "easeOut",
+                          }}
                           className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200 ${
                             isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
                           }`}
@@ -615,7 +654,7 @@ export default function HeroSection() {
                             setIsMessageChanging(false);
                             setIsTyping(true);
                           },
-                          isMobile ? 300 : 500
+                          isMobile ? 400 : 300 // Match the slide animation timing
                         );
                       }}
                     ></motion.div>
