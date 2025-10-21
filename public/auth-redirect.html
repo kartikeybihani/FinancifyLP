@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation - Financify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mint': {
+                            400: '#4ade80',
+                            500: '#22c55e',
+                        }
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-gentle': 'bounceGentle 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        bounceGentle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mint-glow {
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+        
+        .blue-glow {
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+        }
+        
+        .loading-spinner {
+            border: 3px solid rgba(74, 222, 128, 0.2);
+            border-top: 3px solid #4ade80;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-icon {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: bounceGentle 2s ease-in-out infinite;
+        }
+        
+        .error-icon {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 opacity-10">
+        <div class="absolute inset-0 bg-gradient-to-br from-mint-400/5 to-blue-500/5"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-mint-400/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="container max-w-md mx-auto relative z-10">
+        <!-- Success State -->
+        <div id="success" class="hidden">
+            <div class="glass-morphism rounded-3xl p-8 text-center animate-fade-in">
+                <div class="success-icon mb-6">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-4 animate-slide-up">Email Confirmed!</h1>
+                <p class="text-zinc-300 mb-8 leading-relaxed animate-slide-up">
+                    Your email has been successfully updated. You can now close this window and return to the Financify app.
+                </p>
+                <a href="financify://" 
+                   class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-400 hover:from-blue-600 hover:to-blue-500 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105 blue-glow hover:shadow-lg">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18l9-5-9-5-9 5 9 5z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18V8"></path>
+                    </svg>
+                    Open Financify App
+                </a>
+            </div>
+        </div>
+        
+        <!-- Error State -->
+        <div id="error" class="hidden">
+            <div class="glass-morphism rounded-3xl p-8 text-center animate-fade-in">
+                <div class="error-icon mb-6">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-4 animate-slide-up">Confirmation Failed</h1>
+                <p id="errorMessage" class="text-zinc-300 mb-8 leading-relaxed animate-slide-up">
+                    There was an error confirming your email. Please try again.
+                </p>
+                <a href="financify://" 
+                   class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-zinc-700 to-zinc-600 hover:from-zinc-600 hover:to-zinc-500 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Return to App
+                </a>
+            </div>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loading">
+            <div class="glass-morphism rounded-3xl p-8 text-center">
+                <div class="loading-spinner mx-auto mb-6"></div>
+                <h1 class="text-3xl font-bold text-white mb-4 animate-pulse-slow">Confirming Email...</h1>
+                <p class="text-zinc-300 leading-relaxed">
+                    Please wait while we confirm your email address.
+                </p>
+                <div class="mt-6 flex justify-center space-x-1">
+                    <div class="w-2 h-2 bg-mint-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+                    <div class="w-2 h-2 bg-mint-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+                    <div class="w-2 h-2 bg-mint-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const errorCode = urlParams.get('error_code');
+        const errorDescription = urlParams.get('error_description');
+        
+        // Show appropriate message
+        if (error) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (errorCode === 'otp_expired') {
+                errorMessage.textContent = 'The confirmation link has expired. Please request a new email confirmation.';
+            } else if (errorCode === 'invalid_token') {
+                errorMessage.textContent = 'The confirmation link is invalid or has already been used. Please request a new email confirmation.';
+            } else if (errorCode === 'user_not_found') {
+                errorMessage.textContent = 'User account not found. Please contact support if this issue persists.';
+            } else if (errorDescription) {
+                errorMessage.textContent = decodeURIComponent(errorDescription);
+            } else {
+                errorMessage.textContent = 'An unexpected error occurred. Please try again or contact support.';
+            }
+        } else {
+            // Success case - show loading for 2 seconds then success
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('success').style.display = 'block';
+            }, 2000);
+        }
+        
+        // Add smooth transitions when showing/hiding elements
+        function showElement(elementId) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.classList.add('animate-fade-in');
+        }
+        
+        function hideElement(elementId) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'none';
+            element.classList.remove('animate-fade-in');
+        }
+    </script>
+</body>
+</html>
