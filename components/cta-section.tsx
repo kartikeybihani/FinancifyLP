@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
+import { getStoredSourceData } from "@/lib/source-tracking";
 
 export default function CtaSection() {
   const [email, setEmail] = useState("");
@@ -68,6 +69,10 @@ export default function CtaSection() {
       duration: 7000,
     });
 
+    // Get source tracking data if available
+    const sourceData = getStoredSourceData();
+    const trackingSource = sourceData?.source || "cta";
+
     // Store in localStorage immediately
     try {
       const storedEmails = JSON.parse(
@@ -76,10 +81,14 @@ export default function CtaSection() {
       storedEmails.push({
         email,
         timestamp: new Date().toISOString(),
-        source: "cta",
+        source: trackingSource,
+        sourceData: sourceData || null,
       });
       localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
-      console.log("CTA email stored in localStorage");
+      console.log(
+        "CTA email stored in localStorage with source:",
+        trackingSource
+      );
     } catch (err) {
       console.error("Error storing CTA email in localStorage:", err);
     }
@@ -94,7 +103,11 @@ export default function CtaSection() {
           headers: {
             "Content-Type": "text/plain", // Changed from application/json due to no-cors restrictions
           },
-          body: JSON.stringify({ email: email, source: "cta" }),
+          body: JSON.stringify({
+            email: email,
+            source: trackingSource,
+            sourceData: sourceData || null,
+          }),
         }
       )
         .then((response) => {

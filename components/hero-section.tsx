@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
+import { getStoredSourceData } from "@/lib/source-tracking";
 
 export default function HeroSection() {
   const [email, setEmail] = useState("");
@@ -77,6 +78,10 @@ export default function HeroSection() {
       duration: 7000,
     });
 
+    // Get source tracking data if available
+    const sourceData = getStoredSourceData();
+    const trackingSource = sourceData?.source || "hero";
+
     // Store in localStorage immediately
     try {
       const storedEmails = JSON.parse(
@@ -85,21 +90,26 @@ export default function HeroSection() {
       storedEmails.push({
         email,
         timestamp: new Date().toISOString(),
-        source: "hero",
+        source: trackingSource,
+        sourceData: sourceData || null,
       });
       localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
-      console.log("Email stored in localStorage");
+      console.log("Email stored in localStorage with source:", trackingSource);
     } catch (err) {
       console.error("Error storing email in localStorage:", err);
     }
 
-    setEmail("");
-
     // Handle Google Apps Script submission in the background (non-blocking)
     try {
-      // Create form data for Google Apps Script
+      // Create form data for Google Apps Script (before clearing email)
       const formData = new URLSearchParams();
       formData.append("email", email);
+      formData.append("source", trackingSource);
+      if (sourceData) {
+        formData.append("sourceData", JSON.stringify(sourceData));
+      }
+
+      setEmail("");
 
       // Submit to Google Apps Script - simple POST to avoid preflight
       const response = await fetch(
