@@ -74,8 +74,8 @@ const financifyTiers = [
   {
     name: "Pro",
     price: {
-      monthly: 19,
-      yearly: 179,
+      monthly: 13,
+      yearly: 99,
     },
     description: "Ideal for serious financial planning and wealth building",
     highlight: true,
