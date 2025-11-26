@@ -50,7 +50,7 @@ const financifyTiers = [
         included: true,
       },
       {
-        name: "Community Support (Coming Soon)",
+        name: "Community Support",
         description: "Access to community forums and basic help",
         included: true,
       },
@@ -74,7 +74,7 @@ const financifyTiers = [
   {
     name: "Pro",
     price: {
-      monthly: 13,
+      monthly: 9.99,
       yearly: 99,
     },
     description: "Ideal for serious financial planning and wealth building",
@@ -126,8 +126,12 @@ const financifyTiers = [
   },
 ];
 
-function PricingDemo() {
-  return <PricingSection tiers={financifyTiers} />;
+interface PricingDemoProps {
+  onJoinWaitlist?: () => void;
+}
+
+function PricingDemo({ onJoinWaitlist }: PricingDemoProps) {
+  return <PricingSection tiers={financifyTiers} onJoinWaitlist={onJoinWaitlist} />;
 }
 
 export { PricingDemo };

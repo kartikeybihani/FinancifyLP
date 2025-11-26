@@ -254,9 +254,6 @@ export default function SparkMomentSection() {
           </div>
         </div>
       </div>
-
-      {/* Decorative background elements */}
-      <div className="absolute top-1/4 left-0 w-full h-1/2 bg-gradient-to-r from-[#4A90E2]/5 via-transparent to-blue-900/5 transform -skew-y-6 -z-10"></div>
     </section>
   );
 }

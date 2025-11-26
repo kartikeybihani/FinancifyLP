@@ -130,7 +130,7 @@ export default function CtaSection() {
   };
 
   return (
-    <section className="py-24 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-[#0a0c14] to-[#050509] relative">
+    <section className="py-24 px-4 md:px-6 lg:px-8 relative">
       {/* Custom notification overlay */}
       <AnimatePresence>
         {showNotification && (

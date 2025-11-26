@@ -102,11 +102,6 @@ export default function HowItWorksSection() {
       className="py-16 sm:py-20 md:py-24 px-4 md:px-6 lg:px-8 relative"
       id="how-it-works"
     >
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent"></div>
-      <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-[#4A90E2]/5 to-transparent opacity-40"></div>
-      <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-tr from-indigo-500/10 to-transparent rounded-full blur-xl"></div>
-
       <div className="container mx-auto max-w-6xl relative">
         <motion.div
           initial={isMobile ? false : { opacity: 0, y: 20 }}

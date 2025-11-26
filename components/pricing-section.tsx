@@ -29,59 +29,32 @@ interface PricingTier {
 interface PricingSectionProps {
   tiers: PricingTier[];
   className?: string;
+  onJoinWaitlist?: () => void;
 }
 
-function PricingSection({ tiers, className }: PricingSectionProps) {
+function PricingSection({
+  tiers,
+  className,
+  onJoinWaitlist,
+}: PricingSectionProps) {
   const [selectedFrequency, setSelectedFrequency] = useState("monthly");
   const isYearly = selectedFrequency === "yearly";
-
-  const buttonStyles = {
-    default: cn(
-      "h-10 bg-gradient-to-r from-zinc-50 to-zinc-100 dark:from-zinc-800 dark:to-zinc-700",
-      "hover:from-zinc-100 hover:to-zinc-200 dark:hover:from-zinc-700 dark:hover:to-zinc-600",
-      "text-zinc-900 dark:text-zinc-100",
-      "border border-zinc-200/80 dark:border-zinc-700/80",
-      "hover:border-zinc-300 dark:hover:border-zinc-600",
-      "shadow-sm hover:shadow-lg hover:-translate-y-0.5",
-      "text-sm font-medium transition-all duration-300 transform-gpu"
-    ),
-    highlight: cn(
-      "h-10 bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-zinc-200",
-      "hover:from-zinc-800 hover:to-zinc-700 dark:hover:from-zinc-200 dark:hover:to-zinc-300",
-      "text-white dark:text-zinc-900",
-      "shadow-[0_4px_20px_rgba(0,0,0,0.15)]",
-      "hover:shadow-[0_6px_25px_rgba(0,0,0,0.2)] hover:-translate-y-0.5",
-      "font-semibold text-base transition-all duration-300 transform-gpu"
-    ),
-  };
-
-  const badgeStyles = cn(
-    "px-4 py-1.5 text-sm font-medium",
-    "bg-zinc-900 dark:bg-zinc-100",
-    "text-white dark:text-zinc-900",
-    "border-none shadow-lg"
-  );
 
   return (
     <section
       id="pricing"
       className={cn(
-        "relative bg-background text-foreground",
-        "py-8 px-4 md:py-16 lg:py-20",
-        "overflow-hidden",
-        "scroll-mt-20",
+        "relative py-16 px-4 md:px-6 lg:px-8 overflow-hidden scroll-mt-20",
         className
       )}
     >
-      <div className="w-full max-w-5xl mx-auto">
-        <div className="flex flex-col items-center gap-4 mb-8">
-          <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-            Simple Pricing
-          </h2>
-          <p className="text-sm text-muted-foreground">
+      <div className="w-full max-w-5xl mx-auto relative">
+        <div className="flex flex-col items-center gap-4 mb-12">
+          <h2 className="text-3xl font-bold text-white">Simple Pricing</h2>
+          <p className="text-sm text-zinc-400">
             Choose the best plan for your needs. No hidden fees.
           </p>
-          <div className="flex w-fit rounded-full bg-muted p-1">
+          <div className="flex w-fit rounded-full bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 p-1">
             {["monthly", "yearly"].map((frequency) => (
               <Tab
                 key={frequency}
@@ -94,131 +67,133 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch">
           {tiers.map((tier) => (
             <div
               key={tier.name}
               className={cn(
-                "relative group backdrop-blur-sm",
-                "rounded-2xl transition-all duration-300",
-                "flex flex-col",
+                "relative group backdrop-blur-sm rounded-2xl transition-all duration-300 flex flex-col h-full",
                 tier.highlight
-                  ? "bg-gradient-to-br from-zinc-100/90 via-zinc-50/80 to-transparent dark:from-zinc-400/[0.2] dark:via-zinc-300/[0.1]"
-                  : "bg-white/90 dark:bg-zinc-800/60",
-                "border",
+                  ? "bg-gradient-to-br from-zinc-900/80 via-zinc-900/70 to-blue-950/20 border-2 border-blue-500/30 shadow-xl hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] z-10"
+                  : "bg-zinc-900/60 border border-zinc-700/50 shadow-lg hover:shadow-xl",
                 tier.highlight
-                  ? "border-zinc-300/50 dark:border-zinc-400/30 shadow-xl hover:shadow-2xl"
-                  : "border-zinc-200/80 dark:border-zinc-700/80 shadow-lg hover:shadow-xl",
-                "hover:-translate-y-1 hover:scale-[1.02]",
-                "transform-gpu"
+                  ? "hover:-translate-y-2 transform-gpu"
+                  : "hover:-translate-y-1 hover:scale-[1.02] transform-gpu"
               )}
             >
+              {/* Animated glow effect for Pro tier */}
+              {tier.highlight && (
+                <>
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/10 via-blue-400/15 to-blue-500/10 rounded-2xl blur-lg animate-[glow_3s_ease-in-out_infinite] opacity-50"></div>
+                  <div className="absolute -inset-[1px] bg-gradient-to-r from-blue-600/5 via-blue-500/10 to-blue-600/5 rounded-2xl blur-xl animate-[glow_2s_ease-in-out_infinite] opacity-30"></div>
+                </>
+              )}
               {tier.badge && tier.highlight && (
-                <div className="absolute -top-4 left-6">
-                  <Badge className={badgeStyles}>{tier.badge}</Badge>
+                <div className="absolute -top-3 left-6">
+                  <Badge className="px-3 py-1 text-xs font-medium bg-blue-500/15 text-blue-300/90 border border-blue-400/20 backdrop-blur-sm">
+                    {tier.badge}
+                  </Badge>
                 </div>
               )}
 
               {/* Yearly discount badge for Pro tier */}
               {tier.highlight && isYearly && (
-                <div className="absolute -top-4 right-6">
-                  <Badge className="px-4 py-1.5 text-sm font-bold bg-yellow-400 text-yellow-900 border-none shadow-lg animate-[glow_2s_ease-in-out_infinite]">
+                <div className="absolute -top-3 right-6">
+                  <Badge className="px-3 py-1 text-xs font-bold bg-yellow-400/15 text-yellow-300/90 border border-yellow-400/20 backdrop-blur-sm animate-[glow_2s_ease-in-out_infinite]">
                     Save 22%
                   </Badge>
                 </div>
               )}
 
-              <div className="p-4 flex-1">
-                <div className="flex items-center justify-between mb-4">
+              <div className="p-6 flex-1 relative z-10 flex flex-col">
+                <div className="flex items-center gap-4 mb-6">
                   <div
                     className={cn(
-                      "p-2 rounded-lg transition-all duration-300 group-hover:scale-110",
+                      "p-2 rounded-lg transition-all duration-300",
                       tier.highlight
-                        ? "bg-gradient-to-br from-zinc-100 to-zinc-50 dark:from-zinc-800 dark:to-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                        : "bg-gradient-to-br from-zinc-100 to-zinc-50 dark:from-zinc-800 dark:to-zinc-700 text-zinc-600 dark:text-zinc-400 shadow-sm"
+                        ? "group-hover:scale-110 group-hover:rotate-3"
+                        : "group-hover:scale-110"
                     )}
                   >
                     {tier.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                  <h3
+                    className={cn(
+                      "text-2xl font-semibold",
+                      tier.highlight
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-blue-400/90 via-blue-500/90 to-blue-600/90"
+                        : "text-white"
+                    )}
+                  >
                     {tier.name}
                   </h3>
                 </div>
 
-                <div className="mb-3">
+                <div className="mb-6">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+                    <span
+                      className={cn(
+                        "text-4xl font-bold",
+                        tier.highlight
+                          ? "text-transparent bg-clip-text bg-gradient-to-r from-blue-400/90 to-blue-600/90"
+                          : "text-white"
+                      )}
+                    >
+                      $
                       {tier.price.monthly === 0
-                        ? "Free"
-                        : `$${
-                            isYearly ? tier.price.yearly : tier.price.monthly
-                          }`}
+                        ? "0"
+                        : isYearly
+                        ? tier.price.yearly
+                        : tier.price.monthly}
                     </span>
-                    {tier.price.monthly > 0 && (
-                      <span className="text-sm text-zinc-500 dark:text-zinc-400">
-                        /{isYearly ? "year" : "month"}
-                      </span>
-                    )}
+                    <span className="text-sm text-zinc-400">
+                      /{isYearly ? "year" : "month"}
+                    </span>
                   </div>
-                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  <p className="mt-3 text-sm text-zinc-300">
                     {tier.description}
                   </p>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-3 mb-8">
                   {tier.features.map((feature) => (
-                    <div key={feature.name} className="flex gap-4">
+                    <div key={feature.name} className="flex gap-3">
                       <div
                         className={cn(
-                          "mt-1 p-0.5 rounded-full transition-colors duration-200",
-                          feature.included
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-400 dark:text-zinc-600"
+                          "mt-1 p-0.5 rounded-full transition-colors duration-200 shrink-0",
+                          feature.included ? "text-blue-400" : "text-zinc-600"
                         )}
                       >
                         <CheckIcon className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                        <div className="text-sm font-medium text-white">
                           {feature.name}
                         </div>
-                        <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                        <div className="text-sm text-zinc-400">
                           {feature.description}
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
 
-              <div className="p-4 pt-0 mt-auto">
-                <Button
-                  className={cn(
-                    "w-full relative transition-all duration-300",
-                    tier.highlight
-                      ? buttonStyles.highlight
-                      : buttonStyles.default
-                  )}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {tier.price.monthly === 0 ? (
-                      <>
-                        Get started free
-                        <ArrowRightIcon className="w-4 h-4" />
-                      </>
-                    ) : tier.highlight ? (
-                      <>
-                        Buy now
-                        <ArrowRightIcon className="w-4 h-4" />
-                      </>
-                    ) : (
-                      <>
-                        Get started
-                        <ArrowRightIcon className="w-4 h-4" />
-                      </>
+                <div className="mt-auto">
+                  <Button
+                    onClick={onJoinWaitlist}
+                    className={cn(
+                      "w-full relative transition-all duration-300",
+                      tier.highlight
+                        ? "bg-gradient-to-r from-blue-500/90 to-blue-600/90 hover:from-blue-400/90 hover:to-blue-500/90 text-white shadow-lg hover:shadow-blue-500/30 hover:scale-105 font-semibold text-base py-6"
+                        : "bg-zinc-800/50 hover:bg-zinc-800/70 text-white border border-zinc-700/50 hover:border-blue-500/50 backdrop-blur-sm"
                     )}
-                  </span>
-                </Button>
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      Get Started
+                      <ArrowRightIcon className="w-4 h-4" />
+                    </span>
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
