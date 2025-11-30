@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { getStoredSourceData } from "@/lib/source-tracking";
+import { submitToGoogleScript } from "@/lib/google-scripts-api";
+import FinnyAvatar from "@/components/finny-avatar";
 
 export default function HeroSection() {
   const [email, setEmail] = useState("");
@@ -26,152 +28,153 @@ export default function HeroSection() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [responseTime, setResponseTime] = useState(2); // Default value to prevent hydration mismatch
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
+  const typingTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const rotationIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const navigateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const progressClickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const rotationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const finnyMessages = [
-    "You're 75% to your Hawaii trip. You're almost there.",
-    "Your investments are up 12% this year. Should we rebalance?",
-    "You could save $87/month by cutting unused subscriptions.",
-    "Your emergency fund needs $2,000 more. Let's get there.",
-  ];
+  // Memoize messages array to prevent recreation on every render
+  const finnyMessages = useMemo(
+    () => [
+      "You're 75% to your Hawaii trip. You're almost there.",
+      "Your investments are up 12% this year. Should we rebalance?",
+      "You could save $87/month by cutting unused subscriptions.",
+      "Your emergency fund needs $2,000 more. Let's get there.",
+    ],
+    []
+  );
 
-  // Generate response time in seconds (random between 1-3 seconds) - memoized
-  const getResponseTime = useCallback(() => {
-    return Math.floor(Math.random() * 3) + 1;
+  // Set response time on client side only to prevent hydration mismatch
+  useEffect(() => {
+    setResponseTime(Math.floor(Math.random() * 3) + 1);
   }, []);
 
-  // Handle email form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted");
+  // Handle email form submission - memoized
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    // Improved email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      console.log("Invalid email");
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-        duration: 3000,
-      });
-      return;
-    }
+      // Improved email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        toast({
+          title: "Invalid email",
+          description: "Please enter a valid email address.",
+          variant: "destructive",
+          duration: 3000,
+        });
+        return;
+      }
 
-    console.log("Email submitted:", email);
-
-    // Show success notification IMMEDIATELY
-    setNotificationMessage(
-      "🎉 You're on the waitlist! We'll be in touch soon."
-    );
-    setShowNotification(true);
-
-    // Hide notification after 3 seconds
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 3000);
-
-    toast({
-      title: "You're on the list!",
-      description: "We'll notify you when early access is available.",
-      duration: 7000,
-    });
-
-    // Get source tracking data if available
-    const sourceData = getStoredSourceData();
-    const trackingSource = sourceData?.source || "hero";
-
-    // Store in localStorage immediately
-    try {
-      const storedEmails = JSON.parse(
-        localStorage.getItem("waitlistEmails") || "[]"
+      // Show success notification IMMEDIATELY
+      setNotificationMessage(
+        "🎉 You're on the waitlist! We'll be in touch soon."
       );
-      storedEmails.push({
-        email,
-        timestamp: new Date().toISOString(),
+      setShowNotification(true);
+
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+
+      // Get source tracking data if available
+      const sourceData = getStoredSourceData();
+      const trackingSource = sourceData?.source || "hero";
+
+      // Store in localStorage immediately
+      try {
+        const storedEmails = JSON.parse(
+          localStorage.getItem("waitlistEmails") || "[]"
+        );
+        storedEmails.push({
+          email,
+          timestamp: new Date().toISOString(),
+          source: trackingSource,
+          sourceData: sourceData || null,
+        });
+        localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
+      } catch (err) {
+        console.error("Error storing email in localStorage:", err);
+      }
+
+      // Handle Google Apps Script submission in the background (non-blocking) with retry logic
+      setEmail("");
+      submitToGoogleScript({
+        type: "waitlist",
+        email: email,
         source: trackingSource,
         sourceData: sourceData || null,
       });
-      localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
-      console.log("Email stored in localStorage with source:", trackingSource);
-    } catch (err) {
-      console.error("Error storing email in localStorage:", err);
-    }
+    },
+    [email]
+  );
 
-    // Handle Google Apps Script submission in the background (non-blocking)
-    try {
-      // Create form data for Google Apps Script (before clearing email)
-      const formData = new URLSearchParams();
-      formData.append("email", email);
-      formData.append("source", trackingSource);
-      if (sourceData) {
-        formData.append("sourceData", JSON.stringify(sourceData));
-      }
+  // Memoize current message to avoid recalculation
+  const currentMessage = useMemo(
+    () => finnyMessages[currentMessageIndex],
+    [finnyMessages, currentMessageIndex]
+  );
 
-      setEmail("");
-
-      // Submit to Google Apps Script - simple POST to avoid preflight
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyEs7w326Cp6vNhgK6C835GgKaJ1PsUV8tm0rz74okNnwGEmDAAMihjJ5qtpeHU1q6z/exec",
-        {
-          method: "POST",
-          body: formData, // Let browser set Content-Type automatically
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.text();
-      console.log("Google Apps Script response:", result);
-    } catch (error) {
-      console.error("Error in background submission:", error);
-      // Don't show error to user since we already showed success
-    }
-  };
-
-  // Type animation effect for messages - skip typing on mobile
+  // Optimized type animation effect - skip typing on mobile
   useEffect(() => {
+    // Clear any existing timer
+    if (typingTimerRef.current) {
+      clearTimeout(typingTimerRef.current);
+      typingTimerRef.current = null;
+    }
+
     if (!isMessageChanging && !isTyping) return;
 
     // Skip typing animation on mobile - show message directly
     if (isMobile && isTyping) {
-      const currentMessage = finnyMessages[currentMessageIndex];
       setDisplayedText(currentMessage);
       // Add a small delay to prevent race conditions
-      setTimeout(() => {
+      typingTimerRef.current = setTimeout(() => {
         setIsTyping(false);
+        typingTimerRef.current = null;
       }, 50);
       return;
     }
 
     if (isTyping) {
-      const currentMessage = finnyMessages[currentMessageIndex];
       const typingSpeed = 25; // Desktop typing speed - slower for better readability
 
       if (displayedText.length < currentMessage.length) {
-        const timer = setTimeout(() => {
+        typingTimerRef.current = setTimeout(() => {
           setDisplayedText(
             currentMessage.substring(0, displayedText.length + 1)
           );
+          typingTimerRef.current = null;
         }, typingSpeed);
-
-        return () => clearTimeout(timer);
       } else {
         setIsTyping(false);
       }
     }
-  }, [isTyping, displayedText, currentMessageIndex, finnyMessages, isMobile]);
+
+    return () => {
+      if (typingTimerRef.current) {
+        clearTimeout(typingTimerRef.current);
+        typingTimerRef.current = null;
+      }
+    };
+  }, [isTyping, displayedText, currentMessage, isMessageChanging, isMobile]);
 
   // Handle manual navigation - memoized
   const handleNavigate = useCallback(
     (direction: "prev" | "next") => {
       setIsMessageChanging(true);
 
+      // Clear any existing timeout
+      if (navigateTimeoutRef.current) {
+        clearTimeout(navigateTimeoutRef.current);
+      }
+
       // Wait for animation to complete
-      setTimeout(
+      navigateTimeoutRef.current = setTimeout(
         () => {
           if (direction === "prev") {
             setCurrentMessageIndex((prev) =>
@@ -183,6 +186,7 @@ export default function HeroSection() {
           setDisplayedText("");
           setIsMessageChanging(false);
           setIsTyping(true);
+          navigateTimeoutRef.current = null;
         },
         isMobile ? 400 : 300 // Match the slide animation timing
       );
@@ -190,23 +194,63 @@ export default function HeroSection() {
     [finnyMessages.length, isMobile]
   );
 
-  // Rotate through Finny messages - ensure typing completes first
+  // Memoized handler for clicking progress indicators
+  const handleProgressClick = useCallback(
+    (index: number) => {
+      setIsMessageChanging(true);
+
+      // Clear any existing timeout
+      if (progressClickTimeoutRef.current) {
+        clearTimeout(progressClickTimeoutRef.current);
+      }
+
+      progressClickTimeoutRef.current = setTimeout(
+        () => {
+          setCurrentMessageIndex(index);
+          setDisplayedText("");
+          setIsMessageChanging(false);
+          setIsTyping(true);
+          progressClickTimeoutRef.current = null;
+        },
+        isMobile ? 400 : 300 // Match the slide animation timing
+      );
+    },
+    [isMobile]
+  );
+
+  // Optimized rotation through Finny messages - ensure typing completes first
   useEffect(() => {
-    const rotateMessages = setInterval(
+    // Clear any existing interval
+    if (rotationIntervalRef.current) {
+      clearInterval(rotationIntervalRef.current);
+      rotationIntervalRef.current = null;
+    }
+
+    // Don't start rotation if typing is in progress (desktop only)
+    if (!isMobile && isTyping) {
+      return;
+    }
+
+    rotationIntervalRef.current = setInterval(
       () => {
-        // Don't change if still typing (only for desktop)
+        // Double-check typing state before rotating
         if (!isMobile && isTyping) return;
 
         setIsMessageChanging(true);
 
+        // Clear any existing timeout
+        if (rotationTimeoutRef.current) {
+          clearTimeout(rotationTimeoutRef.current);
+        }
+
         // Wait for animation to complete
-        setTimeout(
+        rotationTimeoutRef.current = setTimeout(
           () => {
-            const nextIndex = (currentMessageIndex + 1) % finnyMessages.length;
-            setCurrentMessageIndex(nextIndex);
+            setCurrentMessageIndex((prev) => (prev + 1) % finnyMessages.length);
             setDisplayedText("");
             setIsMessageChanging(false);
             setIsTyping(true);
+            rotationTimeoutRef.current = null;
           },
           isMobile ? 400 : 300 // Longer transition for mobile slide animation
         );
@@ -214,24 +258,69 @@ export default function HeroSection() {
       isMobile ? 3000 : 1000 // Much slower rotation for mobile (3 seconds vs 1 second)
     );
 
-    return () => clearInterval(rotateMessages);
+    return () => {
+      if (rotationIntervalRef.current) {
+        clearInterval(rotationIntervalRef.current);
+        rotationIntervalRef.current = null;
+      }
+      if (rotationTimeoutRef.current) {
+        clearTimeout(rotationTimeoutRef.current);
+        rotationTimeoutRef.current = null;
+      }
+    };
   }, [currentMessageIndex, finnyMessages.length, isMobile, isTyping]);
+
+  // Cleanup all timers on unmount
+  useEffect(() => {
+    return () => {
+      if (typingTimerRef.current) {
+        clearTimeout(typingTimerRef.current);
+        typingTimerRef.current = null;
+      }
+      if (navigateTimeoutRef.current) {
+        clearTimeout(navigateTimeoutRef.current);
+        navigateTimeoutRef.current = null;
+      }
+      if (progressClickTimeoutRef.current) {
+        clearTimeout(progressClickTimeoutRef.current);
+        progressClickTimeoutRef.current = null;
+      }
+      if (rotationIntervalRef.current) {
+        clearInterval(rotationIntervalRef.current);
+        rotationIntervalRef.current = null;
+      }
+      if (rotationTimeoutRef.current) {
+        clearTimeout(rotationTimeoutRef.current);
+        rotationTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   // Start initial typing on component mount
   useEffect(() => {
     setIsTyping(true);
   }, []);
 
-  // Mobile detection
+  // Optimized mobile detection with debouncing
   useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
+
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        setIsMobile(window.innerWidth < 768); // md breakpoint
+      }, 150); // Debounce resize events
     };
 
-    checkMobile();
+    // Initial check
+    setIsMobile(window.innerWidth < 768);
+
     window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
 
   // Auto-scroll to typing animation on mobile - optimized
@@ -344,30 +433,14 @@ export default function HeroSection() {
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-8 items-center">
           <div className="text-left sm:text-left text-center order-2 lg:order-1">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: isMobile ? 0.03 : 0.05,
-                duration: isMobile ? 0.2 : 0.4,
-              }}
-              className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-6 md:mb-8 mx-auto sm:mx-0"
-            >
+            <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-6 md:mb-8 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
               <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
               <span className="bg-gradient-to-r from-[#4A90E2] via-blue-500 to-blue-400 text-transparent bg-clip-text">
                 AI-native financial guidance
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: isMobile ? 0.05 : 0.15,
-                duration: isMobile ? 0.25 : 0.45,
-              }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3 md:mb-4 relative"
-            >
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3 md:mb-4 relative animate-fade-in-up hero-animate-2">
               <span className="relative inline-block">
                 Stop losing money to <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
@@ -378,42 +451,18 @@ export default function HeroSection() {
                   bad financial decisions.
                 </span>
               </span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: isMobile ? 0.08 : 0.25,
-                duration: isMobile ? 0.25 : 0.45,
-              }}
-              className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-xl mb-3 md:mb-4 mx-auto sm:mx-0"
-            >
+            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-xl mb-3 md:mb-4 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
               Your personal financial advisor. Invest smarter, save more, and
               avoid costly mistakes.
-            </motion.p>
+            </p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: isMobile ? 0.1 : 0.3,
-                duration: isMobile ? 0.25 : 0.45,
-              }}
-              className="text-sm sm:text-base text-zinc-400 max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0"
-            >
+            <p className="text-sm sm:text-base text-zinc-400 max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
               Built to give you peace of mind.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: isMobile ? 0.12 : 0.35,
-                duration: isMobile ? 0.25 : 0.45,
-              }}
-              className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto sm:mx-0"
-            >
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto sm:mx-0 animate-fade-in-up hero-animate-4">
               <form
                 onSubmit={handleSubmit}
                 className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full"
@@ -424,45 +473,25 @@ export default function HeroSection() {
                     placeholder="Enter your email"
                     className="w-full bg-zinc-800/40 border-zinc-700/30 focus:border-[#4A90E2]/50 h-10 sm:h-12"
                     value={email}
-                    onChange={(e) => {
-                      console.log("Email input changed:", e.target.value);
-                      setEmail(e.target.value);
-                    }}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
                 <Button
                   type="submit"
                   className="h-10 sm:h-12 px-4 sm:px-6 bg-[#4A90E2] hover:bg-[#3A7BC9] text-white font-medium rounded-lg transition-colors"
-                  onClick={() => console.log("Join button clicked")}
                 >
                   Join the Waitlist
                 </Button>
               </form>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: isMobile ? 0.15 : 0.45,
-                duration: isMobile ? 0.25 : 0.45,
-              }}
-              className="text-xs sm:text-sm text-[#4A90E2] font-medium mt-4 mx-auto sm:mx-0"
-            >
+            <div className="text-xs sm:text-sm text-[#4A90E2] font-medium mt-4 mx-auto sm:mx-0 animate-fade-in-up hero-animate-5">
               Join 500+ people on our waitlist to get early access
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: isMobile ? 0.3 : 0.6,
-              delay: isMobile ? 0.1 : 0.35,
-            }}
-            className="flex justify-center lg:justify-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12 order-1 lg:order-2"
-          >
+          <div className="flex justify-center lg:justify-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12 order-1 lg:order-2 animate-fade-in-scale hero-animate-4">
             {/* Mobile category indicators - REMOVED completely for phones */}
 
             <div
@@ -490,15 +519,7 @@ export default function HeroSection() {
                   }`}
                 >
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-12 sm:w-16 h-12 sm:h-16 shrink-0">
-                      <Image
-                        src="/mascot1.jpg"
-                        alt="Finny Mascot"
-                        width={90}
-                        height={90}
-                        className="w-full h-full scale-x-[-1]"
-                      />
-                    </div>
+                    <FinnyAvatar size="lg" priority />
                     <div>
                       <div className="font-medium text-zinc-200 text-sm sm:text-base">
                         Finny
@@ -540,15 +561,7 @@ export default function HeroSection() {
 
                   {/* Previous message bubble */}
                   <div className="flex gap-2 mb-4 sm:mb-6">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-gradient-to-br from-[#4A90E2] to-blue-600 flex items-center justify-center shrink-0">
-                      <Image
-                        src="/mascot1.jpg"
-                        alt="Finny Mascot"
-                        width={32}
-                        height={32}
-                        className="w-full h-full object-cover scale-x-[-1]"
-                      />
-                    </div>
+                    <FinnyAvatar size="md" />
                     <div className="max-w-[85%] sm:max-w-[80%]">
                       <div
                         className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200 ${
@@ -565,15 +578,7 @@ export default function HeroSection() {
 
                   {/* Current animated message bubble */}
                   <div className="flex gap-2">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-gradient-to-br from-[#4A90E2] to-blue-600 flex items-center justify-center shrink-0">
-                      <Image
-                        src="/mascot1.jpg"
-                        alt="Finny Mascot"
-                        width={32}
-                        height={32}
-                        className="w-full h-full object-cover scale-x-[-1]"
-                      />
-                    </div>
+                    <FinnyAvatar size="md" />
                     <div className="max-w-[85%] sm:max-w-[80%]">
                       <AnimatePresence mode="wait">
                         <motion.div
@@ -630,7 +635,7 @@ export default function HeroSection() {
                       <div className="text-xs text-zinc-500 ml-2 mt-1 flex items-center gap-2">
                         {!isTyping && (
                           <span className="text-xs text-zinc-600">
-                            {getResponseTime()}s response time
+                            {responseTime}s response time
                           </span>
                         )}
                       </div>
@@ -655,18 +660,7 @@ export default function HeroSection() {
                             ? undefined
                             : "rgb(168, 85, 247)",
                       }}
-                      onClick={() => {
-                        setIsMessageChanging(true);
-                        setTimeout(
-                          () => {
-                            setCurrentMessageIndex(index);
-                            setDisplayedText("");
-                            setIsMessageChanging(false);
-                            setIsTyping(true);
-                          },
-                          isMobile ? 400 : 300 // Match the slide animation timing
-                        );
-                      }}
+                      onClick={() => handleProgressClick(index)}
                     ></motion.div>
                   ))}
                 </div>
@@ -683,7 +677,7 @@ export default function HeroSection() {
                 <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

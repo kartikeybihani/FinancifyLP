@@ -33,9 +33,6 @@ export function SourceTracker() {
         referrer: sourceData.referrer || "direct",
       });
 
-      // Log to console for debugging (remove in production if desired)
-      console.log("Source tracked:", sourceData);
-
       // Optional: Clean up URL by removing tracking parameters
       // This keeps the URL clean after tracking
       if (typeof window !== "undefined" && window.history) {

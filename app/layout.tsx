@@ -6,8 +6,13 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { SourceTracker } from "@/components/source-tracker";
+import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+});
 
 // Viewport configuration for responsive design and mobile optimization
 export const viewport = {
@@ -234,6 +239,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Toaster />
         <Analytics />
         <SpeedInsights />
       </body>

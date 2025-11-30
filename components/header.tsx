@@ -67,6 +67,8 @@ export default function Header({ onContactClick }: HeaderProps) {
                   alt="Financify Logo"
                   width={48}
                   height={48}
+                  priority
+                  sizes="48px"
                   className="object-contain"
                 />
               </motion.div>

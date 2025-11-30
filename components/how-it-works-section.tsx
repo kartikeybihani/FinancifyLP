@@ -6,16 +6,28 @@ import { motion } from "framer-motion";
 export default function HowItWorksSection() {
   const [isMobile, setIsMobile] = useState(false);
 
-  // Mobile detection
+  // Mobile detection with debounced resize handler
   useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        checkMobile();
+      }, 150);
+    };
 
-    return () => window.removeEventListener("resize", checkMobile);
+    checkMobile();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
   const journeySteps = [
     {

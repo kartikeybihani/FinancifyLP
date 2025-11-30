@@ -4,6 +4,11 @@ import { useEffect, useRef } from "react";
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const isVisibleRef = useRef(true);
+  const isTabVisibleRef = useRef(true);
+  const particlesArrayRef = useRef<any[]>([]);
+  const geometricElementsRef = useRef<any[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,14 +17,52 @@ export default function ParticleBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set canvas dimensions
-    const setCanvasDimensions = () => {
+    // Set canvas dimensions IMMEDIATELY (no debounce on initial load)
+    const setCanvasDimensions = (immediate = false) => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight * 3; // Make canvas taller to cover scrolling
     };
 
-    setCanvasDimensions();
-    window.addEventListener("resize", setCanvasDimensions);
+    // Set dimensions immediately on mount
+    setCanvasDimensions(true);
+
+    // Debounced resize handler
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const oldWidth = canvas.width;
+        const oldHeight = canvas.height;
+        setCanvasDimensions();
+
+        // Recreate particles and geometric elements with new dimensions
+        const isMobile = window.innerWidth < 768;
+        const isLowEnd =
+          window.innerWidth < 1024 || (navigator.hardwareConcurrency || 4) < 4;
+        const baseParticles = isMobile ? 100 : isLowEnd ? 200 : 300;
+        const numberOfParticles = Math.min(
+          baseParticles,
+          window.innerWidth / (isMobile ? 8 : 5)
+        );
+
+        // Update particle positions based on new dimensions
+        particlesArrayRef.current.forEach((particle) => {
+          particle.canvasWidth = canvas.width;
+          particle.canvasHeight = canvas.height;
+          // Scale positions proportionally
+          particle.x = (particle.x / oldWidth) * canvas.width;
+          particle.y = (particle.y / oldHeight) * canvas.height;
+        });
+
+        // Update geometric elements
+        geometricElementsRef.current.forEach((element) => {
+          element.x = (element.x / oldWidth) * canvas.width;
+          element.y = (element.y / oldHeight) * canvas.height;
+        });
+      }, 150);
+    };
+
+    window.addEventListener("resize", handleResize);
 
     // Particle class with enhanced behavior
     class Particle {
@@ -176,14 +219,38 @@ export default function ParticleBackground() {
       }
     }
 
-    // Create many more particles for a dense star field
-    const numberOfParticles = Math.min(400, window.innerWidth / 5);
+    // Optimize particle count based on device capabilities
+    const isMobile = window.innerWidth < 768;
+    const isLowEnd =
+      window.innerWidth < 1024 || (navigator.hardwareConcurrency || 4) < 4;
 
-    // Create particles
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Reduce particles on mobile, low-end devices, and when reduced motion is preferred
+    const baseParticles = prefersReducedMotion
+      ? 50
+      : isMobile
+      ? 80
+      : isLowEnd
+      ? 150
+      : 250;
+    const numberOfParticles = Math.min(
+      baseParticles,
+      window.innerWidth / (isMobile ? 10 : 6)
+    );
+
+    // Create particles AFTER canvas dimensions are set
     const particlesArray: Particle[] = [];
     for (let i = 0; i < numberOfParticles; i++) {
       particlesArray.push(new Particle(canvas.width, canvas.height));
     }
+    particlesArrayRef.current = particlesArray;
+
+    // Pre-calculate connection distance squared (avoid sqrt in loop)
+    const connectionDistanceSquared = 120 * 120;
 
     // Create geometric background elements
     const geometricElements: {
@@ -206,9 +273,63 @@ export default function ParticleBackground() {
         color: `hsla(${Math.random() * 60 + 180}, 30%, 50%, 0.02)`,
       });
     }
+    geometricElementsRef.current = geometricElements;
 
-    // Animation loop
+    // Optimized connection algorithm - use distance squared to avoid sqrt
+    const connectParticles = () => {
+      const maxConnections = isMobile ? 3 : 5; // Limit connections per particle
+
+      for (let a = 0; a < particlesArray.length; a++) {
+        let connectionCount = 0;
+
+        for (
+          let b = a + 1;
+          b < particlesArray.length && connectionCount < maxConnections;
+          b++
+        ) {
+          const dx = particlesArray[a].x - particlesArray[b].x;
+          const dy = particlesArray[a].y - particlesArray[b].y;
+          const distanceSquared = dx * dx + dy * dy;
+
+          // Use squared distance comparison (faster than sqrt)
+          if (distanceSquared < connectionDistanceSquared) {
+            const distance = Math.sqrt(distanceSquared);
+            const opacity = 1 - distance / 120;
+
+            // Only draw if opacity is significant
+            if (opacity > 0.1) {
+              // Create gradient line between particles
+              const gradient = ctx.createLinearGradient(
+                particlesArray[a].x,
+                particlesArray[a].y,
+                particlesArray[b].x,
+                particlesArray[b].y
+              );
+              gradient.addColorStop(0, particlesArray[a].color);
+              gradient.addColorStop(1, particlesArray[b].color);
+
+              ctx.strokeStyle = gradient;
+              ctx.lineWidth = opacity * 0.8;
+              ctx.beginPath();
+              ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+              ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+              ctx.stroke();
+
+              connectionCount++;
+            }
+          }
+        }
+      }
+    };
+
+    // Animation loop with visibility checks
     const animate = () => {
+      // Pause animation if not visible or tab is hidden - don't request new frame
+      if (!isVisibleRef.current || !isTabVisibleRef.current) {
+        animationFrameRef.current = null;
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Create pure black space gradient
@@ -265,45 +386,81 @@ export default function ParticleBackground() {
       // Connect particles with lines if they're close enough
       connectParticles();
 
-      requestAnimationFrame(animate);
-    };
-
-    // Connect particles with lines - enhanced with gradient lines
-    const connectParticles = () => {
-      for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-          const dx = particlesArray[a].x - particlesArray[b].x;
-          const dy = particlesArray[a].y - particlesArray[b].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 120) {
-            const opacity = 1 - distance / 120;
-
-            // Create gradient line between particles
-            const gradient = ctx.createLinearGradient(
-              particlesArray[a].x,
-              particlesArray[a].y,
-              particlesArray[b].x,
-              particlesArray[b].y
-            );
-            gradient.addColorStop(0, particlesArray[a].color);
-            gradient.addColorStop(1, particlesArray[b].color);
-
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = opacity * 0.8;
-            ctx.beginPath();
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-            ctx.stroke();
-          }
-        }
+      // Only request next frame if still visible
+      if (isVisibleRef.current && isTabVisibleRef.current) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      } else {
+        animationFrameRef.current = null;
       }
     };
 
-    animate();
+    // Intersection Observer to pause when off-screen - improved with rootMargin
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const wasVisible = isVisibleRef.current;
+          isVisibleRef.current = entry.isIntersecting;
+
+          // Pause animation immediately when not visible
+          if (!entry.isIntersecting && animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+          }
+          // Restart animation when becoming visible again
+          else if (
+            entry.isIntersecting &&
+            !wasVisible &&
+            !animationFrameRef.current &&
+            isTabVisibleRef.current
+          ) {
+            animationFrameRef.current = requestAnimationFrame(animate);
+          }
+        });
+      },
+      {
+        threshold: 0,
+        rootMargin: "50px", // Start pausing slightly before going off-screen
+      }
+    );
+
+    if (canvas) {
+      observer.observe(canvas);
+    }
+
+    // Pause when tab is hidden - improved
+    const handleVisibilityChange = () => {
+      const wasVisible = isTabVisibleRef.current;
+      const isHidden = document.hidden;
+      isTabVisibleRef.current = !isHidden;
+
+      // Immediately cancel animation frame when tab is hidden
+      if (isHidden && animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      // Restart animation when tab becomes visible again
+      else if (
+        !isHidden &&
+        wasVisible &&
+        isVisibleRef.current &&
+        !animationFrameRef.current
+      ) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Start animation immediately
+    animationFrameRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("resize", setCanvasDimensions);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      observer.disconnect();
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
@@ -311,6 +468,7 @@ export default function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="fixed top-0 left-0 w-full h-full z-0 opacity-70"
+      style={{ willChange: "transform" }}
     />
   );
 }

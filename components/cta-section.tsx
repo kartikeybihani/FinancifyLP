@@ -1,25 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { getStoredSourceData } from "@/lib/source-tracking";
+import { submitToGoogleScript } from "@/lib/google-scripts-api";
 
 export default function CtaSection() {
   const [email, setEmail] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    console.log("CTA form submitted");
 
     // Improved email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
-      console.log("Invalid email in CTA");
       toast({
         title: "Invalid email",
         description: "Please enter a valid email address.",
@@ -50,24 +59,20 @@ export default function CtaSection() {
       console.error("Error checking for duplicates:", err);
     }
 
-    // Handle form submission
-    console.log("Email submitted from CTA:", email);
-
-    // Show the custom notification IMMEDIATELY
-    setNotificationMessage("You're on the waitlist! We'll be in touch soon.");
+    // Show success notification IMMEDIATELY
+    setNotificationMessage(
+      "🎉 You're on the waitlist! We'll be in touch soon."
+    );
     setShowNotification(true);
 
     // Hide notification after 3 seconds
-    setTimeout(() => {
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+    }
+    notificationTimeoutRef.current = setTimeout(() => {
       setShowNotification(false);
+      notificationTimeoutRef.current = null;
     }, 3000);
-
-    // Show toast notification immediately
-    toast({
-      title: "You're on the list!",
-      description: "We'll notify you when early access is available.",
-      duration: 7000,
-    });
 
     // Get source tracking data if available
     const sourceData = getStoredSourceData();
@@ -85,49 +90,24 @@ export default function CtaSection() {
         sourceData: sourceData || null,
       });
       localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
-      console.log(
-        "CTA email stored in localStorage with source:",
-        trackingSource
-      );
     } catch (err) {
-      console.error("Error storing CTA email in localStorage:", err);
+      console.error("Error storing CTA email:", err);
     }
 
-    // Attempt to send to the server in the background (non-blocking)
-    try {
-      fetch(
-        "https://script.google.com/macros/s/AKfycbyYvw7_bBsuirrctEjf02yyoJ_GDMh2EJA1oLnKI6txtdJiBx4cr5hgrIC4fffeE1rg/exec",
-        {
-          method: "POST",
-          mode: "no-cors", // This allows the request to be sent cross-origin
-          headers: {
-            "Content-Type": "text/plain", // Changed from application/json due to no-cors restrictions
-          },
-          body: JSON.stringify({
-            email: email,
-            source: trackingSource,
-            sourceData: sourceData || null,
-          }),
-        }
-      )
-        .then((response) => {
-          console.log("CTA response received:", response);
-          // With no-cors, we can't actually read the response content
-          console.log(
-            "CTA email submitted successfully (no-cors mode, can't confirm server response)"
-          );
-        })
-        .catch((error) => {
-          console.error("Error sending CTA form to Google Script:", error);
-          // Log that we'll rely on localStorage since the remote endpoint failed
-          console.log("Using localStorage as backup for the CTA submission");
-        });
-    } catch (err) {
-      console.error("Error in CTA fetch operation:", err);
-    }
+    // Attempt to send to the server in the background (non-blocking) with retry logic
+    submitToGoogleScript({
+      type: "waitlist",
+      email: email,
+      source: trackingSource,
+      sourceData: sourceData || null,
+    });
 
     setEmail("");
-  };
+  }, [email]);
+
+  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  }, []);
 
   return (
     <section className="py-24 px-4 md:px-6 lg:px-8 relative">
@@ -135,19 +115,48 @@ export default function CtaSection() {
       <AnimatePresence>
         {showNotification && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -60 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-0 top-8 flex justify-center z-50"
+            exit={{ opacity: 0, y: -60 }}
+            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+            className="fixed top-0 left-0 right-0 z-[100] flex justify-center pointer-events-none"
+            style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
           >
-            <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-700/50 rounded-lg px-10 py-4 shadow-xl max-w-lg text-center relative">
+            <div className="pointer-events-auto bg-white/90 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-700 shadow-xl rounded-b-2xl px-10 py-4 mt-4 max-w-2xl w-full flex items-center relative overflow-hidden mx-4 sm:mx-8">
+              <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-[#4A90E2] via-blue-400 to-blue-500 opacity-70" />
+              <div className="flex items-center gap-3 flex-1">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-[#4A90E2]/15 flex items-center justify-center">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-[#4A90E2]"
+                  >
+                    <path
+                      d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm sm:text-base text-zinc-900 dark:text-zinc-100 font-semibold truncate">
+                    {notificationMessage}
+                  </p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
+                    We'll send you an email when we're ready for you.
+                  </p>
+                </div>
+              </div>
               <button
                 onClick={() => setShowNotification(false)}
-                className="absolute top-3 right-3 text-zinc-400 hover:text-white transition-colors py-1.5 pr-1.5 pl-3 rounded-full hover:bg-zinc-800/50"
+                className="absolute top-3 right-3 text-zinc-400 hover:text-zinc-700 dark:hover:text-white transition-colors p-1 rounded-full hover:bg-zinc-200/60 dark:hover:bg-zinc-800/60"
+                aria-label="Close notification"
               >
                 <svg
-                  width="15"
-                  height="15"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -158,27 +167,6 @@ export default function CtaSection() {
                   />
                 </svg>
               </button>
-              <div className="bg-gradient-to-r from-[#4A90E2] to-blue-500 h-1 w-full absolute top-0 left-0 rounded-t-lg"></div>
-              <div className="flex items-center justify-center">
-                <span className="mr-3 text-[#4A90E2] flex-shrink-0">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="bg-[#4A90E2]/20 p-0.5 rounded-full"
-                  >
-                    <path
-                      d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                <p className="text-zinc-100 text-sm font-medium pr-6">
-                  {notificationMessage}
-                </p>
-              </div>
             </div>
           </motion.div>
         )}
@@ -211,16 +199,12 @@ export default function CtaSection() {
                 placeholder="Enter your email"
                 className="bg-zinc-800/50 border-zinc-700/30 focus:border-blue-500/50 h-12"
                 value={email}
-                onChange={(e) => {
-                  console.log("CTA email input changed:", e.target.value);
-                  setEmail(e.target.value);
-                }}
+                onChange={handleEmailChange}
                 required
               />
               <Button
                 type="submit"
                 className="h-12 px-6 bg-[#4A90E2] hover:bg-[#3A7BC9] text-white font-medium rounded-lg transition-colors"
-                onClick={() => console.log("CTA join button clicked")}
               >
                 Join the Waitlist
               </Button>

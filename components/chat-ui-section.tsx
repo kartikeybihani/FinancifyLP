@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import Image from "next/image";
+import FinnyAvatar from "@/components/finny-avatar";
 
 type Message = {
   id: number;
@@ -46,16 +46,28 @@ export default function ChatUISection() {
     "Help me budget for a new car",
   ];
 
-  // Mobile detection
+  // Mobile detection with debounced resize handler
   useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        checkMobile();
+      }, 150);
+    };
 
-    return () => window.removeEventListener("resize", checkMobile);
+    checkMobile();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
 
   // Set up intersection observer to detect when section is in view
@@ -175,15 +187,7 @@ export default function ChatUISection() {
           {/* Chat header */}
           <div className="flex items-center justify-between pb-3 border-b border-zinc-700/40 mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full overflow-hidden bg-gradient-to-br from-[#4A90E2] to-blue-600 flex items-center justify-center shrink-0">
-                <Image
-                  src="/mascot1.jpg"
-                  alt="Finny Mascot"
-                  width={28}
-                  height={28}
-                  className="w-full h-full object-cover scale-x-[-1]"
-                />
-              </div>
+              <FinnyAvatar size="sm" />
               <div>
                 <h3 className="font-medium text-sm">Finny</h3>
                 <p className="text-xs text-zinc-400">Your financial coach</p>
