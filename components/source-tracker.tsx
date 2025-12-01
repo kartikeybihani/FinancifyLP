@@ -25,12 +25,15 @@ export function SourceTracker() {
       // Store in localStorage for later use (e.g., form submissions)
       storeSourceData(sourceData);
 
-      // Track in Vercel Analytics
+      // Track in Vercel Analytics with comprehensive UTM data
       track("source_visit", {
         source: sourceData.source,
         medium: sourceData.medium || "unknown",
         campaign: sourceData.campaign || "none",
+        term: sourceData.term || "none",
+        content: sourceData.content || "none",
         referrer: sourceData.referrer || "direct",
+        timestamp: sourceData.timestamp,
       });
 
       // Optional: Clean up URL by removing tracking parameters
