@@ -432,7 +432,7 @@ export default function HeroSection() {
 
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-8 items-center">
-          <div className="text-left sm:text-left text-center order-2 lg:order-1">
+          <div className="text-left sm:text-left text-center order-2 lg:order-1 -mt-8 lg:-mt-4 lg:pl-0">
             <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-6 md:mb-8 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
               <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
               <span className="bg-gradient-to-r from-[#4A90E2] via-blue-500 to-blue-400 text-transparent bg-clip-text">
@@ -440,26 +440,21 @@ export default function HeroSection() {
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3 md:mb-4 relative animate-fade-in-up hero-animate-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-6 md:mb-8 relative animate-fade-in-up hero-animate-2">
               <span className="relative inline-block">
-                Stop losing money to <br className="md:block hidden" />
+                Stop guessing. <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
               </span>
               <span className="relative inline-block md:mt-2">
                 <span className="absolute -inset-1 bg-gradient-to-r from-[#4A90E2]/20 via-indigo-400/20 to-mint-400/20 blur-2xl rounded-lg"></span>
                 <span className="relative bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-mint-400 text-transparent bg-clip-text animate-shimmer">
-                  bad financial decisions.
+                  Start making money decisions that feel right.
                 </span>
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-xl mb-3 md:mb-4 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
-              Your personal financial advisor. Invest smarter, save more, and
-              avoid costly mistakes.
-            </p>
-
-            <p className="text-sm sm:text-base text-zinc-400 max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
-              Built to give you peace of mind.
+            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
+              Make smarter moves without overthinking every decision.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto sm:mx-0 animate-fade-in-up hero-animate-4">
@@ -481,7 +476,7 @@ export default function HeroSection() {
                   type="submit"
                   className="h-10 sm:h-12 px-4 sm:px-6 bg-[#4A90E2] hover:bg-[#3A7BC9] text-white font-medium rounded-lg transition-colors"
                 >
-                  Join the Waitlist
+                  Get Early Access
                 </Button>
               </form>
             </div>
@@ -491,7 +486,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div className="flex justify-center lg:justify-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12 order-1 lg:order-2 animate-fade-in-scale hero-animate-4">
+          <div className="flex flex-col items-center lg:items-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12 order-1 lg:order-2 animate-fade-in-scale hero-animate-4">
             {/* Mobile category indicators - REMOVED completely for phones */}
 
             <div
@@ -569,8 +564,8 @@ export default function HeroSection() {
                         }`}
                       >
                         <p>
-                          Hello! I'm Finny, your AI financial advisor. I'll help
-                          you manage your money better.
+                          Hello! I'm Finny, your AI money coach. I'll help you
+                          manage your money better.
                         </p>
                       </div>
                     </div>
@@ -677,6 +672,9 @@ export default function HeroSection() {
                 <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
               </div>
             </div>
+            <p className="text-xs sm:text-sm text-zinc-400 text-center mt-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto lg:mr-0 lg:ml-auto animate-fade-in-up hero-animate-5">
+              Built to give you clarity and control.
+            </p>
           </div>
         </div>
       </div>

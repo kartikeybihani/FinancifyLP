@@ -25,17 +25,17 @@ export default function ChatUISection() {
     {
       id: 1,
       sender: "user",
-      text: "I want to save for a trip to Hawaii this fall",
+      text: "I overspent this month what now 🫣 ",
     },
     {
       id: 2,
       sender: "finny",
-      text: "Great! I'll track this monthly",
+      text: "You're okay. Here's what to focus on next 🚀",
     },
     {
       id: 3,
       sender: "finny",
-      text: "For $2,000 by October? Save $250/month. Added to your plan!",
+      text: "let's review your spending and adjust. You're still on track for your goals!",
     },
   ];
 
@@ -164,8 +164,8 @@ export default function ChatUISection() {
             </span>
           </h2>
           <p className="text-zinc-300 max-w-2xl mx-auto text-lg">
-            Financify combines AI intelligence with emotional understanding to
-            help you navigate your financial growth.
+            When money feels overwhelming, Finny provides safety and clarity—not
+            judgment. Real support for real financial moments.
           </p>
         </div>
 

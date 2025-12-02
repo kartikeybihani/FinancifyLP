@@ -9,9 +9,9 @@ export default function SparkMomentSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 items-center">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-relaxed">
-              <span className="block">Your personal financial</span>
+              <span className="block">Your personal money</span>
               <span className="block mt-1 md:mt-1 bg-gradient-to-r from-[#4A90E2] via-indigo-400 to-blue-400 text-transparent bg-clip-text leading-tight">
-                advisor. Always on.
+                coach. Always on.
               </span>
             </h2>
 

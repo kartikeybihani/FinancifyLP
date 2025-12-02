@@ -23,91 +23,97 @@ export default function CtaSection() {
     };
   }, []);
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
 
-    // Improved email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-        duration: 3000,
-      });
-      return;
-    }
-
-    // Check for duplicate emails
-    try {
-      const storedEmails = JSON.parse(
-        localStorage.getItem("waitlistEmails") || "[]"
-      );
-      const isDuplicate = storedEmails.some(
-        (entry: any) => entry.email.toLowerCase() === email.toLowerCase()
-      );
-
-      if (isDuplicate) {
+      // Improved email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
         toast({
-          title: "Already on the list!",
-          description: "This email is already registered for early access.",
+          title: "Invalid email",
+          description: "Please enter a valid email address.",
+          variant: "destructive",
           duration: 3000,
         });
         return;
       }
-    } catch (err) {
-      console.error("Error checking for duplicates:", err);
-    }
 
-    // Show success notification IMMEDIATELY
-    setNotificationMessage(
-      "🎉 You're on the waitlist! We'll be in touch soon."
-    );
-    setShowNotification(true);
+      // Check for duplicate emails
+      try {
+        const storedEmails = JSON.parse(
+          localStorage.getItem("waitlistEmails") || "[]"
+        );
+        const isDuplicate = storedEmails.some(
+          (entry: any) => entry.email.toLowerCase() === email.toLowerCase()
+        );
 
-    // Hide notification after 3 seconds
-    if (notificationTimeoutRef.current) {
-      clearTimeout(notificationTimeoutRef.current);
-    }
-    notificationTimeoutRef.current = setTimeout(() => {
-      setShowNotification(false);
-      notificationTimeoutRef.current = null;
-    }, 3000);
+        if (isDuplicate) {
+          toast({
+            title: "Already on the list!",
+            description: "This email is already registered for early access.",
+            duration: 3000,
+          });
+          return;
+        }
+      } catch (err) {
+        console.error("Error checking for duplicates:", err);
+      }
 
-    // Get source tracking data if available
-    const sourceData = getStoredSourceData();
-    const trackingSource = sourceData?.source || "cta";
-
-    // Store in localStorage immediately
-    try {
-      const storedEmails = JSON.parse(
-        localStorage.getItem("waitlistEmails") || "[]"
+      // Show success notification IMMEDIATELY
+      setNotificationMessage(
+        "🎉 You're on the waitlist! We'll be in touch soon."
       );
-      storedEmails.push({
-        email,
-        timestamp: new Date().toISOString(),
+      setShowNotification(true);
+
+      // Hide notification after 3 seconds
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+      notificationTimeoutRef.current = setTimeout(() => {
+        setShowNotification(false);
+        notificationTimeoutRef.current = null;
+      }, 3000);
+
+      // Get source tracking data if available
+      const sourceData = getStoredSourceData();
+      const trackingSource = sourceData?.source || "cta";
+
+      // Store in localStorage immediately
+      try {
+        const storedEmails = JSON.parse(
+          localStorage.getItem("waitlistEmails") || "[]"
+        );
+        storedEmails.push({
+          email,
+          timestamp: new Date().toISOString(),
+          source: trackingSource,
+          sourceData: sourceData || null,
+        });
+        localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
+      } catch (err) {
+        console.error("Error storing CTA email:", err);
+      }
+
+      // Attempt to send to the server in the background (non-blocking) with retry logic
+      submitToGoogleScript({
+        type: "waitlist",
+        email: email,
         source: trackingSource,
         sourceData: sourceData || null,
       });
-      localStorage.setItem("waitlistEmails", JSON.stringify(storedEmails));
-    } catch (err) {
-      console.error("Error storing CTA email:", err);
-    }
 
-    // Attempt to send to the server in the background (non-blocking) with retry logic
-    submitToGoogleScript({
-      type: "waitlist",
-      email: email,
-      source: trackingSource,
-      sourceData: sourceData || null,
-    });
+      setEmail("");
+    },
+    [email]
+  );
 
-    setEmail("");
-  }, [email]);
-
-  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }, []);
+  const handleEmailChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+    },
+    []
+  );
 
   return (
     <section className="py-24 px-4 md:px-6 lg:px-8 relative">
@@ -183,11 +189,11 @@ export default function CtaSection() {
           <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/20 via-blue-500/20 to-blue-400/20 rounded-xl blur-sm"></div>
           <div className="bg-zinc-900/60 backdrop-blur-sm border border-blue-800/30 rounded-xl p-8 md:p-12 relative">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Want early access to Financify?
+              Ready to actually figure out your money?
             </h2>
             <p className="text-zinc-300 max-w-2xl mx-auto text-lg mb-8">
-              Join our waitlist today and be among the first to experience the
-              future of financial advising.
+              Be the first to use the app that actually tells you what to do,
+              not just what you spent.
             </p>
 
             <form

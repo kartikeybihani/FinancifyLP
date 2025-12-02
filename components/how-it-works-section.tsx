@@ -31,9 +31,8 @@ export default function HowItWorksSection() {
   }, []);
   const journeySteps = [
     {
-      title: "Connect Your Accounts",
-      description:
-        "Securely link your bank accounts and investment accounts. We use bank-level encryption to keep your data safe.",
+      title: "Link your accounts",
+      description: "Connect safely in seconds. \nBank-level encryption.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -56,9 +55,9 @@ export default function HowItWorksSection() {
       borderGradient: "from-blue-500/30 to-indigo-500/30",
     },
     {
-      title: "Tell Finny Your Goals",
+      title: "Share your goals",
       description:
-        "Share your financial goals and priorities. Want to buy a home? Pay off debt? Build wealth? Finny understands your unique situation.",
+        "Buying a home? Paying off debt? Building wealth? We'll help you get there.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -82,9 +81,9 @@ export default function HowItWorksSection() {
       borderGradient: "from-purple-500/30 to-pink-500/30",
     },
     {
-      title: "Get Personalized Guidance",
+      title: "Get personalized advice",
       description:
-        "Finny analyzes your data, calculates optimal strategies, and nudges you with personalized advice. No generic ChatGPT responses—just real financial guidance.",
+        "Real advice tailored to you. No generic tips, just results.",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -124,10 +123,10 @@ export default function HowItWorksSection() {
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-2">
-            Your journey to financial freedom
+            Your journey to Growth
           </h2>
           <p className="text-zinc-300 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg px-4">
-            Three simple steps to get your personal financial advisor
+            Three simple steps to get started
           </p>
         </motion.div>
 
@@ -283,8 +282,8 @@ export default function HowItWorksSection() {
               That's it. You're done.
             </h3>
             <p className="text-zinc-400 text-sm sm:text-base lg:text-base mb-4 sm:mb-5">
-              Finny handles all the calculations, tracking, and personalized
-              nudges. No more expensive advisors. No more generic advice.
+              Finny handles everything. No expensive advisors. No generic
+              advice. Just you and your goals.
             </p>
             <div className="flex items-center justify-center gap-2 text-sm text-[#4A90E2] font-medium">
               <span>Get started in under 5 minutes</span>
