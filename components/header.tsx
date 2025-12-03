@@ -64,7 +64,7 @@ export default function Header({ onContactClick }: HeaderProps) {
               >
                 <Image
                   src="/main1.png"
-                  alt="Financify Logo"
+                  alt="Finny Logo"
                   width={48}
                   height={48}
                   priority
@@ -85,7 +85,7 @@ export default function Header({ onContactClick }: HeaderProps) {
                   transition: { duration: 0.2 },
                 }}
               >
-                Financify
+                Finny
               </motion.div>
             </Link>
           </div>

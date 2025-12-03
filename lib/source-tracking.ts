@@ -194,16 +194,16 @@ export function addSourceToUrl(
  * 
  * @example
  * // Social media post
- * buildUTMUrl("https://financify.ing", {
+ * buildUTMUrl("https://usefinny.com", {
  *   utm_source: "twitter",
  *   utm_medium: "social",
  *   utm_campaign: "product_launch"
  * })
- * // Returns: https://financify.ing?utm_source=twitter&utm_medium=social&utm_campaign=product_launch
+ * // Returns: https://usefinny.com?utm_source=twitter&utm_medium=social&utm_campaign=product_launch
  * 
  * @example
  * // Email newsletter
- * buildUTMUrl("https://financify.ing", {
+ * buildUTMUrl("https://usefinny.com", {
  *   utm_source: "newsletter",
  *   utm_medium: "email",
  *   utm_campaign: "monthly_update",
@@ -309,13 +309,13 @@ export const UTMHelpers = {
 /**
  * Example usage for social media links:
  * 
- * Twitter: addSourceToUrl("https://financify.ing", "twitter", { medium: "social", campaign: "launch" })
- * LinkedIn: addSourceToUrl("https://financify.ing", "linkedin", { medium: "social" })
- * Facebook: addSourceToUrl("https://financify.ing", "facebook", { medium: "social" })
+ * Twitter: addSourceToUrl("https://usefinny.com", "twitter", { medium: "social", campaign: "launch" })
+ * LinkedIn: addSourceToUrl("https://usefinny.com", "linkedin", { medium: "social" })
+ * Facebook: addSourceToUrl("https://usefinny.com", "facebook", { medium: "social" })
  * 
  * Or use the new UTM helpers:
- * Twitter: UTMHelpers.socialMedia("https://financify.ing", "twitter", "launch")
- * LinkedIn: UTMHelpers.socialMedia("https://financify.ing", "linkedin", "launch")
- * Email: UTMHelpers.email("https://financify.ing", "monthly_newsletter", "header_cta")
+ * Twitter: UTMHelpers.socialMedia("https://usefinny.com", "twitter", "launch")
+ * LinkedIn: UTMHelpers.socialMedia("https://usefinny.com", "linkedin", "launch")
+ * Email: UTMHelpers.email("https://usefinny.com", "monthly_newsletter", "header_cta")
  */
 

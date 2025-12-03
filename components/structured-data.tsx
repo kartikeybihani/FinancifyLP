@@ -5,8 +5,8 @@ interface StructuredDataProps {
 }
 
 export function StructuredData({ type = "all" }: StructuredDataProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://financify.ing";
-  const siteName = "Financify";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://usefinny.com";
+  const siteName = "Finny";
   const siteDescription =
     "Your AI-powered financial advisor for smarter saving and investing decisions.";
 
@@ -26,14 +26,13 @@ export function StructuredData({ type = "all" }: StructuredDataProps) {
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "Customer Service",
-      // Add contact information when available
-      // email: "support@financify.ing",
+      email: "finnyadvisor@gmail.com",
       // telephone: "+1-XXX-XXX-XXXX",
     },
     foundingDate: "2024",
     founder: {
       "@type": "Person",
-      name: "Financify Team",
+      name: "Finny Team",
     },
   };
 

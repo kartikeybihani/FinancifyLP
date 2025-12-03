@@ -18,30 +18,30 @@ When you share your website link on Twitter, Facebook, email, or anywhere else, 
 
 Instead of sharing:
 ```
-https://financify.ing
+https://usefinny.com
 ```
 
 Share this:
 ```
-https://financify.ing?utm_source=twitter&utm_medium=social&utm_campaign=my_post
+https://usefinny.com?utm_source=twitter&utm_medium=social&utm_campaign=my_post
 ```
 
 ### For LinkedIn posts:
 
 ```
-https://financify.ing?utm_source=linkedin&utm_medium=social&utm_campaign=my_post
+https://usefinny.com?utm_source=linkedin&utm_medium=social&utm_campaign=my_post
 ```
 
 ### For Email newsletters:
 
 ```
-https://financify.ing?utm_source=newsletter&utm_medium=email&utm_campaign=monthly_update
+https://usefinny.com?utm_source=newsletter&utm_medium=email&utm_campaign=monthly_update
 ```
 
 ### For Facebook posts:
 
 ```
-https://financify.ing?utm_source=facebook&utm_medium=social&utm_campaign=my_post
+https://usefinny.com?utm_source=facebook&utm_medium=social&utm_campaign=my_post
 ```
 
 ## What do those tags mean?
@@ -58,10 +58,10 @@ If you're a developer, you can use this code:
 import { UTMHelpers } from "@/lib/source-tracking";
 
 // For social media
-const url = UTMHelpers.socialMedia("https://financify.ing", "twitter", "my_campaign");
+const url = UTMHelpers.socialMedia("https://usefinny.com", "twitter", "my_campaign");
 
 // For email
-const url = UTMHelpers.email("https://financify.ing", "newsletter", "header");
+const url = UTMHelpers.email("https://usefinny.com", "newsletter", "header");
 ```
 
 ## Where to see your results

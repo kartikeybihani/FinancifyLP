@@ -421,10 +421,10 @@ export default function Home() {
 
       <footer className="relative z-10 border-t border-blue-800/20 py-8 text-center text-blue-100/40 text-sm">
         <div className="container mx-auto px-4">
-          <p>© {new Date().getFullYear()} Financify. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Finny. All rights reserved.</p>
           <div className="flex justify-center gap-6 mt-4">
             <a
-              href="https://www.notion.so/Terms-Conditions-for-Financify-20d42b8a217980cea19ceda310df47c1?source=copy_link"
+              href="https://www.notion.so/Terms-Conditions-for-Finny-20d42b8a217980cea19ceda310df47c1?source=copy_link"
               className="hover:text-blue-300 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -432,7 +432,7 @@ export default function Home() {
               Terms
             </a>
             <a
-              href="https://www.notion.so/Privacy-Policy-for-Financify-20d42b8a2179800682afdf5dc000fcdd?source=copy_link"
+              href="https://www.notion.so/Privacy-Policy-for-Finny-20d42b8a2179800682afdf5dc000fcdd?source=copy_link"
               className="hover:text-blue-300 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -694,7 +694,7 @@ export default function Home() {
           <DialogHeader>
             <DialogTitle className="text-white">Join the Waitlist</DialogTitle>
             <DialogDescription className="text-zinc-400">
-              We're launching soon! Get early access to Financify.
+              We're launching soon! Get early access to Finny.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleWaitlistSubmit} className="space-y-4">

@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { PricingSection } from "@/components/pricing-section";
 
-const financifyTiers = [
+const finnyTiers = [
   {
     name: "Free",
     price: {
@@ -131,7 +131,7 @@ interface PricingDemoProps {
 }
 
 function PricingDemo({ onJoinWaitlist }: PricingDemoProps) {
-  return <PricingSection tiers={financifyTiers} onJoinWaitlist={onJoinWaitlist} />;
+  return <PricingSection tiers={finnyTiers} onJoinWaitlist={onJoinWaitlist} />;
 }
 
 export { PricingDemo };

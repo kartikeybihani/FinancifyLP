@@ -23,18 +23,18 @@ export const viewport = {
   themeColor: "#1e293b",
 };
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://financify.ing";
-const siteName = "Financify";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://usefinny.com";
+const siteName = "Finny";
 const siteDescription =
   "Your AI-powered financial advisor for smarter saving and investing decisions.";
-const author = "Financify Team";
-const publisher = "Financify";
+const author = "Finny Team";
+const publisher = "Finny";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Financify - AI Financial Advisor",
-    template: "%s | Financify",
+    default: "Finny - AI Financial Advisor",
+    template: "%s | Finny",
   },
   description: siteDescription,
   generator: "Next.js",
@@ -63,20 +63,20 @@ export const metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: siteName,
-    title: "Financify - AI Financial Advisor",
+    title: "Finny - AI Financial Advisor",
     description: siteDescription,
     images: [
       {
         url: `${siteUrl}/mascot1.jpg`,
         width: 1200,
         height: 630,
-        alt: "Financify - AI Financial Advisor",
+        alt: "Finny - AI Financial Advisor",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Financify - AI Financial Advisor",
+    title: "Finny - AI Financial Advisor",
     description: siteDescription,
     creator: "@financify",
     images: [`${siteUrl}/mascot1.jpg`],

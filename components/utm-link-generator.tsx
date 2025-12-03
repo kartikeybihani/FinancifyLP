@@ -5,18 +5,24 @@ import { buildUTMUrl, UTMHelpers } from "@/lib/source-tracking";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Check, Sparkles } from "lucide-react";
 
 /**
  * UTM Link Generator Component
- * 
+ *
  * A helpful tool for generating UTM-tagged URLs for marketing campaigns.
  * This component provides an easy interface to create tracked links.
  */
 export function UTMLinkGenerator() {
-  const [baseUrl, setBaseUrl] = useState("https://financify.ing");
+  const [baseUrl, setBaseUrl] = useState("https://usefinny.com");
   const [generatedUrl, setGeneratedUrl] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -55,12 +61,20 @@ export function UTMLinkGenerator() {
   };
 
   const generateQuickUrl = () => {
-    const url = UTMHelpers.socialMedia(baseUrl, quickPlatform, quickCampaign || undefined);
+    const url = UTMHelpers.socialMedia(
+      baseUrl,
+      quickPlatform,
+      quickCampaign || undefined
+    );
     setGeneratedUrl(url);
   };
 
   const generateEmailUrl = () => {
-    const url = UTMHelpers.email(baseUrl, utmCampaign || "newsletter", utmContent || undefined);
+    const url = UTMHelpers.email(
+      baseUrl,
+      utmCampaign || "newsletter",
+      utmContent || undefined
+    );
     setGeneratedUrl(url);
   };
 
@@ -72,7 +86,8 @@ export function UTMLinkGenerator() {
           UTM Link Generator
         </CardTitle>
         <CardDescription>
-          Generate tracked URLs for your marketing campaigns. Perfect for social media, emails, and ads.
+          Generate tracked URLs for your marketing campaigns. Perfect for social
+          media, emails, and ads.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -83,7 +98,7 @@ export function UTMLinkGenerator() {
               id="baseUrl"
               value={baseUrl}
               onChange={(e) => setBaseUrl(e.target.value)}
-              placeholder="https://financify.ing"
+              placeholder="https://usefinny.com"
             />
           </div>
 
@@ -167,7 +182,9 @@ export function UTMLinkGenerator() {
                 />
               </div>
               <div>
-                <Label htmlFor="utmContent">UTM Content (for A/B testing)</Label>
+                <Label htmlFor="utmContent">
+                  UTM Content (for A/B testing)
+                </Label>
                 <Input
                   id="utmContent"
                   value={utmContent}
@@ -209,7 +226,11 @@ export function UTMLinkGenerator() {
             <div className="space-y-2 pt-4 border-t">
               <Label>Generated URL</Label>
               <div className="flex gap-2">
-                <Input value={generatedUrl} readOnly className="font-mono text-sm" />
+                <Input
+                  value={generatedUrl}
+                  readOnly
+                  className="font-mono text-sm"
+                />
                 <Button
                   onClick={handleCopy}
                   variant="outline"
@@ -224,7 +245,8 @@ export function UTMLinkGenerator() {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Copy this URL and use it in your marketing campaigns. All clicks will be tracked automatically.
+                Copy this URL and use it in your marketing campaigns. All clicks
+                will be tracked automatically.
               </p>
             </div>
           )}
@@ -233,4 +255,3 @@ export function UTMLinkGenerator() {
     </Card>
   );
 }
-

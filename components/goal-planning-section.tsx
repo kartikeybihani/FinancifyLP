@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 export default function GoalPlanningSection() {
   return (
@@ -28,20 +28,25 @@ export default function GoalPlanningSection() {
             </h2>
 
             <p className="text-lg text-zinc-300 max-w-xl">
-              Financify doesn't just tell you what to do—it helps you craft a personalized roadmap that aligns with your
-              unique goals and values. From emergency funds to dream homes, visualize your entire financial journey in
-              one place.
+              Finny doesn't just tell you what to do—it helps you craft a
+              personalized roadmap that aligns with your unique goals and
+              values. From emergency funds to dream homes, visualize your entire
+              financial journey in one place.
             </p>
 
             <div className="flex flex-wrap gap-4">
               <div className="bg-zinc-800/50 backdrop-blur-sm px-5 py-3 rounded-lg border border-zinc-700/50">
                 <div className="text-2xl font-bold text-purple-400">93%</div>
-                <div className="text-sm text-zinc-400">of users achieve their first financial goal</div>
+                <div className="text-sm text-zinc-400">
+                  of users achieve their first financial goal
+                </div>
               </div>
 
               <div className="bg-zinc-800/50 backdrop-blur-sm px-5 py-3 rounded-lg border border-zinc-700/50">
                 <div className="text-2xl font-bold text-amber-400">2.5x</div>
-                <div className="text-sm text-zinc-400">faster savings rate than traditional methods</div>
+                <div className="text-sm text-zinc-400">
+                  faster savings rate than traditional methods
+                </div>
               </div>
             </div>
           </motion.div>
@@ -57,8 +62,12 @@ export default function GoalPlanningSection() {
             <div className="relative">
               <div className="w-[320px] h-[650px] bg-zinc-900/40 border-2 border-dashed border-zinc-700 rounded-[40px] flex items-center justify-center">
                 <div className="text-center p-6">
-                  <p className="text-zinc-400 mb-2">Your goals timeline screen here</p>
-                  <p className="text-xs text-zinc-500">Replace with your custom goals timeline screenshot</p>
+                  <p className="text-zinc-400 mb-2">
+                    Your goals timeline screen here
+                  </p>
+                  <p className="text-xs text-zinc-500">
+                    Replace with your custom goals timeline screenshot
+                  </p>
                 </div>
               </div>
 
@@ -70,7 +79,11 @@ export default function GoalPlanningSection() {
               <motion.div
                 initial={{ y: 0 }}
                 animate={{ y: [-5, 5, -5] }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3, ease: "easeInOut" }}
+                transition={{
+                  repeat: Number.POSITIVE_INFINITY,
+                  duration: 3,
+                  ease: "easeInOut",
+                }}
                 className="absolute -top-4 -left-20 bg-zinc-800/80 backdrop-blur-sm border border-zinc-700/50 rounded-lg p-3"
               >
                 <div className="flex items-center gap-2">
@@ -82,7 +95,11 @@ export default function GoalPlanningSection() {
               <motion.div
                 initial={{ y: 0 }}
                 animate={{ y: [5, -5, 5] }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3.5, ease: "easeInOut" }}
+                transition={{
+                  repeat: Number.POSITIVE_INFINITY,
+                  duration: 3.5,
+                  ease: "easeInOut",
+                }}
                 className="absolute -bottom-4 -right-16 bg-zinc-800/80 backdrop-blur-sm border border-zinc-700/50 rounded-lg p-3"
               >
                 <div className="flex items-center gap-2">
@@ -98,5 +115,5 @@ export default function GoalPlanningSection() {
       {/* Decorative background elements */}
       <div className="absolute top-1/4 left-0 w-full h-1/2 bg-gradient-to-r from-purple-900/10 via-transparent to-amber-900/10 transform -skew-y-6 -z-10"></div>
     </section>
-  )
+  );
 }
