@@ -320,7 +320,7 @@ export default function Home() {
   );
 
   return (
-    <main className="relative min-h-screen bg-zinc-900 text-white overflow-hidden">
+    <main className="relative min-h-screen bg-gradient-to-b from-neutral-950 via-zinc-900 to-neutral-900 text-white overflow-hidden">
       <ParticleBackground />
 
       {/* Custom notification overlay */}
@@ -462,7 +462,7 @@ export default function Home() {
           }
         }}
       >
-        <DialogContent className="sm:max-w-[500px] fixed left-[50%] bottom-4 top-auto rounded-3xl sm:bottom-auto sm:top-[45%] bg-zinc-900/80 backdrop-blur-xl border border-zinc-700/50 text-white shadow-2xl data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom">
+        <DialogContent className="w-[calc(100%-2rem)] sm:w-[50%] lg:w-[40%] sm:max-w-[650px] fixed left-[50%] bottom-0 top-auto sm:bottom-auto sm:top-[45%] rounded-3xl bg-zinc-900/80 backdrop-blur-xl border border-zinc-700/50 text-white shadow-2xl max-h-[85vh] overflow-y-auto data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom">
           <DialogHeader>
             <DialogTitle className="text-white">Contact Us</DialogTitle>
             <DialogDescription className="text-zinc-400">
@@ -690,7 +690,7 @@ export default function Home() {
           dispatch({ type: "SET_WAITLIST_OPEN", payload: open })
         }
       >
-        <DialogContent className="sm:max-w-[500px] fixed left-[50%] bottom-4 top-auto rounded-3xl sm:bottom-auto sm:top-[45%] bg-zinc-900/80 backdrop-blur-xl border border-zinc-700/50 text-white shadow-2xl data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom">
+        <DialogContent className="w-[calc(100%-2rem)] sm:w-[50%] lg:w-[40%] sm:max-w-[680px] fixed left-[50%] bottom-0 top-auto sm:bottom-auto sm:top-[45%] rounded-3xl bg-zinc-900/80 backdrop-blur-xl border border-zinc-700/50 text-white shadow-2xl max-h-[85vh] overflow-y-auto data-[state=open]:animate-slide-in-from-bottom data-[state=closed]:animate-slide-out-to-bottom">
           <DialogHeader>
             <DialogTitle className="text-white">Join the Waitlist</DialogTitle>
             <DialogDescription className="text-zinc-400">

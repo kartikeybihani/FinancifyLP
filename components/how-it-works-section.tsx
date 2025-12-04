@@ -120,14 +120,17 @@ export default function HowItWorksSection() {
           whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={isMobile ? { duration: 0 } : { duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-8 sm:mb-12"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-2">
             Your journey to Growth
           </h2>
-          <p className="text-zinc-300 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg px-4">
-            Three simple steps to get started
-          </p>
+          <div className="flex justify-center">
+            <div className="inline-flex items-center gap-2 rounded-full bg-zinc-800/70 px-3 py-1 text-xs sm:text-sm text-zinc-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse" />
+              <span>3 simple steps to Get Started</span>
+            </div>
+          </div>
         </motion.div>
 
         <div className="relative">
@@ -187,82 +190,58 @@ export default function HowItWorksSection() {
             ))}
           </div>
 
-          {/* Mobile layout */}
-          <div className="md:hidden space-y-6">
-            {journeySteps.map((step, index) => (
-              <div key={index} className="relative">
-                <motion.div
-                  initial={isMobile ? false : { opacity: 0, y: 30 }}
-                  animate={isMobile ? { opacity: 1, y: 0 } : {}}
-                  whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={
-                    isMobile
-                      ? { duration: 0 }
-                      : { duration: 0.6, delay: index * 0.2 }
-                  }
-                  className="relative group"
-                >
-                  <div className="relative bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-4 group-hover:border-zinc-700/50 transition-all duration-300">
-                    {/* Gradient background */}
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${step.gradient} rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                    ></div>
+          {/* Mobile layout – compact 3-step timeline card */}
+          <div className="md:hidden">
+            <motion.div
+              initial={isMobile ? false : { opacity: 0, y: 30 }}
+              animate={isMobile ? { opacity: 1, y: 0 } : {}}
+              whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={isMobile ? { duration: 0 } : { duration: 0.6 }}
+              className="relative bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-4"
+            >
+              {/* Subtle gradient wash using first/last step colors */}
+              <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/10 via-zinc-900/0 to-emerald-500/10" />
 
-                    <div className="relative z-10 text-center">
-                      {/* Icon */}
-                      <div className="w-12 h-12 rounded-xl bg-zinc-800/50 flex items-center justify-center mx-auto mb-4 group-hover:bg-zinc-800/70 transition-colors duration-300">
-                        {step.icon}
+              <div className="relative z-10">
+                {/* Label */}
+                <div className="mb-3">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-zinc-800/70 px-3 py-1 text-[11px] text-zinc-300">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse" />
+                    <span>3 simple steps to Get Started</span>
+                  </div>
+                </div>
+
+                {/* Timeline steps */}
+                <div className="space-y-3">
+                  {journeySteps.map((step, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      {/* Numbered bullet */}
+                      <div className="flex-shrink-0 mt-0.5">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800 text-[11px] font-semibold text-zinc-200 border border-zinc-700">
+                          {index + 1}
+                        </div>
                       </div>
 
-                      {/* Title */}
-                      <h3 className="text-base font-semibold text-white mb-3">
-                        {step.title}
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-zinc-400 text-sm leading-relaxed">
-                        {step.description}
-                      </p>
+                      {/* Text content */}
+                      <div className="flex-1">
+                        <h3 className="text-sm font-semibold text-white">
+                          {step.title}
+                        </h3>
+                        <p className="mt-0.5 text-[12px] leading-snug text-zinc-400">
+                          {index === 0 &&
+                            "Securely link your accounts in seconds."}
+                          {index === 1 &&
+                            "Tell Finny your goals: home, debt, wealth and more."}
+                          {index === 2 &&
+                            "Get clear, personalized next steps you can act on today."}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-
-                {/* Mobile arrow - only between steps, not after the last one */}
-                {index < journeySteps.length - 1 && (
-                  <motion.div
-                    initial={isMobile ? false : { opacity: 0 }}
-                    animate={isMobile ? { opacity: 1 } : {}}
-                    whileInView={isMobile ? {} : { opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={
-                      isMobile
-                        ? { duration: 0 }
-                        : { duration: 0.6, delay: index * 0.2 + 0.3 }
-                    }
-                    className="flex justify-center py-2"
-                  >
-                    <div className="w-8 h-8 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-zinc-500"
-                      >
-                        <path d="M12 5v14"></path>
-                        <path d="m19 12-7 7-7-7"></path>
-                      </svg>
-                    </div>
-                  </motion.div>
-                )}
+                  ))}
+                </div>
               </div>
-            ))}
+            </motion.div>
           </div>
         </div>
 
@@ -286,7 +265,7 @@ export default function HowItWorksSection() {
               advice. Just you and your goals.
             </p>
             <div className="flex items-center justify-center gap-2 text-sm text-[#4A90E2] font-medium">
-              <span>Get started in under 5 minutes</span>
+              <span>Get started in under 1 minute</span>
             </div>
           </div>
         </motion.div>

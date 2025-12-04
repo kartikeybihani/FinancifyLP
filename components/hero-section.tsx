@@ -226,37 +226,35 @@ export default function HeroSection() {
       rotationIntervalRef.current = null;
     }
 
+    // On mobile, keep the message static to reduce motion in the hero
+    if (isMobile) return;
+
     // Don't start rotation if typing is in progress (desktop only)
-    if (!isMobile && isTyping) {
-      return;
-    }
+    if (isTyping) return;
 
-    rotationIntervalRef.current = setInterval(
-      () => {
-        // Double-check typing state before rotating
-        if (!isMobile && isTyping) return;
+    rotationIntervalRef.current = setInterval(() => {
+      // Double-check typing state before rotating
+      if (isTyping) return;
 
-        setIsMessageChanging(true);
+      setIsMessageChanging(true);
 
-        // Clear any existing timeout
-        if (rotationTimeoutRef.current) {
-          clearTimeout(rotationTimeoutRef.current);
-        }
+      // Clear any existing timeout
+      if (rotationTimeoutRef.current) {
+        clearTimeout(rotationTimeoutRef.current);
+      }
 
-        // Wait for animation to complete
-        rotationTimeoutRef.current = setTimeout(
-          () => {
-            setCurrentMessageIndex((prev) => (prev + 1) % finnyMessages.length);
-            setDisplayedText("");
-            setIsMessageChanging(false);
-            setIsTyping(true);
-            rotationTimeoutRef.current = null;
-          },
-          isMobile ? 400 : 300 // Longer transition for mobile slide animation
-        );
-      },
-      isMobile ? 3000 : 1000 // Much slower rotation for mobile (3 seconds vs 1 second)
-    );
+      // Wait for animation to complete
+      rotationTimeoutRef.current = setTimeout(
+        () => {
+          setCurrentMessageIndex((prev) => (prev + 1) % finnyMessages.length);
+          setDisplayedText("");
+          setIsMessageChanging(false);
+          setIsTyping(true);
+          rotationTimeoutRef.current = null;
+        },
+        isMobile ? 400 : 300 // Longer transition for mobile slide animation
+      );
+    }, 1000);
 
     return () => {
       if (rotationIntervalRef.current) {
@@ -432,15 +430,16 @@ export default function HeroSection() {
 
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-8 items-center">
-          <div className="text-left sm:text-left text-center order-2 lg:order-1 -mt-8 lg:-mt-4 lg:pl-0">
-            <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-6 md:mb-8 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
+          {/* On mobile, text/CTA comes first; on desktop, keep text on the left */}
+          <div className="text-left sm:text-left text-center order-1 lg:order-1 mt-0 lg:-mt-4 lg:pl-0">
+            <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-4 sm:mb-6 md:mb-8 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
               <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
               <span className="bg-gradient-to-r from-[#4A90E2] via-blue-500 to-blue-400 text-transparent bg-clip-text">
                 AI-native financial guidance
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-6 md:mb-8 relative animate-fade-in-up hero-animate-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-snug sm:leading-tight mb-6 sm:mb-7 md:mb-8 relative animate-fade-in-up hero-animate-2 max-w-xl mx-auto sm:mx-0">
               <span className="relative inline-block">
                 Stop guessing. <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
@@ -453,7 +452,7 @@ export default function HeroSection() {
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
+            <p className="text-[15px] sm:text-lg md:text-xl text-zinc-300 max-w-md sm:max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
               Make smarter moves without overthinking every decision.
             </p>
 
@@ -486,20 +485,21 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center lg:items-end relative mt-6 sm:mt-8 lg:mt-0 lg:pl-12 order-1 lg:order-2 animate-fade-in-scale hero-animate-4">
+          {/* On mobile, chat demo comes after text/CTA and gets extra spacing */}
+          <div className="flex flex-col items-center lg:items-end relative mt-8 sm:mt-10 lg:mt-0 lg:pl-12 order-2 lg:order-2 animate-fade-in-scale hero-animate-4">
             {/* Mobile category indicators - REMOVED completely for phones */}
 
             <div
-              className="relative w-full max-w-xs sm:max-w-sm md:max-w-md h-[260px] sm:h-[320px] md:h-[420px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto"
+              className="relative w-full max-w-xs sm:max-w-sm md:max-w-md h-[210px] sm:h-[260px] md:h-[380px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto"
               ref={chatContainerRef}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {/* Glow background effects */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/30 to-blue-500/30 rounded-2xl blur-md"></div>
-              <div className="absolute -top-6 -left-6 w-32 h-32 bg-[#4A90E2]/10 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
+              {/* Glow background effects - toned down on mobile to reduce visual noise */}
+              <div className="absolute -inset-px sm:-inset-0.5 bg-gradient-to-r from-[#4A90E2]/20 sm:from-[#4A90E2]/30 to-blue-500/20 sm:to-blue-500/30 rounded-2xl blur-sm sm:blur-md"></div>
+              <div className="hidden sm:block absolute -top-6 -left-6 w-32 h-32 bg-[#4A90E2]/10 rounded-full blur-xl"></div>
+              <div className="hidden sm:block absolute -bottom-6 -right-6 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
 
               {/* Chat interface container */}
               <div
@@ -509,14 +509,14 @@ export default function HeroSection() {
               >
                 {/* Chat header */}
                 <div
-                  className={`bg-zinc-800/50 px-3 sm:px-6 py-3 sm:py-4 border-b border-zinc-700/30 flex items-center justify-between ${
+                  className={`bg-zinc-800/50 px-3 sm:px-6 py-2.5 sm:py-4 border-b border-zinc-700/30 flex items-center justify-between ${
                     isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
                   }`}
                 >
                   <div className="flex items-center gap-2 sm:gap-3">
                     <FinnyAvatar size="lg" priority />
                     <div>
-                      <div className="font-medium text-zinc-200 text-sm sm:text-base">
+                      <div className="font-medium text-zinc-200 text-xs sm:text-sm md:text-base">
                         Finny
                       </div>
                       <div className="text-xs text-zinc-400 flex items-center gap-1">
@@ -545,21 +545,19 @@ export default function HeroSection() {
                 {/* Chat messages area */}
                 <div
                   ref={chatMessagesRef}
-                  className="flex-1 px-3 sm:px-6 py-3 sm:py-4 overflow-auto"
+                  className="flex-1 px-3 sm:px-6 py-2.5 sm:py-4 overflow-auto"
                 >
                   {/* System welcome message */}
-                  <div className="bg-zinc-800/50 px-3 sm:px-4 py-2 rounded-lg text-center text-xs text-zinc-500 mb-3 sm:mb-4">
+                  <div className="bg-zinc-800/50 px-3 sm:px-4 py-2 rounded-lg text-center text-[11px] sm:text-xs text-zinc-500 mb-3 sm:mb-4">
                     Today • Conversation with Finny
                   </div>
 
-                  {/* User account message */}
-
                   {/* Previous message bubble */}
-                  <div className="flex gap-2 mb-4 sm:mb-6">
+                  <div className="flex gap-2 mb-3 sm:mb-6">
                     <FinnyAvatar size="md" />
                     <div className="max-w-[85%] sm:max-w-[80%]">
                       <div
-                        className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200 ${
+                        className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-200 ${
                           isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
                         }`}
                       >
@@ -597,7 +595,7 @@ export default function HeroSection() {
                             duration: isMobile ? 0.4 : 0.3,
                             ease: isMobile ? "easeInOut" : "easeOut",
                           }}
-                          className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-zinc-200 ${
+                          className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-200 ${
                             isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
                           }`}
                         >
@@ -615,8 +613,9 @@ export default function HeroSection() {
                               <span className="inline-block w-1.5 h-4 bg-zinc-400 ml-1 animate-pulse"></span>
                             )}
                           </p>
+                          {/* Keep quick actions for larger screens; hide on the smallest viewports to reduce clutter */}
                           {!isTyping && (
-                            <div className="flex flex-wrap justify-end gap-2 mt-2">
+                            <div className="hidden sm:flex flex-wrap justify-end gap-1.5 sm:gap-2 mt-2">
                               <button className="text-xs text-blue-300 hover:text-blue-200 transition-colors py-1 px-2">
                                 Tell me more
                               </button>
@@ -627,7 +626,7 @@ export default function HeroSection() {
                           )}
                         </motion.div>
                       </AnimatePresence>
-                      <div className="text-xs text-zinc-500 ml-2 mt-1 flex items-center gap-2">
+                      <div className="hidden sm:flex text-xs text-zinc-500 ml-2 mt-1 items-center gap-2">
                         {!isTyping && (
                           <span className="text-xs text-zinc-600">
                             {responseTime}s response time
@@ -661,15 +660,15 @@ export default function HeroSection() {
                 </div>
 
                 {/* Swipe indicator for mobile */}
-                <div className="sm:hidden text-center text-xs text-zinc-500 py-2">
+                <div className="sm:hidden text-center text-[11px] text-zinc-500 py-1.5">
                   Swipe to change messages
                 </div>
 
                 {/* Glow effects */}
-                <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#4A90E2]/10 to-transparent pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-blue-500/10 to-transparent pointer-events-none"></div>
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#4A90E2]/10 rounded-full blur-xl pointer-events-none"></div>
-                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
+                <div className="absolute top-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-b from-[#4A90E2]/10 to-transparent pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-t from-blue-500/10 to-transparent pointer-events-none"></div>
+                <div className="hidden sm:block absolute -top-10 -right-10 w-40 h-40 bg-[#4A90E2]/10 rounded-full blur-xl pointer-events-none"></div>
+                <div className="hidden sm:block absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-zinc-400 text-center mt-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto lg:mr-0 lg:ml-auto animate-fade-in-up hero-animate-5">

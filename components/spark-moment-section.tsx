@@ -4,7 +4,7 @@ import React from "react";
 
 export default function SparkMomentSection() {
   return (
-    <section className="py-16 px-4 md:px-6 lg:px-8 relative overflow-hidden">
+    <section className="py-12 sm:py-16 px-4 md:px-6 lg:px-8 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 items-center">
           <div className="space-y-6">
@@ -15,12 +15,29 @@ export default function SparkMomentSection() {
               </span>
             </h2>
 
-            <p className="text-xl text-zinc-300 max-w-xl leading-relaxed">
-              Get personalized financial guidance that actually understands your
-              goals.
+            <p className="text-lg sm:text-xl text-zinc-300 max-w-xl leading-relaxed">
+              Get clear, confident money decisions without the guesswork.
             </p>
 
-            <div className="grid grid-cols-2 gap-4">
+            {/* Mobile: compact proof row */}
+            <div className="sm:hidden grid grid-cols-1 gap-3 max-w-sm">
+              <div className="flex flex-wrap items-center gap-2 rounded-lg bg-zinc-800/40 backdrop-blur-sm border border-zinc-700/40 px-3 py-2">
+                <span className="text-sm font-semibold text-purple-300">
+                  $0/hour
+                </span>
+                <span className="h-1 w-1 rounded-full bg-zinc-500" />
+                <span className="text-sm font-semibold text-mint-300">
+                  24/7
+                </span>
+                <span className="h-1 w-1 rounded-full bg-zinc-500" />
+                <span className="text-xs text-zinc-400">
+                  Built for how Gen Z actually manages money
+                </span>
+              </div>
+            </div>
+
+            {/* Desktop / tablet: full stat grid */}
+            <div className="hidden sm:grid grid-cols-2 gap-4">
               <div className="bg-zinc-800/30 backdrop-blur-sm px-4 py-3 rounded-lg border border-zinc-700/30">
                 <div className="text-lg font-bold text-purple-400 mb-1">
                   $0/hour
@@ -61,7 +78,13 @@ export default function SparkMomentSection() {
             <div className="w-full max-w-md bg-zinc-900/60 border border-zinc-800/50 rounded-xl overflow-hidden relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/10 to-blue-500/10 rounded-xl blur opacity-50"></div>
 
-              <div className="p-6 relative z-10">
+              <div className="p-4 sm:p-6 relative z-10">
+                <p className="text-xs text-zinc-400">
+                  Before: random money moves.
+                </p>
+                <p className="text-xs text-zinc-400 mb-2">
+                  After: one clear plan and next step.
+                </p>
                 <h3 className="text-lg font-medium mb-6">
                   Your Complete Financial Plan
                 </h3>
@@ -107,9 +130,9 @@ export default function SparkMomentSection() {
                           6 months of expenses saved
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
                           <div
-                            className="bg-blue-500 h-1.5 rounded-full"
+                            className="bg-blue-500 h-1 sm:h-1.5 rounded-full"
                             style={{ width: "85%" }}
                           ></div>
                         </div>
@@ -154,17 +177,17 @@ export default function SparkMomentSection() {
                           Debt freedom milestone
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
                           <div
-                            className="bg-mint-500 h-1.5 rounded-full"
+                            className="bg-mint-500 h-1 sm:h-1.5 rounded-full"
                             style={{ width: "60%" }}
                           ></div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Mid-term: Investment Portfolio */}
-                    <div className="flex items-start gap-3 sm:gap-4">
+                    {/* Mid-term: Investment Portfolio (hidden on small screens to keep mobile concise) */}
+                    <div className="hidden sm:flex items-start gap-3 sm:gap-4">
                       <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center shrink-0 z-10">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -198,9 +221,9 @@ export default function SparkMomentSection() {
                           Diversified portfolio for long-term growth
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
                           <div
-                            className="bg-purple-500 h-1.5 rounded-full"
+                            className="bg-purple-500 h-1 sm:h-1.5 rounded-full"
                             style={{ width: "30%" }}
                           ></div>
                         </div>
@@ -239,15 +262,20 @@ export default function SparkMomentSection() {
                           20% down on your dream home
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
                           <div
-                            className="bg-mint-500 h-1.5 rounded-full"
+                            className="bg-mint-500 h-1 sm:h-1.5 rounded-full"
                             style={{ width: "15%" }}
                           ></div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* Mobile: hint that more is tracked without overwhelming the view */}
+                  <p className="mt-3 text-[11px] text-zinc-500 sm:hidden">
+                    And more goals tracked automatically as your life evolves.
+                  </p>
                 </div>
               </div>
             </div>

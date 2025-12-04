@@ -22,9 +22,9 @@ export function Tab({
     <button
       onClick={() => setSelected(text)}
       className={cn(
-        "relative w-fit px-4 py-2 text-sm font-semibold capitalize",
-        "text-foreground transition-colors",
-        discount && "flex items-center justify-center gap-2.5"
+        "relative flex-1 px-4 py-2 text-xs sm:text-sm font-semibold capitalize",
+        "text-foreground transition-colors flex items-center justify-center gap-1.5",
+        discount && "gap-2.5"
       )}
     >
       <span className="relative z-10">{text}</span>
