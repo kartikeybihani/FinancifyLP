@@ -26,14 +26,14 @@ export const viewport = {
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://usefinny.com";
 const siteName = "Finny";
 const siteDescription =
-  "Your AI-powered financial advisor for smarter saving and investing decisions.";
+  "Money feels overwhelming. Finny makes it simple, calm, and actually doable.";
 const author = "Finny Team";
 const publisher = "Finny";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Finny - AI Financial Advisor",
+    default: "Finny | Your calm AI money coach",
     template: "%s | Finny",
   },
   description: siteDescription,
@@ -41,6 +41,8 @@ export const metadata = {
   applicationName: siteName,
   referrer: "origin-when-cross-origin",
   keywords: [
+    "money coach",
+    "AI money coach",
     "financial advisor",
     "AI financial advisor",
     "personal finance",
@@ -63,20 +65,20 @@ export const metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: siteName,
-    title: "Finny - AI Financial Advisor",
+    title: "Finny | Your calm AI money coach",
     description: siteDescription,
     images: [
       {
         url: `${siteUrl}/opengraph.png`,
         width: 1200,
         height: 634,
-        alt: "Finny - AI Financial Advisor",
+        alt: "Finny | Your calm AI money coach",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Finny - AI Financial Advisor",
+    title: "Finny | Your calm AI money coach",
     description: siteDescription,
     creator: "@financify",
     images: [`${siteUrl}/opengraph.png`],

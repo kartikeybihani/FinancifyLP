@@ -43,7 +43,7 @@ export default function SparkMomentSection() {
                   $0/hour
                 </div>
                 <div className="text-xs text-zinc-400">
-                  vs $300/hour financial advisors
+                  vs $300/hour money coaches
                 </div>
               </div>
 

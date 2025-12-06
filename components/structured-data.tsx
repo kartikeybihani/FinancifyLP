@@ -8,7 +8,7 @@ export function StructuredData({ type = "all" }: StructuredDataProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://usefinny.com";
   const siteName = "Finny";
   const siteDescription =
-    "Your AI-powered financial advisor for smarter saving and investing decisions.";
+    "Money feels overwhelming. Finny makes it simple, calm, and actually doable.";
 
   const organizationSchema = {
     "@context": "https://schema.org",

@@ -178,7 +178,7 @@ export function UTMLinkGenerator() {
                   id="utmTerm"
                   value={utmTerm}
                   onChange={(e) => setUtmTerm(e.target.value)}
-                  placeholder="financial advisor"
+                  placeholder="money coach"
                 />
               </div>
               <div>
