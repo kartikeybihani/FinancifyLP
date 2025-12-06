@@ -69,7 +69,7 @@ export const metadata = {
     description: siteDescription,
     images: [
       {
-        url: `${siteUrl}/opengraph.png`,
+        url: `${siteUrl}/opengraph1.jpg`,
         width: 1200,
         height: 634,
         alt: "Finny | Your calm AI money coach",
@@ -81,7 +81,7 @@ export const metadata = {
     title: "Finny | Your calm AI money coach",
     description: siteDescription,
     creator: "@financify",
-    images: [`${siteUrl}/opengraph.png`],
+    images: [`${siteUrl}/opengraph1.jpg`],
   },
   robots: {
     index: true,
