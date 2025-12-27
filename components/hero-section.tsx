@@ -366,7 +366,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="min-h-[100svh] flex flex-col justify-center pt-16 sm:pt-20 pb-8 sm:pb-16 px-4 md:px-6 lg:px-8 relative">
+    <section className="min-h-[100svh] flex flex-col justify-center pt-20 sm:pt-24 md:pt-28 pb-6 sm:pb-8 md:pb-12 px-4 md:px-6 lg:px-8 relative">
       {/* Custom notification overlay */}
       <AnimatePresence>
         {showNotification && (
@@ -429,17 +429,17 @@ export default function HeroSection() {
       </AnimatePresence>
 
       <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* On mobile, chat demo comes first; on desktop, keep text on the left */}
-          <div className="text-center sm:text-left order-2 lg:order-1 -mt-2 lg:-mt-4 lg:pl-0">
-            <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-4 sm:mb-6 md:mb-8 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
+          <div className="text-center sm:text-left order-2 lg:order-1 lg:pl-0">
+            <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-5 sm:mb-6 md:mb-8 lg:mb-10 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
               <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
               <span className="bg-gradient-to-r from-[#4A90E2] via-blue-500 to-blue-400 text-transparent bg-clip-text">
                 AI-native financial guidance
               </span>
             </div>
 
-            <h1 className="text-[28px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-snug sm:leading-tight mb-4 sm:mb-5 md:mb-8 relative animate-fade-in-up hero-animate-2 max-w-xl mx-auto sm:mx-0">
+            <h1 className="text-[28px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-snug sm:leading-tight mb-5 sm:mb-6 md:mb-8 lg:mb-10 relative animate-fade-in-up hero-animate-2 max-w-xl mx-auto sm:mx-0">
               <span className="relative inline-block">
                 Stop guessing. <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
@@ -452,11 +452,11 @@ export default function HeroSection() {
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-md sm:max-w-xl mb-5 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
+            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-md sm:max-w-xl mb-6 sm:mb-7 md:mb-8 lg:mb-10 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
               Make smarter moves without overthinking every decision.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto sm:mx-0 animate-fade-in-up hero-animate-4">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto sm:mx-0 animate-fade-in-up hero-animate-4 mb-4 sm:mb-6">
               <form
                 onSubmit={handleSubmit}
                 className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full"
@@ -480,17 +480,17 @@ export default function HeroSection() {
               </form>
             </div>
 
-            <div className="text-xs sm:text-sm text-[#4A90E2] font-medium mt-4 mx-auto sm:mx-0 animate-fade-in-up hero-animate-5">
+            <div className="text-xs sm:text-sm text-[#4A90E2] font-medium mx-auto sm:mx-0 animate-fade-in-up hero-animate-5">
               Join 500+ people on our waitlist to get early access
             </div>
           </div>
 
           {/* On mobile, chat demo comes first; on desktop, keep chat on the right */}
-          <div className="flex flex-col items-center lg:items-end relative mt-0 lg:mt-0 lg:pl-12 order-1 lg:order-2 animate-fade-in-scale hero-animate-4 pb-2 lg:pb-0">
+          <div className="flex flex-col items-center lg:items-end relative mt-2 sm:mt-4 lg:mt-0 lg:pl-12 order-1 lg:order-2 animate-fade-in-scale hero-animate-4 pb-2 lg:pb-0">
             {/* Mobile category indicators - REMOVED completely for phones */}
 
             <div
-              className="relative w-full max-w-sm sm:max-w-sm md:max-w-md h-[200px] sm:h-[260px] md:h-[380px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto opacity-95 sm:opacity-100"
+              className="relative w-full max-w-sm sm:max-w-sm md:max-w-md h-[180px] sm:h-[240px] md:h-[380px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto opacity-95 sm:opacity-100"
               ref={chatContainerRef}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
@@ -702,7 +702,7 @@ export default function HeroSection() {
                 <div className="hidden sm:block absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
               </div>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400 text-center mt-3 sm:mt-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto lg:mr-0 lg:ml-auto animate-fade-in-up hero-animate-5">
+            <p className="text-xs sm:text-sm text-zinc-400 text-center mt-2 sm:mt-3 md:mt-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto lg:mr-0 lg:ml-auto animate-fade-in-up hero-animate-5">
               Built to give you clarity and control.
             </p>
           </div>
