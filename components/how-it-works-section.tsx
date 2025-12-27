@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 export default function HowItWorksSection() {
   const [isMobile, setIsMobile] = useState(false);
@@ -110,7 +111,7 @@ export default function HowItWorksSection() {
 
   return (
     <section
-      className="py-16 sm:py-20 md:py-24 px-4 md:px-6 lg:px-8 relative"
+      className="py-12 sm:py-20 md:py-24 px-4 md:px-6 lg:px-8 relative"
       id="how-it-works"
     >
       <div className="container mx-auto max-w-6xl relative">
@@ -122,7 +123,7 @@ export default function HowItWorksSection() {
           transition={isMobile ? { duration: 0 } : { duration: 0.6 }}
           className="text-center mb-8 sm:mb-12"
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-2">
+          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-2">
             Your journey to Growth
           </h2>
           <div className="flex justify-center">
@@ -198,35 +199,32 @@ export default function HowItWorksSection() {
               whileInView={isMobile ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={isMobile ? { duration: 0 } : { duration: 0.6 }}
-              className="relative bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-4"
+              className="relative bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-5 sm:p-4"
             >
               {/* Subtle gradient wash using first/last step colors */}
               <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/10 via-zinc-900/0 to-emerald-500/10" />
 
               <div className="relative z-10">
                 {/* Timeline steps */}
-                <div className="space-y-3">
+                <div className="space-y-4 relative">
+                  {/* Connecting line for mobile */}
+                  <div className="absolute left-[15px] sm:left-[11px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-blue-500/30 via-purple-500/30 to-emerald-500/30 md:hidden"></div>
                   {journeySteps.map((step, index) => (
-                    <div key={index} className="flex items-start gap-3">
+                    <div key={index} className="flex items-start gap-3 relative">
                       {/* Numbered bullet */}
-                      <div className="flex-shrink-0 mt-0.5">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800 text-[11px] font-semibold text-zinc-200 border border-zinc-700">
+                      <div className="flex-shrink-0 mt-0.5 relative z-10">
+                        <div className="flex h-8 w-8 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-zinc-800 text-sm sm:text-[11px] font-semibold text-zinc-200 border border-zinc-700">
                           {index + 1}
                         </div>
                       </div>
 
                       {/* Text content */}
                       <div className="flex-1">
-                        <h3 className="text-sm font-semibold text-white">
+                        <h3 className="text-base font-semibold text-white">
                           {step.title}
                         </h3>
-                        <p className="mt-0.5 text-[12px] leading-snug text-zinc-400">
-                          {index === 0 &&
-                            "Securely link your accounts in seconds."}
-                          {index === 1 &&
-                            "Tell Finny your goals: home, debt, wealth and more."}
-                          {index === 2 &&
-                            "Get clear, personalized next steps you can act on today."}
+                        <p className="mt-0.5 text-sm leading-snug text-zinc-400 whitespace-pre-line">
+                          {step.description}
                         </p>
                       </div>
                     </div>
@@ -246,19 +244,24 @@ export default function HowItWorksSection() {
           transition={
             isMobile ? { duration: 0 } : { duration: 0.6, delay: 0.6 }
           }
-          className="text-center mt-12 sm:mt-16"
+          className="text-center mt-8 sm:mt-16"
         >
           <div className="bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-5 sm:p-6 lg:p-8 max-w-2xl mx-auto">
-            <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-white mb-3 sm:mb-4">
+            <h3 className="text-lg sm:text-lg lg:text-xl font-semibold text-white mb-3 sm:mb-4">
               That's it. You're done.
             </h3>
-            <p className="text-zinc-400 text-sm sm:text-base lg:text-base mb-4 sm:mb-5">
+            <p className="text-zinc-400 text-base sm:text-base lg:text-base mb-4 sm:mb-5">
               Finny handles everything. No expensive advisors. No generic
               advice. Just you and your goals.
             </p>
-            <div className="flex items-center justify-center gap-2 text-sm text-[#4A90E2] font-medium">
-              <span>Get started in under 1 minute</span>
-            </div>
+            <Button
+              onClick={() => {
+                document.getElementById("top")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="bg-[#4A90E2] hover:bg-[#3A7BC9] text-white font-medium rounded-lg transition-colors"
+            >
+              Get started in under 1 minute
+            </Button>
           </div>
         </motion.div>
       </div>

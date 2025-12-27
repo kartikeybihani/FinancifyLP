@@ -6,7 +6,7 @@ export default function SparkMomentSection() {
   return (
     <section className="py-12 sm:py-16 px-4 md:px-6 lg:px-8 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-6 items-center">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-relaxed">
               <span className="block">Your personal money</span>
@@ -15,24 +15,25 @@ export default function SparkMomentSection() {
               </span>
             </h2>
 
-            <p className="text-lg sm:text-xl text-zinc-300 max-w-xl leading-relaxed">
+            <p className="text-base sm:text-xl text-zinc-300 max-w-xl leading-relaxed">
               Get clear, confident money decisions without the guesswork.
             </p>
 
             {/* Mobile: compact proof row */}
-            <div className="sm:hidden grid grid-cols-1 gap-3 max-w-sm">
-              <div className="flex flex-wrap items-center gap-2 rounded-lg bg-zinc-800/40 backdrop-blur-sm border border-zinc-700/40 px-3 py-2">
-                <span className="text-sm font-semibold text-purple-300">
+            <div className="sm:hidden grid grid-cols-2 gap-2 max-w-sm">
+              <div className="bg-zinc-800/40 backdrop-blur-sm px-3 py-2.5 rounded-lg border border-zinc-700/40">
+                <div className="text-base font-bold text-purple-300 mb-0.5">
                   $0/hour
-                </span>
-                <span className="h-1 w-1 rounded-full bg-zinc-500" />
-                <span className="text-sm font-semibold text-mint-300">
-                  24/7
-                </span>
-                <span className="h-1 w-1 rounded-full bg-zinc-500" />
-                <span className="text-xs text-zinc-400">
-                  Built for how Gen Z actually manages money
-                </span>
+                </div>
+                <div className="text-xs text-zinc-400">
+                  vs $300/hour coaches
+                </div>
+              </div>
+              <div className="bg-zinc-800/40 backdrop-blur-sm px-3 py-2.5 rounded-lg border border-zinc-700/40">
+                <div className="text-base font-bold text-mint-300 mb-0.5">24/7</div>
+                <div className="text-xs text-zinc-400">
+                  Always available
+                </div>
               </div>
             </div>
 
@@ -75,7 +76,7 @@ export default function SparkMomentSection() {
           </div>
 
           <div className="flex justify-center lg:justify-end">
-            <div className="w-full max-w-md bg-zinc-900/60 border border-zinc-800/50 rounded-xl overflow-hidden relative group">
+            <div className="w-full sm:max-w-md bg-zinc-900/60 border border-zinc-800/50 rounded-xl overflow-hidden relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4A90E2]/10 to-blue-500/10 rounded-xl blur opacity-50"></div>
 
               <div className="p-4 sm:p-6 relative z-10">
@@ -91,13 +92,13 @@ export default function SparkMomentSection() {
 
                 <div className="space-y-4 sm:space-y-6 relative">
                   {/* Timeline line */}
-                  <div className="absolute left-[14px] sm:left-[18px] top-1 bottom-1 w-0.5 bg-zinc-700/50"></div>
+                  <div className="absolute left-[18px] sm:left-[18px] top-1 bottom-1 w-0.5 sm:w-0.5 bg-zinc-600/70 sm:bg-zinc-700/50 -z-10"></div>
 
                   {/* Timeline items */}
                   <div className="space-y-4 sm:space-y-6">
                     {/* Short-term: Emergency Fund */}
                     <div className="flex items-start gap-3 sm:gap-4">
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 z-10">
+                      <div className="w-9 h-9 sm:w-9 sm:h-9 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 relative z-10 bg-zinc-900/60">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="14"
@@ -116,24 +117,24 @@ export default function SparkMomentSection() {
                       </div>
                       <div className="w-full">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-xs font-semibold text-blue-400">
-                            2023
+                          <span className="text-sm font-semibold text-blue-400">
+                            2024
                           </span>
                           <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Emergency Fund
                           </span>
                           <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded-full whitespace-nowrap">
-                            85%
+                            95%
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-400 mt-1">
+                        <p className="text-sm text-zinc-400 mt-1">
                           6 months of expenses saved
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5 sm:h-1.5">
                           <div
-                            className="bg-blue-500 h-1 sm:h-1.5 rounded-full"
-                            style={{ width: "85%" }}
+                            className="bg-blue-500 h-1.5 sm:h-1.5 rounded-full"
+                            style={{ width: "95%" }}
                           ></div>
                         </div>
                       </div>
@@ -141,7 +142,7 @@ export default function SparkMomentSection() {
 
                     {/* Short-term: Student Loan */}
                     <div className="flex items-start gap-3 sm:gap-4">
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
+                      <div className="w-9 h-9 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 relative z-10 bg-zinc-900/60">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="14"
@@ -166,29 +167,29 @@ export default function SparkMomentSection() {
                       </div>
                       <div className="w-full">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-xs font-semibold text-mint-400">
-                            2024
+                          <span className="text-sm font-semibold text-mint-400">
+                            2025
                           </span>
                           <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Student Loan Payoff
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-400 mt-1">
+                        <p className="text-sm text-zinc-400 mt-1">
                           Debt freedom milestone
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5 sm:h-1.5">
                           <div
-                            className="bg-mint-500 h-1 sm:h-1.5 rounded-full"
-                            style={{ width: "60%" }}
+                            className="bg-mint-500 h-1.5 sm:h-1.5 rounded-full"
+                            style={{ width: "75%" }}
                           ></div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Mid-term: Investment Portfolio (hidden on small screens to keep mobile concise) */}
-                    <div className="hidden sm:flex items-start gap-3 sm:gap-4">
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center shrink-0 z-10">
+                    {/* Mid-term: Investment Portfolio */}
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="w-9 h-9 sm:w-9 sm:h-9 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center shrink-0 relative z-10 bg-zinc-900/60">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="14"
@@ -207,8 +208,8 @@ export default function SparkMomentSection() {
                       </div>
                       <div className="w-full">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-xs font-semibold text-purple-400">
-                            2025
+                          <span className="text-sm font-semibold text-purple-400">
+                            2026
                           </span>
                           <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Investment Portfolio
@@ -217,14 +218,14 @@ export default function SparkMomentSection() {
                             In progress
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-400 mt-1">
+                        <p className="text-sm text-zinc-400 mt-1">
                           Diversified portfolio for long-term growth
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5 sm:h-1.5">
                           <div
-                            className="bg-purple-500 h-1 sm:h-1.5 rounded-full"
-                            style={{ width: "30%" }}
+                            className="bg-purple-500 h-1.5 sm:h-1.5 rounded-full"
+                            style={{ width: "45%" }}
                           ></div>
                         </div>
                       </div>
@@ -232,7 +233,7 @@ export default function SparkMomentSection() {
 
                     {/* Long-term: Home */}
                     <div className="flex items-start gap-3 sm:gap-4">
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 z-10">
+                      <div className="w-9 h-9 sm:w-9 sm:h-9 rounded-full bg-mint-500/20 border border-mint-500/30 flex items-center justify-center shrink-0 relative z-10 bg-zinc-900/60">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="14"
@@ -251,21 +252,21 @@ export default function SparkMomentSection() {
                       </div>
                       <div className="w-full">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-xs font-semibold text-mint-400">
+                          <span className="text-sm font-semibold text-mint-400">
                             2028
                           </span>
                           <span className="text-sm text-zinc-300 font-medium whitespace-nowrap">
                             Home Downpayment
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-400 mt-1">
+                        <p className="text-sm text-zinc-400 mt-1">
                           20% down on your dream home
                         </p>
                         {/* Progress bar */}
-                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1 sm:h-1.5">
+                        <div className="mt-2 w-full bg-zinc-700/30 rounded-full h-1.5 sm:h-1.5">
                           <div
-                            className="bg-mint-500 h-1 sm:h-1.5 rounded-full"
-                            style={{ width: "15%" }}
+                            className="bg-mint-500 h-1.5 sm:h-1.5 rounded-full"
+                            style={{ width: "25%" }}
                           ></div>
                         </div>
                       </div>
@@ -273,7 +274,7 @@ export default function SparkMomentSection() {
                   </div>
 
                   {/* Mobile: hint that more is tracked without overwhelming the view */}
-                  <p className="mt-3 text-[11px] text-zinc-500 sm:hidden">
+                  <p className="mt-3 text-xs text-zinc-500 sm:hidden relative z-10 pl-12">
                     And more goals tracked automatically as your life evolves.
                   </p>
                 </div>
