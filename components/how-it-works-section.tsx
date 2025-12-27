@@ -204,14 +204,6 @@ export default function HowItWorksSection() {
               <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/10 via-zinc-900/0 to-emerald-500/10" />
 
               <div className="relative z-10">
-                {/* Label */}
-                <div className="mb-3">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-zinc-800/70 px-3 py-1 text-[11px] text-zinc-300">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse" />
-                    <span>3 simple steps to Get Started</span>
-                  </div>
-                </div>
-
                 {/* Timeline steps */}
                 <div className="space-y-3">
                   {journeySteps.map((step, index) => (

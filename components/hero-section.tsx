@@ -429,9 +429,9 @@ export default function HeroSection() {
       </AnimatePresence>
 
       <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-8 items-center">
-          {/* On mobile, text/CTA comes first; on desktop, keep text on the left */}
-          <div className="text-left sm:text-left text-center order-1 lg:order-1 mt-0 lg:-mt-4 lg:pl-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-center">
+          {/* On mobile, chat demo comes first; on desktop, keep text on the left */}
+          <div className="text-center sm:text-left order-2 lg:order-1 -mt-2 lg:-mt-4 lg:pl-0">
             <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-4 sm:mb-6 md:mb-8 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
               <div className="h-1.5 w-1.5 rounded-full bg-[#4A90E2] animate-pulse"></div>
               <span className="bg-gradient-to-r from-[#4A90E2] via-blue-500 to-blue-400 text-transparent bg-clip-text">
@@ -439,7 +439,7 @@ export default function HeroSection() {
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-snug sm:leading-tight mb-6 sm:mb-7 md:mb-8 relative animate-fade-in-up hero-animate-2 max-w-xl mx-auto sm:mx-0">
+            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-snug sm:leading-tight mb-4 sm:mb-5 md:mb-8 relative animate-fade-in-up hero-animate-2 max-w-xl mx-auto sm:mx-0">
               <span className="relative inline-block">
                 Stop guessing. <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
@@ -485,12 +485,12 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* On mobile, chat demo comes after text/CTA and gets extra spacing */}
-          <div className="flex flex-col items-center lg:items-end relative mt-8 sm:mt-10 lg:mt-0 lg:pl-12 order-2 lg:order-2 animate-fade-in-scale hero-animate-4">
+          {/* On mobile, chat demo comes first; on desktop, keep chat on the right */}
+          <div className="flex flex-col items-center lg:items-end relative mt-0 lg:mt-0 lg:pl-12 order-1 lg:order-2 animate-fade-in-scale hero-animate-4 pb-2 lg:pb-0">
             {/* Mobile category indicators - REMOVED completely for phones */}
 
             <div
-              className="relative w-full max-w-xs sm:max-w-sm md:max-w-md h-[210px] sm:h-[260px] md:h-[380px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto"
+              className="relative w-full max-w-sm sm:max-w-sm md:max-w-md h-[320px] sm:h-[260px] md:h-[380px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto"
               ref={chatContainerRef}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
