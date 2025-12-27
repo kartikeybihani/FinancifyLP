@@ -40,10 +40,10 @@ export default function HeroSection() {
   // Memoize messages array to prevent recreation on every render
   const finnyMessages = useMemo(
     () => [
-      "You're 75% to your Hawaii trip. You're almost there.",
-      "Your investments are up 12% this year. Should we rebalance?",
-      "You could save $87/month by cutting unused subscriptions.",
-      "Your emergency fund needs $2,000 more. Let's get there.",
+      "You're 75% to your Hawaii trip. You're almost there. Just $1,200 more and you'll be booking flights.",
+      "Your investments are up 12% this year. Should we rebalance? I can help you optimize your portfolio.",
+      "You could save $87/month by cutting unused subscriptions. That's over $1,000 a year back in your pocket.",
+      "Your emergency fund needs $2,000 more. Let's get there. I'll help you set up automatic savings.",
     ],
     []
   );
@@ -129,14 +129,14 @@ export default function HeroSection() {
 
     if (!isMessageChanging && !isTyping) return;
 
-    // Skip typing animation on mobile - show message directly
+    // Skip typing animation on mobile - show message directly (faster for mobile UX)
     if (isMobile && isTyping) {
       setDisplayedText(currentMessage);
       // Add a small delay to prevent race conditions
       typingTimerRef.current = setTimeout(() => {
         setIsTyping(false);
         typingTimerRef.current = null;
-      }, 50);
+      }, 100);
       return;
     }
 
@@ -366,7 +366,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="min-h-screen flex flex-col justify-center pt-16 sm:pt-20 pb-12 sm:pb-16 px-4 md:px-6 lg:px-8 relative">
+    <section className="min-h-[100svh] flex flex-col justify-center pt-16 sm:pt-20 pb-8 sm:pb-16 px-4 md:px-6 lg:px-8 relative">
       {/* Custom notification overlay */}
       <AnimatePresence>
         {showNotification && (
@@ -429,7 +429,7 @@ export default function HeroSection() {
       </AnimatePresence>
 
       <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 lg:gap-8 items-center">
           {/* On mobile, chat demo comes first; on desktop, keep text on the left */}
           <div className="text-center sm:text-left order-2 lg:order-1 -mt-2 lg:-mt-4 lg:pl-0">
             <div className="inline-flex items-center gap-2 bg-zinc-800/30 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-zinc-300 border border-zinc-700/30 mb-4 sm:mb-6 md:mb-8 mx-auto sm:mx-0 animate-fade-in-up hero-animate-1">
@@ -439,7 +439,7 @@ export default function HeroSection() {
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-snug sm:leading-tight mb-4 sm:mb-5 md:mb-8 relative animate-fade-in-up hero-animate-2 max-w-xl mx-auto sm:mx-0">
+            <h1 className="text-[28px] sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-snug sm:leading-tight mb-4 sm:mb-5 md:mb-8 relative animate-fade-in-up hero-animate-2 max-w-xl mx-auto sm:mx-0">
               <span className="relative inline-block">
                 Stop guessing. <br className="md:block hidden" />
                 <span className="absolute -inset-1 bg-[#4A90E2]/20 blur-2xl rounded-lg"></span>
@@ -452,7 +452,7 @@ export default function HeroSection() {
               </span>
             </h1>
 
-            <p className="text-[15px] sm:text-lg md:text-xl text-zinc-300 max-w-md sm:max-w-xl mb-4 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
+            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-md sm:max-w-xl mb-5 md:mb-6 mx-auto sm:mx-0 animate-fade-in-up hero-animate-3">
               Make smarter moves without overthinking every decision.
             </p>
 
@@ -490,7 +490,7 @@ export default function HeroSection() {
             {/* Mobile category indicators - REMOVED completely for phones */}
 
             <div
-              className="relative w-full max-w-sm sm:max-w-sm md:max-w-md h-[320px] sm:h-[260px] md:h-[380px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto"
+              className="relative w-full max-w-sm sm:max-w-sm md:max-w-md h-[200px] sm:h-[260px] md:h-[380px] lg:h-[450px] mx-auto lg:mr-0 lg:ml-auto opacity-95 sm:opacity-100"
               ref={chatContainerRef}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
@@ -519,7 +519,7 @@ export default function HeroSection() {
                       <div className="font-medium text-zinc-200 text-xs sm:text-sm md:text-base">
                         Finny
                       </div>
-                      <div className="text-xs text-zinc-400 flex items-center gap-1">
+                      <div className="text-[10px] sm:text-xs text-zinc-400 flex items-center gap-1">
                         <span className="h-1.5 w-1.5 rounded-full bg-green-400"></span>
                         <span>Online</span>
                       </div>
@@ -545,96 +545,127 @@ export default function HeroSection() {
                 {/* Chat messages area */}
                 <div
                   ref={chatMessagesRef}
-                  className="flex-1 px-3 sm:px-6 py-2.5 sm:py-4 overflow-auto"
+                  className={`flex-1 overflow-auto ${
+                    isMobile
+                      ? "px-2.5 py-2 flex items-center justify-center"
+                      : "px-3 sm:px-6 py-2.5 sm:py-4"
+                  }`}
                 >
-                  {/* System welcome message */}
-                  <div className="bg-zinc-800/50 px-3 sm:px-4 py-2 rounded-lg text-center text-[11px] sm:text-xs text-zinc-500 mb-3 sm:mb-4">
-                    Today • Conversation with Finny
-                  </div>
-
-                  {/* Previous message bubble */}
-                  <div className="flex gap-2 mb-3 sm:mb-6">
-                    <FinnyAvatar size="md" />
-                    <div className="max-w-[85%] sm:max-w-[80%]">
-                      <div
-                        className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-200 ${
-                          isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
-                        }`}
-                      >
-                        <p>
-                          Hello! I'm Finny, your AI money coach. I'll help you
-                          manage your money better.
-                        </p>
+                  {/* Mobile: Show only one concise message */}
+                  {isMobile ? (
+                    <div className="w-full flex flex-col items-center justify-center h-full">
+                      <div className="w-full max-w-[90%]">
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={currentMessageIndex}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{
+                              duration: 0.3,
+                              ease: "easeOut",
+                            }}
+                            className="bg-blue-600/20 border border-blue-500/30 rounded-2xl px-4 py-3.5 text-sm text-zinc-200 text-center backdrop-blur-none"
+                          >
+                            <p className="leading-relaxed">
+                              {displayedText || finnyMessages[currentMessageIndex]}
+                            </p>
+                          </motion.div>
+                        </AnimatePresence>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <>
+                      {/* System welcome message */}
+                      <div className="bg-zinc-800/50 px-3 sm:px-4 py-2 rounded-lg text-center text-xs text-zinc-500 mb-3 sm:mb-4">
+                        Today • Conversation with Finny
+                      </div>
 
-                  {/* Current animated message bubble */}
-                  <div className="flex gap-2">
-                    <FinnyAvatar size="md" />
-                    <div className="max-w-[85%] sm:max-w-[80%]">
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={currentMessageIndex}
-                          initial={
-                            isMobile
-                              ? { opacity: 0, x: 50 }
-                              : { opacity: 0, y: 10 }
-                          }
-                          animate={
-                            isMobile
-                              ? { opacity: 1, x: 0 }
-                              : { opacity: 1, y: 0 }
-                          }
-                          exit={
-                            isMobile
-                              ? { opacity: 0, x: -50 }
-                              : { opacity: 0, y: -10 }
-                          }
-                          transition={{
-                            duration: isMobile ? 0.4 : 0.3,
-                            ease: isMobile ? "easeInOut" : "easeOut",
-                          }}
-                          className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-200 ${
-                            isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
-                          }`}
-                        >
-                          {isTyping && !isMobile && (
-                            <div className="flex items-center mb-1.5">
-                              <span className="text-xs text-zinc-500 flex items-center gap-1">
-                                <span className="h-1 w-1 bg-zinc-500 rounded-full animate-pulse"></span>
-                                Typing...
+                      {/* Previous message bubble */}
+                      <div className="flex gap-2 mb-3 sm:mb-6">
+                        <FinnyAvatar size="md" />
+                        <div className="max-w-[85%] sm:max-w-[80%]">
+                          <div
+                            className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-200 ${
+                              isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
+                            }`}
+                          >
+                            <p>
+                              Hello! I'm Finny, your AI money coach. I'll help you
+                              manage your money better.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Current animated message bubble */}
+                      <div className="flex gap-2">
+                        <FinnyAvatar size="md" />
+                        <div className="max-w-[85%] sm:max-w-[80%]">
+                          <AnimatePresence mode="wait">
+                            <motion.div
+                              key={currentMessageIndex}
+                              initial={
+                                isMobile
+                                  ? { opacity: 0, x: 50 }
+                                  : { opacity: 0, y: 10 }
+                              }
+                              animate={
+                                isMobile
+                                  ? { opacity: 1, x: 0 }
+                                  : { opacity: 1, y: 0 }
+                              }
+                              exit={
+                                isMobile
+                                  ? { opacity: 0, x: -50 }
+                                  : { opacity: 0, y: -10 }
+                              }
+                              transition={{
+                                duration: isMobile ? 0.4 : 0.3,
+                                ease: isMobile ? "easeInOut" : "easeOut",
+                              }}
+                              className={`bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tl-none px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm md:text-base text-zinc-200 ${
+                                isMobile ? "backdrop-blur-none" : "backdrop-blur-sm"
+                              }`}
+                            >
+                              {isTyping && !isMobile && (
+                                <div className="flex items-center mb-1.5">
+                                  <span className="text-xs text-zinc-500 flex items-center gap-1">
+                                    <span className="h-1 w-1 bg-zinc-500 rounded-full animate-pulse"></span>
+                                    Typing...
+                                  </span>
+                                </div>
+                              )}
+                              <p>
+                                {displayedText}
+                                {isTyping && !isMobile && (
+                                  <span className="inline-block w-1.5 h-4 bg-zinc-400 ml-1 animate-pulse"></span>
+                                )}
+                              </p>
+                              {/* Keep quick actions for larger screens; hide on the smallest viewports to reduce clutter */}
+                              {!isTyping && (
+                                <div className="hidden sm:flex flex-wrap justify-end gap-1.5 sm:gap-2 mt-2">
+                                  <button className="text-xs text-blue-300 hover:text-blue-200 transition-colors py-1 px-2">
+                                    Tell me more
+                                  </button>
+                                  <button className="text-xs text-green-300 hover:text-green-200 transition-colors py-1 px-2">
+                                    Let's do it
+                                  </button>
+                                </div>
+                              )}
+                            </motion.div>
+                          </AnimatePresence>
+                          <div className="hidden sm:flex text-xs text-zinc-500 ml-2 mt-1 items-center gap-2">
+                            {!isTyping && (
+                              <span className="text-xs text-zinc-600">
+                                {responseTime}s response time
                               </span>
-                            </div>
-                          )}
-                          <p>
-                            {displayedText}
-                            {isTyping && !isMobile && (
-                              <span className="inline-block w-1.5 h-4 bg-zinc-400 ml-1 animate-pulse"></span>
                             )}
-                          </p>
-                          {/* Keep quick actions for larger screens; hide on the smallest viewports to reduce clutter */}
-                          {!isTyping && (
-                            <div className="hidden sm:flex flex-wrap justify-end gap-1.5 sm:gap-2 mt-2">
-                              <button className="text-xs text-blue-300 hover:text-blue-200 transition-colors py-1 px-2">
-                                Tell me more
-                              </button>
-                              <button className="text-xs text-green-300 hover:text-green-200 transition-colors py-1 px-2">
-                                Let's do it
-                              </button>
-                            </div>
-                          )}
-                        </motion.div>
-                      </AnimatePresence>
-                      <div className="hidden sm:flex text-xs text-zinc-500 ml-2 mt-1 items-center gap-2">
-                        {!isTyping && (
-                          <span className="text-xs text-zinc-600">
-                            {responseTime}s response time
-                          </span>
-                        )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Message progress indicators */}
@@ -659,8 +690,8 @@ export default function HeroSection() {
                   ))}
                 </div>
 
-                {/* Swipe indicator for mobile */}
-                <div className="sm:hidden text-center text-[11px] text-zinc-500 py-1.5">
+                {/* Swipe indicator for mobile - hidden to reduce clutter */}
+                <div className="sm:hidden text-center text-[10px] text-zinc-500/70 py-1">
                   Swipe to change messages
                 </div>
 
@@ -671,7 +702,7 @@ export default function HeroSection() {
                 <div className="hidden sm:block absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-xl pointer-events-none"></div>
               </div>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-400 text-center mt-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto lg:mr-0 lg:ml-auto animate-fade-in-up hero-animate-5">
+            <p className="text-xs sm:text-sm text-zinc-400 text-center mt-3 sm:mt-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto lg:mr-0 lg:ml-auto animate-fade-in-up hero-animate-5">
               Built to give you clarity and control.
             </p>
           </div>

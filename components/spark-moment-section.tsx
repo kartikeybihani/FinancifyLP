@@ -30,10 +30,10 @@ export default function SparkMomentSection() {
                 </div>
               </div>
               <div className="bg-zinc-800/40 backdrop-blur-sm px-3 py-2.5 rounded-lg border border-zinc-700/40">
-                <div className="text-base font-bold text-mint-300 mb-0.5">24/7</div>
-                <div className="text-xs text-zinc-400">
-                  Always available
+                <div className="text-base font-bold text-mint-300 mb-0.5">
+                  24/7
                 </div>
+                <div className="text-xs text-zinc-400">Always available</div>
               </div>
             </div>
 

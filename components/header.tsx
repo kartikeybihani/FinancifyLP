@@ -32,8 +32,8 @@ export default function Header({ onContactClick }: HeaderProps) {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
         isScrolled
-          ? "mt-2 sm:mt-4 mx-4 sm:mx-auto max-w-[calc(100%-2rem)] sm:max-w-4xl bg-white/3 backdrop-blur-xl rounded-3xl sm:rounded-[2rem] shadow-sm border border-white/10 py-2 sm:py-3 px-4 sm:px-0"
-          : "max-w-7xl mx-auto py-2 sm:py-4 px-4 sm:px-6"
+          ? "mt-2 sm:mt-4 mx-4 sm:mx-auto max-w-[calc(100%-2rem)] sm:max-w-4xl bg-white/3 backdrop-blur-xl rounded-3xl sm:rounded-[2rem] shadow-sm border border-white/10 py-3 sm:py-3 px-4 sm:px-0"
+          : "max-w-7xl mx-auto py-4 sm:py-4 px-4 sm:px-6"
       }`}
     >
       <div className="container mx-auto">
@@ -49,8 +49,8 @@ export default function Header({ onContactClick }: HeaderProps) {
               <motion.div
                 className={`relative ${
                   isScrolled
-                    ? "w-6 h-6 sm:w-8 sm:h-8"
-                    : "w-8 h-8 sm:w-10 sm:h-10"
+                    ? "w-8 h-8 sm:w-8 sm:h-8"
+                    : "w-10 h-10 sm:w-10 sm:h-10"
                 }`}
                 animate={{
                   rotate: isHovered ? 180 : 0,
@@ -79,7 +79,9 @@ export default function Header({ onContactClick }: HeaderProps) {
                   isHovered
                     ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
                     : "bg-gradient-to-r from-white to-zinc-300"
-                } ${isScrolled ? "text-lg sm:text-xl" : "text-xl sm:text-2xl"}`}
+                } ${
+                  isScrolled ? "text-xl sm:text-xl" : "text-2xl sm:text-2xl"
+                }`}
                 whileHover={{
                   scale: 1.05,
                   transition: { duration: 0.2 },
@@ -92,15 +94,15 @@ export default function Header({ onContactClick }: HeaderProps) {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden text-zinc-300 p-1.5 rounded-md bg-zinc-800/30 border border-zinc-700/30 hover:bg-zinc-800/50 transition-colors"
+            className="md:hidden text-zinc-300 p-2.5 rounded-md bg-zinc-800/30 border border-zinc-700/30 hover:bg-zinc-800/50 transition-colors"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -114,8 +116,8 @@ export default function Header({ onContactClick }: HeaderProps) {
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"

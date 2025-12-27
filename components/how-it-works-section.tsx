@@ -210,7 +210,10 @@ export default function HowItWorksSection() {
                   {/* Connecting line for mobile */}
                   <div className="absolute left-[15px] sm:left-[11px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-blue-500/30 via-purple-500/30 to-emerald-500/30 md:hidden"></div>
                   {journeySteps.map((step, index) => (
-                    <div key={index} className="flex items-start gap-3 relative">
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 relative"
+                    >
                       {/* Numbered bullet */}
                       <div className="flex-shrink-0 mt-0.5 relative z-10">
                         <div className="flex h-8 w-8 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-zinc-800 text-sm sm:text-[11px] font-semibold text-zinc-200 border border-zinc-700">
@@ -256,7 +259,9 @@ export default function HowItWorksSection() {
             </p>
             <Button
               onClick={() => {
-                document.getElementById("top")?.scrollIntoView({ behavior: "smooth" });
+                document
+                  .getElementById("top")
+                  ?.scrollIntoView({ behavior: "smooth" });
               }}
               className="bg-[#4A90E2] hover:bg-[#3A7BC9] text-white font-medium rounded-lg transition-colors"
             >

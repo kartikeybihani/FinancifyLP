@@ -165,7 +165,10 @@ export default function ChatUISection() {
           </h2>
           <p className="text-zinc-300 max-w-2xl mx-auto text-base sm:text-lg">
             When money feels overwhelming, Finny provides safety and clarity—not
-            judgment. <span className="sm:inline block">Real support for real financial moments.</span>
+            judgment.{" "}
+            <span className="sm:inline block">
+              Real support for real financial moments.
+            </span>
           </p>
         </div>
 
